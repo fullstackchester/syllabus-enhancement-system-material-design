@@ -90,7 +90,7 @@ export default function SubjectAdd() {
                                     key={key}
                                     fullWidth
                                     margin='normal'
-                                    variant='outlined'
+                                    variant='filled'
                                     required={v.required}
                                     label={v.label} type={v.type}
                                     onChange={v.onChange}

@@ -50,7 +50,7 @@ export default function Syllabus() {
                         pageSize={8}
                         rowsPerPageOptions={[8]}
                         getRowId={(row) => row.postId}
-                        onCellDoubleClick={(cell) => nav(`/faculty/${cell.id}`)}
+                        onCellDoubleClick={(cell) => nav(`/syllabus/${cell.id}`)}
                         checkboxSelection
                         components={{ Toolbar: GridToolbar }}
                     />

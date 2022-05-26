@@ -11,30 +11,39 @@ import Faculty from "./Pages/Faculty/Faculty";
 import Subject from "./Pages/Subject/Subject";
 import SubjectAdd from "./Pages/Subject/SubjectAdd";
 import FacultyProfile from "./Pages/Faculty/FacultyProfile";
+import FirebaseProvider from "./Context/FirebaseContext";
+import SyllabusFile from "./Pages/Syllabus/SyllabusFile";
 
 function App() {
 
 	return (
-		<div className="App">
-			<BrowserRouter>
-				<Routes>
-					<Route index element={<Landing />} />
-					<Route exact path='/' element={<Landing />} />
-					<Route exact path='/signup' element={<Signup />} />
-					<Route exact path='/' element={<Layout />} >
-						<Route index element={<Account />} />
-						<Route exact path='account' element={<Account />} />
-						<Route exact path='dashboard' element={<Dashboard />} />
-						<Route exact path='syllabus' element={<Syllabus />} />
-						<Route exact path='subjects' element={<Subject />} />
-						<Route exact path='subjects/new-subject/:subjectId' element={<SubjectAdd />} />
+		<FirebaseProvider>
+			<div className="App">
+				<BrowserRouter>
+					<Routes>
+						<Route index element={<Landing />} />
+						<Route exact path='/' element={<Landing />} />
+						<Route exact path='/signup' element={<Signup />} />
+						<Route exact path='/' element={<Layout />} >
+							<Route index element={<Dashboard />} />
 
-						<Route exact path='faculty' element={<Faculty />} />
-						<Route exact path='faculty/:uid' element={<FacultyProfile />} />
-					</Route>
-				</Routes>
-			</BrowserRouter>
-		</div>
+							<Route exact path='syllabus' element={<Syllabus />} />
+							<Route exact path='syllabus/:postId' element={<SyllabusFile />} />
+
+
+							<Route exact path='dashboard' element={<Dashboard />} />
+							<Route exact path='subjects' element={<Subject />} />
+							<Route exact path='subjects/new-subject/:subjectId' element={<SubjectAdd />} />
+
+							<Route exact path='faculty' element={<Faculty />} />
+							<Route exact path='faculty/:uid' element={<FacultyProfile />} />
+
+							<Route exact path='account/:uid' element={<Account />} />
+						</Route>
+					</Routes>
+				</BrowserRouter>
+			</div>
+		</FirebaseProvider>
 	)
 }
 

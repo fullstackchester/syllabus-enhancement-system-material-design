@@ -1,18 +1,47 @@
 import { List, ListItem, ListItemButton, ListItemIcon, ListItemText } from '@mui/material'
 import { Box } from '@mui/system'
 import React from 'react'
-import { SidebarLinks } from '../Data/SidebarLink'
 import { useNavigate } from 'react-router-dom'
+import { AccountCircle, Article, Dashboard, Group, School } from "@mui/icons-material";
+import { useFirebase } from '../Context/FirebaseContext';
 
 export default function Sidebar() {
 
     const nav = useNavigate()
+    const { currentUser } = useFirebase()
+
+    const SidebarLinks = [
+        {
+            label: 'Dashboard',
+            link: '/dashboard',
+            icon: <Dashboard color='primary' />
+        },
+        {
+            label: 'Syllabus',
+            link: '/syllabus',
+            icon: <Article color='primary' />
+        },
+        {
+            label: 'Subjects',
+            link: '/subjects',
+            icon: <School color='primary' />
+        },
+        {
+            label: 'Faculty',
+            link: '/faculty',
+            icon: <Group color='primary' />
+        },
+        {
+            label: 'Account',
+            link: `/account/${currentUser.uid}`,
+            icon: <AccountCircle color='primary' />
+        },
+    ]
     return (
         <>
             <Box sx={{
                 height: '100%',
                 width: '18%',
-                backgroundColor: '#FFF',
                 borderRight: '1px solid #DADCE0',
                 position: 'sticky',
                 top: '0',

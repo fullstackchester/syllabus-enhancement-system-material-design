@@ -39,13 +39,13 @@ export default function Faculty() {
                 justifyContent: 'space-between'
             }}>
                 <Typography variant='h4'>Faculty</Typography>
-                <Box>
+                {/* <Box>
                     <Button variant='contained' startIcon={<AddIcon />}
                         style={{
                             marginRight: '.75rem',
                         }}
                         disableElevation>Add</Button>
-                </Box>
+                </Box> */}
             </Container>
             {!isFetching ?
                 <Container sx={{

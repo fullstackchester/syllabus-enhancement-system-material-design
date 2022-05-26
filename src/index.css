@@ -12,3 +12,14 @@ body {
   box-sizing: border-box;
 }
 
+.column-div{
+  display: flex;
+  flex-direction: column;
+}
+
+.horizontal-form{
+  display: flex;
+  flex-direction: row;
+  flex: 1;
+  padding: .5rem;
+}
