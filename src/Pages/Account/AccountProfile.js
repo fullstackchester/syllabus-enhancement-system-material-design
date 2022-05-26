@@ -1,4 +1,4 @@
-import { Avatar, Button, Stack, Typography } from '@mui/material'
+import { Avatar, Button, Stack, Typography, Skeleton } from '@mui/material'
 import { Box } from '@mui/system'
 import { onValue, ref } from 'firebase/database'
 import { getDownloadURL, ref as storageRef } from 'firebase/storage'
@@ -43,7 +43,7 @@ export default function AccountProfile({ uid }) {
                         alignItems: 'center',
                         width: '90%',
                     }}>
-                    <Avatar
+                    {avatarImg ? <Avatar
                         id='profile-avatar'
                         alt={account.name}
                         src={avatarImg}
@@ -53,6 +53,14 @@ export default function AccountProfile({ uid }) {
                             marginRight: '1rem',
                             border: '.3rem solid'
                         }} />
+                        :
+                        <Skeleton
+                            variant="circular"
+                            sx={{
+                                width: '10rem',
+                                height: '10rem',
+                                marginRight: '1rem',
+                            }} />}
                     <Typography variant='h3'>{account.name}</Typography>
                     <Button
                         variant='contained'

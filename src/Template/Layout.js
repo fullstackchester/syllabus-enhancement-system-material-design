@@ -5,7 +5,7 @@ import './Layout.css';
 import Sidebar from './Sidebar';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
-import { Avatar, Switch, Typography } from '@mui/material'
+import { Avatar, Switch, Tooltip, Typography } from '@mui/material'
 import { Box } from '@mui/system'
 import DarkModeIcon from '@mui/icons-material/DarkMode';
 import LightModeIcon from '@mui/icons-material/LightMode';
@@ -45,12 +45,17 @@ export default function Layout() {
                                 color='primary'
                                 onChange={handleMode}
                                 aria-label="text alignment" >
-                                <ToggleButton value="dark" aria-label="left aligned">
-                                    <DarkModeIcon />
-                                </ToggleButton>
-                                <ToggleButton value="light" aria-label="left aligned">
-                                    <LightModeIcon />
-                                </ToggleButton>
+                                <Tooltip title='Dark Mode' placement='bottom'>
+                                    <ToggleButton value="dark" aria-label="left aligned">
+                                        <DarkModeIcon />
+                                    </ToggleButton>
+                                </Tooltip>
+                                <Tooltip title='Light Mode' placement='bottom'>
+                                    <ToggleButton value="light" aria-label="left aligned">
+                                        <LightModeIcon />
+                                    </ToggleButton>
+                                </Tooltip>
+
                             </ToggleButtonGroup>
                         </Box>
                         <Avatar alt='Account-avatar' src='./Assets/Img/sample-avatar.jpg' />

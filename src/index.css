@@ -48,8 +48,14 @@ body {
 
 .edit-account-security-form{
   width: 50%;
-  height: auto;
+  height: auto; 
   spellcheck: false;
   display: flex;
   flex-direction: column;
+}
+
+.add-subject-form{
+  display: grid;
+  grid-template-column: 2;
+  grid-gap: .75rem;
 }

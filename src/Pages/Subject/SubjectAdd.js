@@ -1,8 +1,11 @@
-import { Button, TextField, Alert, AlertTitle, Snackbar, Typography } from '@mui/material'
-import { Box, Container } from '@mui/system'
+import { TextField, Alert, AlertTitle, Snackbar, Typography, Grid } from '@mui/material'
+import { Box } from '@mui/system'
 import React, { useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import LoadingButton from '@mui/lab/LoadingButton';
+import '../../index.css'
+import { ref, set } from 'firebase/database';
+import { database } from '../../JS/Firebase';
 
 export default function SubjectAdd() {
 
@@ -12,6 +15,11 @@ export default function SubjectAdd() {
     const [courseDescription, setCourseDescription] = useState()
     const { subjectId } = useParams()
     const [loading, setLoading] = useState(false)
+
+    const [actionMessage, setActionMessage] = useState('')
+    const [actionStatus, setActionStatus] = useState()
+    const [snakcOpen, setSnackOpen] = useState(false)
+
     const [error, setError] = useState('')
     const [show, setShow] = useState(false)
 
@@ -24,23 +32,29 @@ export default function SubjectAdd() {
 
     const addSubjectTextfields = [
         {
-            label: 'Course Code',
-            type: 'text',
-            required: true,
-            multiline: false,
-            onChange: (e) => setCourseCode(e.target.value)
-        },
-        {
             label: 'Course Title',
             type: 'text',
+            placeHolder: 'Data Stuctures and Algorithm',
             required: true,
+            width: 12,
             multiline: false,
             onChange: (e) => setCourseTitle(e.target.value)
         },
         {
+            label: 'Course Code',
+            type: 'text',
+            placeHolder: 'IT 101',
+            required: true,
+            width: 6,
+            multiline: false,
+            onChange: (e) => setCourseCode(e.target.value)
+        },
+        {
             label: 'Credit Units',
             type: 'number',
+            placeHolder: '3.0',
             required: true,
+            width: 6,
             multiline: false,
             onChange: (e) => setCreditUnits(e.target.value)
         },
@@ -48,80 +62,104 @@ export default function SubjectAdd() {
         {
             label: 'Course Description',
             type: 'text',
+            placeHolder: 'Enter your description...',
             required: true,
+            width: 12,
             multiline: true,
-            maxRows: 6,
+            maxRows: 10,
             onChange: (e) => setCourseDescription(e.target.value)
         },
     ]
 
     function addSubject(e) {
         e.preventDefault()
-        setShow(true)
-        setError('Lorem Ipsum dolor sit amet')
+        setLoading(true)
+
+
+        const newSubject = {
+            subjectId: subjectId,
+            courseCode: courseCode,
+            subjectTitle: courseTitle,
+            subjectDescription: courseDescription,
+            creditUnits: creditUnits,
+        }
+
+        setTimeout(() => {
+            set(ref(database, `subject/${subjectId}`), newSubject)
+                .then(() => {
+                    setLoading(false)
+                    setActionStatus('success')
+                    setActionMessage('Successfully added new subject')
+                    setSnackOpen(true)
+                }).catch((err) => {
+                    setLoading(false)
+                    setActionStatus('error')
+                    setActionMessage(err.message)
+                    setSnackOpen(true)
+                });
+        }, 1500)
     }
     return (
         <>
-            <Container sx={{
-                height: '100%',
+            <Box sx={{
+                width: '70%',
+                height: '85%',
                 display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
                 flexDirection: 'column',
-
+                padding: '1.5rem',
             }}>
-
-                <Box sx={{
-                    width: '70%',
-                    height: '85%',
-                    padding: '2rem',
-                    display: 'flex',
-                    flexDirection: 'column',
-
-                }}>
-                    <Typography variant='h4'>New Subject</Typography>
-                    <form
-                        id='add-subject-form'
-                        spellCheck={false}
-                        onSubmit={addSubject}>
+                <Typography variant='h4' gutterBottom>New Subject</Typography>
+                <form
+                    id='add-subject-form'
+                    spellCheck={false}
+                    onSubmit={addSubject}>
+                    <Grid container spacing={2}>
                         {
                             addSubjectTextfields.map((v, key) =>
-                                <TextField
-                                    key={key}
-                                    fullWidth
-                                    margin='normal'
-                                    variant='filled'
-                                    required={v.required}
-                                    label={v.label} type={v.type}
-                                    onChange={v.onChange}
-                                    maxRows={v.maxRows}
-                                    multiline={v.multiline} />
+                                <Grid key={key} item xs={v.width}>
+                                    <TextField
+                                        size='normal'
+                                        placeholder={v.placeHolder}
+                                        variant='outlined'
+                                        sx={{ width: '100%' }}
+                                        required={v.required}
+                                        label={v.label} type={v.type}
+                                        onChange={v.onChange}
+                                        rows={v.maxRows}
+                                        multiline={v.multiline} />
+                                </Grid>
                             )
                         }
-                    </form>
+                    </Grid>
+                </form>
 
-                    <LoadingButton
-                        sx={{
-                            marginTop: '1rem',
-                        }}
-                        form='add-subject-form'
-                        type='submit'
-                        loading={loading}
-                        variant='contained' > Add Subject</LoadingButton>
-                </Box>
-                <Snackbar
-                    open={show}
-                    onClose={() => {
-                        setShow(false)
-                        nav('/subjects')
+                <LoadingButton
+                    sx={{
+                        marginTop: '1rem',
+                        width: 'max-content',
+                        textTransform: 'none'
                     }}
-                    autoHideDuration={10000}  >
-                    <Alert severity='error' >
-                        <AlertTitle>Error</AlertTitle>
-                        {error}
-                    </Alert>
-                </Snackbar>
-            </Container>
+                    form='add-subject-form'
+                    type='submit'
+                    loading={loading}
+                    variant='contained' > Add Subject</LoadingButton>
+            </Box>
+
+            <Snackbar
+                open={snakcOpen}
+                onClose={() => {
+                    if (actionStatus === 'success') {
+                        setSnackOpen(false)
+                        nav('/subjects')
+                    } else {
+                        setSnackOpen(false)
+                    }
+                }}
+                autoHideDuration={1000}  >
+                <Alert severity={actionStatus} >
+                    {actionMessage}
+                </Alert>
+            </Snackbar>
         </>
     )
 }

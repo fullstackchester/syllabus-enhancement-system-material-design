@@ -47,8 +47,10 @@ export default function Subject() {
                     <Button
                         variant='contained'
                         startIcon={<AddIcon />}
-                        style={{
+                        size='small'
+                        sx={{
                             marginRight: '.75rem',
+                            textTransform: 'none'
                         }}
                         onClick={() => {
                             nav(`/subjects/new-subject/${v4()}`)

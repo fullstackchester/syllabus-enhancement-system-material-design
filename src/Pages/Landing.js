@@ -3,14 +3,14 @@ import { Box, Container } from '@mui/system'
 import { signInWithEmailAndPassword } from 'firebase/auth'
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import DialogComponent from '../Components/DialogComponent'
-import { DummyText } from '../Data/Data'
 import { auth } from '../JS/Firebase'
+import '../index.css'
+import { LoadingButton } from '@mui/lab'
 
 export default function Landing() {
     const [email, setEmail] = useState('')
     const [pass, setPass] = useState('')
-    const [isOpen, setOpen] = useState(false)
+    const [isLoading, setLoading] = useState(false)
     const nav = useNavigate()
 
     const [error, setError] = useState('')
@@ -29,16 +29,21 @@ export default function Landing() {
 
     function SignUpUser(e) {
         e.preventDefault()
-        if (email === '' || pass === '') {
-            setError('Email and Password are required')
-        } else {
-            signInWithEmailAndPassword(auth, email, pass)
-                .then(() => {
-                    nav('/account')
-                }).catch((err) => {
-                    setError(err.message)
-                });
-        }
+        setLoading(true)
+        setTimeout(function () {
+            if (email === '' || pass === '') {
+                setError('Email and Password are required')
+            }
+            else {
+                signInWithEmailAndPassword(auth, email, pass)
+                    .then(() => {
+                        nav('/dashboard')
+                    }).catch((err) => {
+                        setError(err.message)
+                    });
+            }
+            setLoading(false)
+        }, 1500)
     }
 
     return (
@@ -55,37 +60,52 @@ export default function Landing() {
                 <form
                     spellCheck={false}
                     id='sign-up-user-form'
+                    className='sign-up-user-form'
                     onSubmit={SignUpUser}>
+
                     <Box sx={{
                         borderRadius: '.6rem',
-                        padding: '3rem',
+                        padding: '2rem',
                         width: '25rem',
                         height: 'auto',
                         display: 'flex',
                         flexDirection: 'column',
+                        alignItems: 'center',
                     }}>
-                        <Typography variant='h4' component='div' gutterBottom >Login</Typography>
+                        <img src={require('../Assets/logo.svg').default} height='100' width='100' />
+                        <Typography variant='h4'
+                            component='div'
+                            sx={{
+                                textAlign: 'center',
+                                fontWeight: 'bold',
+                            }}
+                            gutterBottom >Login</Typography>
 
                         {formFields.map((v, k) =>
                             <TextField
                                 key={k}
                                 type={v.type}
                                 label={v.label}
-                                variant='outlined'
-                                margin='normal'
+                                variant='filled'
+                                margin='dense'
+                                size='small'
+                                fullWidth
                                 required={v.required}
                                 onChange={v.onChange} />
                         )}
-                        {error && <Alert severity='error' >{error}</Alert>}
-                        <Button
+                        <LoadingButton
                             type='submit'
                             form='sign-up-user-form'
+                            loading={isLoading}
                             style={{
                                 textTransform: 'none',
-                                marginTop: '1rem',
+                                marginTop: '.75rem',
+                                width: '100%'
                             }}
+                            disableElevation
                             variant='contained'
-                            size='medium' >Login</Button>
+                            size='medium' >Login</LoadingButton>
+                        {error && <Alert severity='error' >{error}</Alert>}
                     </Box>
                 </form>
 
@@ -94,8 +114,8 @@ export default function Landing() {
                     flexDirection: 'row',
                     alignItems: 'center'
                 }}>
-                    <Typography variant='caption'>Don't have an Account?</Typography>
-                    <Button onClick={() => nav('/signup')} variant='text' size='small'>Sign up</Button>
+                    <Typography variant='caption' sx={{ fontWeight: 'bold' }}>Don't have an Account?</Typography>
+                    <Button sx={{ textTransform: 'none' }} onClick={() => nav('/signup')} variant='text' size='small'>Sign up</Button>
                 </Box>
             </Container>
         </>
