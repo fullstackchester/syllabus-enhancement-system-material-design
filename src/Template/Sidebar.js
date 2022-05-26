@@ -4,6 +4,8 @@ import React from 'react'
 import { useNavigate } from 'react-router-dom'
 import { AccountCircle, Article, Dashboard, Group, School } from "@mui/icons-material";
 import { useFirebase } from '../Context/FirebaseContext';
+import Typography from '@mui/material/Typography';
+import '../index.css'
 
 export default function Sidebar() {
 
@@ -50,9 +52,18 @@ export default function Sidebar() {
             }}>
                 <Box sx={{
                     width: '100%',
-                    height: '8rem',
+                    height: '5rem',
+                    display: 'flex',
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    justifyContent: 'center'
                 }}>
-
+                    <div className='logo-title-divider'>
+                        <img
+                            id='logo-img'
+                            src={require('../Assets/logo.svg').default} width='50' height='50' />
+                        <Typography variant='h5'>CICT-SEMS</Typography>
+                    </div>
                 </Box>
                 <List sx={{
                     flex: '1',

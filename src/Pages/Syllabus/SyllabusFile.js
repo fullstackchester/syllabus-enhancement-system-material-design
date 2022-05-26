@@ -1,4 +1,4 @@
-import { Typography } from '@mui/material'
+
 import { Box, Container } from '@mui/system'
 import React, { useState } from 'react'
 import { useParams } from 'react-router-dom'
@@ -8,6 +8,7 @@ import TabList from '@mui/lab/TabList';
 import TabPanel from '@mui/lab/TabPanel';
 import SyllabusInformation from './SyllabusInformation';
 import SyllabusComments from './SyllabusComments';
+import SyllabusHistory from './SyllabusHistory';
 
 
 export default function SyllabusFile() {
@@ -53,8 +54,11 @@ export default function SyllabusFile() {
 
                     <TabPanel value="3"
                         sx={{
+                            padding: '1rem',
                             height: '100%'
-                        }}>Item Three</TabPanel>
+                        }}>
+                        <SyllabusHistory postId={postId} />
+                    </TabPanel>
                 </TabContext>
             </Box>
         </>

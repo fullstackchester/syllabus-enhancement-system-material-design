@@ -23,3 +23,33 @@ body {
   flex: 1;
   padding: .5rem;
 }
+
+
+.cover-photo{
+  width: 100%;
+  height: 15rem;
+  content: url('Assets/Img/default-cover-photo.webp');
+  object-fit: cover;
+  opacity: 50%;
+}
+
+.logo-img{
+  height: .5rem;
+  width: .5rem;
+}
+
+.logo-title-divider{
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  padding: .75rem;
+  align-items: center;
+}
+
+.edit-account-security-form{
+  width: 50%;
+  height: auto;
+  spellcheck: false;
+  display: flex;
+  flex-direction: column;
+}

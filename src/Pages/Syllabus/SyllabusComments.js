@@ -71,7 +71,8 @@ export default function SyllabusComments({ postId }) {
                                 variant='outlined'
                                 sx={{
                                     width: '70%',
-                                    height: '5rem',
+                                    height: 'auto',
+                                    minHeight: '5rem',
                                     marginTop: '.75rem'
                                 }}>
                                 <CardContent>

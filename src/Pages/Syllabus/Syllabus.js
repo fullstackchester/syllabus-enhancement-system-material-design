@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react'
-import { Button, CircularProgress, InputAdornment, TextField, Typography } from '@mui/material';
+import { Button, CircularProgress, Typography } from '@mui/material';
 import { Box, Container } from '@mui/system';
-import SearchIcon from '@mui/icons-material/Search';
 import AddIcon from '@mui/icons-material/Add';
 import { onValue, ref } from 'firebase/database';
 import { database } from '../../JS/Firebase';
 import { useNavigate } from 'react-router-dom';
 import { DataGrid, GridToolbar } from '@mui/x-data-grid';
+import { v4 } from 'uuid'
 
 export default function Syllabus() {
 
@@ -38,12 +38,20 @@ export default function Syllabus() {
                 justifyContent: 'space-between'
             }}>
                 <Typography variant='h4'>Syllabus</Typography>
+                <Button
+                    variant='contained'
+                    size='small'
+                    startIcon={<AddIcon />}
+                    onClick={() => {
+                        nav(`/syllabus/new-syllabus/${v4()}`)
+                    }}>Add</Button>
 
             </Container>
             {!isFetching ?
-                <Container sx={{
-                    height: 'calc(95% - 5rem)'
-                }}>
+                <Container
+                    sx={{
+                        height: 'calc(95% - 5rem)'
+                    }}>
                     <DataGrid
                         columns={columns}
                         rows={list}

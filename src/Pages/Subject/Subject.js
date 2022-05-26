@@ -9,6 +9,7 @@ import { onValue, ref } from 'firebase/database';
 import { database } from '../../JS/Firebase';
 import { useNavigate } from 'react-router-dom';
 import { v4 } from 'uuid'
+import { DataGrid, GridToolbar, GridToolbarExport } from '@mui/x-data-grid';
 
 
 export default function Subject() {
@@ -17,6 +18,11 @@ export default function Subject() {
     const [list, setList] = useState([])
 
     const nav = useNavigate()
+    const columns = [
+        { field: 'courseCode', headerName: 'Course Code', flex: 1 },
+        { field: 'subjectTitle', headerName: 'Course Title', flex: 1 },
+        { field: 'creditUnits', headerName: 'Credit Units', flex: 1 },
+    ];
 
     useEffect(() => {
         onValue(ref(database, 'subject'), snapshot => {
@@ -36,7 +42,7 @@ export default function Subject() {
                 justifyContent: 'space-between'
             }}>
                 <Typography variant='h4'>Subjects</Typography>
-                
+
                 <Box>
                     <Button
                         variant='contained'
@@ -48,42 +54,25 @@ export default function Subject() {
                             nav(`/subjects/new-subject/${v4()}`)
                         }}
                         disableElevation>Add</Button>
-                    <TextField variant='outlined' size='small' placeholder='Search'
-                        InputProps={{
-                            startAdornment: (
-                                <InputAdornment position="start">
-                                    <SearchIcon />
-                                </InputAdornment>
-                            ),
-                        }}
-                        style={{
-                            backgroundColor: '#fff',
-                        }}
-                    />
                 </Box>
             </Container>
 
             {!isFetching ?
-                <Container>
-                    <TableContainer component={Paper}>
-                        <Table>
-                            <TableHead>
-                                <TableRow>
-                                    {subjectTableHeader.map((title, key) =>
-                                        <TableCell key={key} align='left'>{title}</TableCell>)}
-                                </TableRow>
-                            </TableHead>
-                            <TableBody>
-                                {list.map((sub, key) =>
-                                    <TableRow key={key}>
-                                        <TableCell>{sub.courseCode}</TableCell>
-                                        <TableCell>{sub.subjectTitle}</TableCell>
-                                        <TableCell>{sub.creditUnits}</TableCell>
-                                    </TableRow>
-                                )}
-                            </TableBody>
-                        </Table>
-                    </TableContainer>
+                <Container
+                    sx={{
+                        height: 'calc(95% - 5rem)'
+                    }}>
+
+                    <DataGrid
+                        columns={columns}
+                        rows={list}
+                        pageSize={8}
+                        rowsPerPageOptions={[8]}
+                        getRowId={(row) => row.subjectId}
+                        onCellDoubleClick={(cell) => nav(`/subjects/${cell.id}`)}
+                        checkboxSelection
+                        components={{ Toolbar: GridToolbar }}
+                    />
                 </Container>
                 :
                 <Box

@@ -9,6 +9,8 @@ import { Avatar, Switch, Typography } from '@mui/material'
 import { Box } from '@mui/system'
 import DarkModeIcon from '@mui/icons-material/DarkMode';
 import LightModeIcon from '@mui/icons-material/LightMode';
+import ToggleButton from '@mui/material/ToggleButton';
+import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 
 
 
@@ -19,6 +21,10 @@ export default function Layout() {
             mode: mode,
         },
     });
+
+    const handleMode = (event, newMode) => {
+        setMode(newMode);
+    };
 
     return (
         <ThemeProvider theme={darkTheme}>
@@ -32,8 +38,20 @@ export default function Layout() {
                             flexDirection: 'row',
                             alignItems: 'center'
                         }}>
-                            <Switch onChange={() => mode === 'light' ? setMode('dark') : setMode('light')} />
-                            {mode === 'dark' ? <DarkModeIcon /> : <LightModeIcon />}
+                            <ToggleButtonGroup
+                                value={mode}
+                                exclusive
+                                size='small'
+                                color='primary'
+                                onChange={handleMode}
+                                aria-label="text alignment" >
+                                <ToggleButton value="dark" aria-label="left aligned">
+                                    <DarkModeIcon />
+                                </ToggleButton>
+                                <ToggleButton value="light" aria-label="left aligned">
+                                    <LightModeIcon />
+                                </ToggleButton>
+                            </ToggleButtonGroup>
                         </Box>
                         <Avatar alt='Account-avatar' src='./Assets/Img/sample-avatar.jpg' />
                     </div>
