@@ -3,10 +3,12 @@ import React, { useEffect, useState } from 'react'
 import { onValue, ref } from 'firebase/database';
 import { database } from '../../JS/Firebase';
 import { useNavigate } from 'react-router-dom';
+import { useFirebase } from '../../Context/FirebaseContext';
 
 export default function SubjectInformation({ subjectId }) {
 
     const [subject, setSubject] = useState({})
+    const { role } = useFirebase()
     const nav = useNavigate()
     const btns = [
         {
@@ -35,19 +37,21 @@ export default function SubjectInformation({ subjectId }) {
 
     return (
         <>
-            <Stack direction="row" spacing={1} sx={{marginBottom: '1rem'}}>
-                {btns.map((v, k) =>
-                    <Button
-                        key={k}
-                        color={v.color}
-                        size='small'
-                        onClick={v.onClick}
-                        variant='contained'
-                        sx={{textTransform: 'none'}}
-                        disableElevation>{v.label}</Button>
-                )}
+            {role !== 'faculty' &&
+                <Stack direction="row" spacing={1} sx={{ marginBottom: '1rem' }}>
+                    {btns.map((v, k) =>
+                        <Button
+                            key={k}
+                            color={v.color}
+                            size='small'
+                            onClick={v.onClick}
+                            variant='contained'
+                            sx={{ textTransform: 'none' }}
+                            disableElevation>{v.label}</Button>
+                    )}
+                </Stack>
+            }
 
-            </Stack>
             <Typography variant='h4' color='primary'>{`${subject.courseCode} - ${subject.subjectTitle}`}</Typography>
             <Typography variant='subtitle2' color='text.secondary' gutterBottom>{`Credit Units: ${subject.creditUnits}`}</Typography>
             <Typography variant='body1'>{subject.subjectDescription}</Typography>

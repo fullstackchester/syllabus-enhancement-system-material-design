@@ -111,6 +111,7 @@ export default function AccountSecurity({ uid }) {
                         type='submit'
                         loading={isLoading}
                         variant='contained'
+                        size='small'
                         sx={{
                             width: 'max-content',
                             marginTop: '1.25rem',
@@ -128,8 +129,9 @@ export default function AccountSecurity({ uid }) {
                 <Typography variant='h4'>Account Deletion</Typography>
                 <Typography variant='subtitle1'>This will delete all of your data ( basic information, passwords )</Typography>
                 <Button
-                    variant='contained'
+                    variant='outlined'
                     color='error'
+                    size='small'
                     onClick={() => setConfirmDeleteDialogOpen(true)}
                     sx={{
                         textTransform: 'none',

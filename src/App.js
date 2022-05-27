@@ -17,6 +17,7 @@ import SubjectFile from "./Pages/Subject/SubjectFile";
 import SyllabusAdd from "./Pages/Syllabus/SyllabusAdd";
 import SubjectEdit from "./Pages/Subject/SubjectEdit";
 import SyllabusEdit from "./Pages/Syllabus/SyllabusEdit";
+import AccountProfileEdit from "./Pages/Account/AccountProfileEdit";
 
 function App() {
 
@@ -47,6 +48,7 @@ function App() {
 							<Route exact path='faculty/:uid' element={<FacultyProfile />} />
 
 							<Route exact path='account/:uid' element={<Account />} />
+							<Route exact path='account/edit-profile/:uid' element={<AccountProfileEdit />} />
 						</Route>
 					</Routes>
 				</BrowserRouter>

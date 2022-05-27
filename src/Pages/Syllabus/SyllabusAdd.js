@@ -197,7 +197,7 @@ export default function SyllabusAdd() {
                 onClose={() => {
                     if (actionStatus === 'success') {
                         setSnackOpen(false)
-                        nav('/syllabs')
+                        nav('/syllabus')
                     } else {
                         setSnackOpen(false)
                     }

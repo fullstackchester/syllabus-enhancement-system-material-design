@@ -3,14 +3,15 @@ import { Box } from '@mui/system'
 import { onValue, ref } from 'firebase/database'
 import { getDownloadURL, ref as storageRef } from 'firebase/storage'
 import React, { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import '../../index.css'
 import { database, storage } from '../../JS/Firebase'
 
 export default function AccountProfile({ uid }) {
 
-
     const [account, setAccount] = useState({})
     const [avatarImg, setAvatarImg] = useState()
+    const nav = useNavigate()
     useEffect(() => {
         onValue(ref(database, `users/${uid}`), snap => {
             if (snap.exists()) {
@@ -61,25 +62,27 @@ export default function AccountProfile({ uid }) {
                                 height: '10rem',
                                 marginRight: '1rem',
                             }} />}
-                    <Typography variant='h3'>{account.name}</Typography>
-                    <Button
-                        variant='contained'
-                        size='small'
-                        sx={{
-                            marginLeft: '.75rem',
-                            textTransform: 'none'
-                        }}>Edit Profile</Button>
                     <Stack sx={{
-                        width: 'max-content',
-                        position: 'relative',
-                        right: '-11rem'
+                        flex: '1',
+                        marginTop: '2.5rem'
                     }}>
-                        <Typography variant='h5'>{`Employee ID: ${account.employeeId}`}</Typography>
-                        <Typography variant='h5'>{`Department: ${account.department}`}</Typography>
+                        <Typography variant='h3'>{account.name}</Typography>
+                        <Typography sx={{ fontSize: '1rem', fontWeight: 'strong' }}>{`Employee ID: ${account.employeeId}`}</Typography>
+                        <Typography sx={{ fontSize: '1rem', fontWeight: 'strong' }}>{`Department: ${account.department}`}</Typography>
+                        <Button
+                            disableElevation
+                            variant='outlined'
+                            size='small'
+                            onClick={() => nav(`/account/edit-profile/${uid}`)}
+                            sx={{
+                                width: 'max-content',
+                                textTransform: 'none'
+                            }}>Edit Profile</Button>
                     </Stack>
                 </Box>
-
             </Box>
         </>
     )
 }
+
+

@@ -18,7 +18,8 @@ export default function FirebaseProvider({ children }) {
 
     const value = {
         currentUser,
-        userData
+        userData,
+        role
     }
 
     useEffect(() => {

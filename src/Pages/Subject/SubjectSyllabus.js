@@ -28,8 +28,6 @@ export default function SubjectSyllabus({ subjectId }) {
             filteredPosts.push(post)
         }
     })
-
-    console.log(filteredPosts)
     return (
         <>
             <Grid container spacing={2}>

@@ -16,11 +16,6 @@ export default function SubjectEdit() {
     const [actionStatus, setActionStatus] = useState()
     const [snakcOpen, setSnackOpen] = useState(false)
 
-    const [title, setTitle] = useState()
-    const [code, setCode] = useState()
-    const [units, setUnits] = useState()
-    const [desc, setDesc] = useState()
-
     const titleRef = useRef()
     const codeRef = useRef()
     const unitRef = useRef()
@@ -41,26 +36,25 @@ export default function SubjectEdit() {
         e.preventDefault()
         setLoading(true)
         const updatedSub = {
-            courseCode: title,
-            subjectTitle: code,
-            creditUnits: units,
-            subjectDescription: desc,
+            courseCode: codeRef.current.value,
+            subjectTitle: titleRef.current.value,
+            creditUnits: unitRef.current.value,
+            subjectDescription: descRef.current.value,
         }
 
         setTimeout(() => {
-            // update(ref(database, `subject/${subjectId}`), updatedSub)
-            //     .then(() => {
-            //         setLoading(false)
-            //         setActionStatus('success')
-            //         setActionMessage('Successfully updated subject')
-            //         setSnackOpen(true)
-            //     }).catch((err) => {
-            //         setLoading(false)
-            //         setActionStatus('error')
-            //         setActionMessage(err.message)
-            //         setSnackOpen(true)
-            //     });
-            console.table(updatedSub)
+            update(ref(database, `subject/${subjectId}`), updatedSub)
+                .then(() => {
+                    setLoading(false)
+                    setActionStatus('success')
+                    setActionMessage('Successfully updated subject')
+                    setSnackOpen(true)
+                }).catch((err) => {
+                    setLoading(false)
+                    setActionStatus('error')
+                    setActionMessage(err.message)
+                    setSnackOpen(true)
+                });
             setLoading(false)
         }, 1500)
 
@@ -74,9 +68,10 @@ export default function SubjectEdit() {
             placeHolder: 'Data Stuctures and Algorithm',
             required: true,
             width: 12,
-            multiline: false,
+            multiline: true,
+            rows: 1,
             value: currentSub.subjectTitle,
-            onChange: (e) => setTitle(e.target.value),
+            ref: titleRef
         },
         {
             id: 'course-code',
@@ -85,9 +80,10 @@ export default function SubjectEdit() {
             placeHolder: 'IT 101',
             required: true,
             width: 6,
-            multiline: false,
+            multiline: true,
+            rows: 1,
             value: currentSub.courseCode,
-            onChange: (e) => setCode(e.target.value),
+            ref: codeRef
         },
         {
             id: 'course-units',
@@ -96,9 +92,10 @@ export default function SubjectEdit() {
             placeHolder: '3.0',
             required: true,
             width: 6,
-            multiline: false,
+            multiline: true,
+            rows: 1,
             value: currentSub.creditUnits,
-            onChange: (e) => setUnits(e.target.value),
+            ref: unitRef
         },
         {
             id: 'course-description',
@@ -108,9 +105,9 @@ export default function SubjectEdit() {
             required: true,
             width: 12,
             multiline: true,
-            maxRows: 10,
+            rows: 10,
             value: currentSub.subjectDescription,
-            onChange: (e) => setDesc(e.target.value),
+            ref: descRef
         },
     ]
 
@@ -141,9 +138,9 @@ export default function SubjectEdit() {
                                         required={v.required}
                                         label={v.label}
                                         type={v.type}
-                                        value={v.value}
-                                        onChange={v.onChange}
-                                        rows={v.maxRows}
+                                        rows={v.rows}
+                                        inputRef={v.ref}
+                                        defaultValue={v.value}
                                         multiline={v.multiline}
 
                                     />

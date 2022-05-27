@@ -10,12 +10,15 @@ import { database } from '../../JS/Firebase';
 import { useNavigate } from 'react-router-dom';
 import { v4 } from 'uuid'
 import { DataGrid, GridToolbar, GridToolbarExport } from '@mui/x-data-grid';
+import { useFirebase } from '../../Context/FirebaseContext';
 
 
 export default function Subject() {
 
     const [isFetching, setFetching] = useState(true)
     const [list, setList] = useState([])
+
+    const { role } = useFirebase()
 
     const nav = useNavigate()
     const columns = [
@@ -44,14 +47,15 @@ export default function Subject() {
                 <Typography variant='h4'>Subjects</Typography>
 
                 <Box>
-                    <Button
-                        variant='contained'
-                        startIcon={<AddIcon />}
-                        size='small'
-                        onClick={() => {
-                            nav(`/subjects/new-subject/${v4()}`)
-                        }}
-                        disableElevation>Add</Button>
+                    {role !== 'faculty' &&
+                        <Button
+                            variant='contained'
+                            startIcon={<AddIcon />}
+                            size='small'
+                            onClick={() => {
+                                nav(`/subjects/new-subject/${v4()}`)
+                            }}
+                            disableElevation>Add</Button>}
                 </Box>
             </Container>
 
