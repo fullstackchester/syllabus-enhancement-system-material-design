@@ -66,7 +66,7 @@ export default function Landing() {
                     <Box sx={{
                         borderRadius: '.6rem',
                         padding: '2rem',
-                        width: '25rem',
+                        width: '30rem',
                         height: 'auto',
                         display: 'flex',
                         flexDirection: 'column',
@@ -86,7 +86,7 @@ export default function Landing() {
                                 key={k}
                                 type={v.type}
                                 label={v.label}
-                                variant='filled'
+                                variant='outlined'
                                 margin='dense'
                                 size='small'
                                 fullWidth

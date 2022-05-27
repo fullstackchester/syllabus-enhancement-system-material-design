@@ -15,6 +15,8 @@ import FirebaseProvider from "./Context/FirebaseContext";
 import SyllabusFile from "./Pages/Syllabus/SyllabusFile";
 import SubjectFile from "./Pages/Subject/SubjectFile";
 import SyllabusAdd from "./Pages/Syllabus/SyllabusAdd";
+import SubjectEdit from "./Pages/Subject/SubjectEdit";
+import SyllabusEdit from "./Pages/Syllabus/SyllabusEdit";
 
 function App() {
 
@@ -32,12 +34,14 @@ function App() {
 							<Route exact path='syllabus' element={<Syllabus />} />
 							<Route exact path='syllabus/:postId' element={<SyllabusFile />} />
 							<Route exact path='syllabus/new-syllabus/:postId' element={<SyllabusAdd />} />
+							<Route exact path='syllabus/edit-syllabus/:postId' element={<SyllabusEdit />} />
 
 
 							<Route exact path='dashboard' element={<Dashboard />} />
 							<Route exact path='subjects' element={<Subject />} />
 							<Route exact path='subjects/:subjectId' element={<SubjectFile />} />
 							<Route exact path='subjects/new-subject/:subjectId' element={<SubjectAdd />} />
+							<Route exact path='subjects/edit-subject/:subjectId' element={<SubjectEdit />} />
 
 							<Route exact path='faculty' element={<Faculty />} />
 							<Route exact path='faculty/:uid' element={<FacultyProfile />} />

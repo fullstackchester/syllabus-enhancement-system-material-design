@@ -1,16 +1,19 @@
-import { Box, Button, Link, Stack, Typography } from '@mui/material'
+import { Box, Button, Link, Stack, Typography, IconButton } from '@mui/material'
 import { onValue, ref } from 'firebase/database'
 import { getDownloadURL, ref as storageRef } from 'firebase/storage'
 import React, { useEffect, useState } from 'react'
 import SetStatusButton from '../../Components/SetStatusButton'
 import { database, storage } from '../../JS/Firebase'
 import Chip from '@mui/material/Chip';
+import { Delete, Edit } from '@mui/icons-material'
+import { useNavigate } from 'react-router-dom'
 
 export default function SyllabusInformation({ postId }) {
 
     const [post, setPost] = useState({})
     const [chipColor, setColor] = useState('info')
     const [fileUrl, setFileUrl] = useState()
+    const nav = useNavigate()
 
 
     useEffect(() => {
@@ -47,7 +50,15 @@ export default function SyllabusInformation({ postId }) {
                 alignItems: 'center',
                 padding: '1.25rem 0 1.25rem 0'
             }}>
-                <SetStatusButton postId={post.postId} />
+                <Stack direction='row' spacing={1}>
+                    <SetStatusButton postId={post.postId} />
+                    <IconButton onClick={() => nav(`/syllabus/edit-syllabus/${postId}`)} variant='contained' color='primary' size='small'>
+                        <Edit />
+                    </IconButton>
+                    <IconButton variant='contained' color='error' size='small'>
+                        <Delete />
+                    </IconButton>
+                </Stack>
                 <Chip label={post.postStatus} color={chipColor} />
             </Box>
             <Typography variant='h4'>{post.postTitle}</Typography>

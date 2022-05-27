@@ -11,12 +11,13 @@ import DarkModeIcon from '@mui/icons-material/DarkMode';
 import LightModeIcon from '@mui/icons-material/LightMode';
 import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
+import PoppinsTTf from '../Fonts/Poppins/Poppins-Regular.ttf';
 
 
 
 export default function Layout() {
     const [mode, setMode] = useState('light')
-    const darkTheme = createTheme({
+    const customTheme = createTheme({
         palette: {
             mode: mode,
         },
@@ -27,7 +28,7 @@ export default function Layout() {
     };
 
     return (
-        <ThemeProvider theme={darkTheme}>
+        <ThemeProvider theme={customTheme}>
             <CssBaseline />
             <div className='template-body'>
                 <Sidebar />
@@ -40,22 +41,17 @@ export default function Layout() {
                         }}>
                             <ToggleButtonGroup
                                 value={mode}
+                                onChange={handleMode}
                                 exclusive
                                 size='small'
                                 color='primary'
-                                onChange={handleMode}
                                 aria-label="text alignment" >
-                                <Tooltip title='Dark Mode' placement='bottom'>
-                                    <ToggleButton value="dark" aria-label="left aligned">
-                                        <DarkModeIcon />
-                                    </ToggleButton>
-                                </Tooltip>
-                                <Tooltip title='Light Mode' placement='bottom'>
-                                    <ToggleButton value="light" aria-label="left aligned">
-                                        <LightModeIcon />
-                                    </ToggleButton>
-                                </Tooltip>
-
+                                <ToggleButton value="dark" aria-label="left aligned" onClick={(e) => setMode(e.target.value)}>
+                                    <DarkModeIcon />
+                                </ToggleButton>
+                                <ToggleButton value="light" aria-label="left aligned" onClick={(e) => setMode(e.target.value)}>
+                                    <LightModeIcon />
+                                </ToggleButton>
                             </ToggleButtonGroup>
                         </Box>
                         <Avatar alt='Account-avatar' src='./Assets/Img/sample-avatar.jpg' />

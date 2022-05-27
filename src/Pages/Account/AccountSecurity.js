@@ -100,7 +100,7 @@ export default function AccountSecurity({ uid }) {
                         <TextField
                             key={k}
                             label={v.label}
-                            variant='filled'
+                            variant='outlined'
                             type={v.type}
                             size='small'
                             inputRef={v.ref}

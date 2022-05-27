@@ -12,11 +12,13 @@ export function useFirebase() {
 export default function FirebaseProvider({ children }) {
 
     const [currentUser, setCurrentUser] = useState()
+    const [userData, setUserData] = useState({})
     const [loading, setLoading] = useState(true)
     const [role, setRole] = useState()
 
     const value = {
-        currentUser
+        currentUser,
+        userData
     }
 
     useEffect(() => {
@@ -27,6 +29,7 @@ export default function FirebaseProvider({ children }) {
                 onValue(ref(database, `users/${user.uid}`), snapshot => {
                     if (snapshot.exists()) {
                         setRole(snapshot.val().userType)
+                        setUserData(snapshot.val())
                     }
                 })
             }
