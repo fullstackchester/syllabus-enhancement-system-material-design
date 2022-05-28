@@ -1,6 +1,6 @@
+import { onAuthStateChanged } from 'firebase/auth'
 import { onValue, ref } from 'firebase/database'
-import { database } from '../JS/Firebase'
-
+import { database, auth } from '../JS/Firebase'
 
 
 export let subjectList = []
@@ -11,6 +11,7 @@ export const subjectTableHeader = [
     'Title',
     'Credit Units'
 ]
+
 
 
 onValue(ref(database, `subject`), snap => {
@@ -24,5 +25,6 @@ onValue(ref(database, `schoolYear`), snap => {
         schoolYearList = Object.values(snap.val())
     }
 })
+
 
 

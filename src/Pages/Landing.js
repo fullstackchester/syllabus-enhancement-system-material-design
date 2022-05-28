@@ -1,4 +1,4 @@
-import { Alert, Button, TextField, Typography } from '@mui/material'
+import { Alert, Button, Link, Stack, TextField, Typography } from '@mui/material'
 import { Box, Container } from '@mui/system'
 import { signInWithEmailAndPassword } from 'firebase/auth'
 import React, { useState } from 'react'
@@ -72,14 +72,14 @@ export default function Landing() {
                         flexDirection: 'column',
                         alignItems: 'center',
                     }}>
-                        <img src={require('../Assets/logo.svg').default} height='100' width='100' />
+
                         <Typography variant='h4'
                             component='div'
                             sx={{
                                 textAlign: 'center',
                                 fontWeight: 'bold',
                             }}
-                            gutterBottom >Login</Typography>
+                            gutterBottom >CICT-SEMS</Typography>
 
                         {formFields.map((v, k) =>
                             <TextField
@@ -93,6 +93,7 @@ export default function Landing() {
                                 required={v.required}
                                 onChange={v.onChange} />
                         )}
+
                         <LoadingButton
                             type='submit'
                             form='sign-up-user-form'
@@ -105,19 +106,23 @@ export default function Landing() {
                             disableElevation
                             variant='contained'
                             size='medium' >Login</LoadingButton>
-                        {error && <Alert severity='error' >{error}</Alert>}
+                        {error && <Alert severity='error' sx={{ width: '100%', marginTop: '.75rem' }} >{error}</Alert>}
                     </Box>
+
                 </form>
 
-                <Box sx={{
-                    display: 'flex',
-                    flexDirection: 'row',
-                    alignItems: 'center'
-                }}>
-                    <Typography variant='caption' sx={{ fontWeight: 'bold' }}>Don't have an Account?</Typography>
-                    <Button sx={{ textTransform: 'none' }} onClick={() => nav('/signup')} variant='text' size='small'>Sign up</Button>
-                </Box>
+
+                <Stack direction='row' spacing={1}>
+                    <Typography variant='caption' color='text.secondary' sx={{ fontWeight: 'bold' }}>Don't have an Account?</Typography>
+                    <Typography
+                        variant='caption' color='primary'
+                        sx={{fontWeight: 'bold', cursor: 'pointer'}}
+                        onClick={() => nav('/signup')}
+                    >Sign up</Typography>
+                </Stack>
+
             </Container>
+
         </>
     )
 }

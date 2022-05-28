@@ -16,9 +16,10 @@ export default function AccountProfile({ uid }) {
         onValue(ref(database, `users/${uid}`), snap => {
             if (snap.exists()) {
                 setAccount(snap.val())
+            }
+            if (snap.val().photoUrl) {
                 getDownloadURL(storageRef(storage, `avatars/${uid}/${snap.val().photoUrl}`))
                     .then((url) => {
-                        const avatar = document.getElementById('profile-avatar')
                         setAvatarImg(url)
                     }).catch((err) => {
                         console.log(err)

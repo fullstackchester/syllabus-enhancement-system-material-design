@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Outlet } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { Outlet, useNavigate } from 'react-router-dom';
 import './Layout.css';
 import Sidebar from './Sidebar';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
@@ -24,7 +24,10 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import { LoadingButton } from '@mui/lab';
-
+import { signOut } from 'firebase/auth'
+import { auth, database, storage } from '../JS/Firebase';
+import { ref as storageRef, getDownloadURL } from 'firebase/storage';
+import { onValue, ref } from 'firebase/database';
 
 
 export default function Layout() {
@@ -38,7 +41,25 @@ export default function Layout() {
     const { userData, role } = useFirebase()
 
     const [isLoading, setLoading] = useState(false)
+    const { currentUser } = useFirebase()
+    const nav = useNavigate()
 
+
+    // for displayin avatar
+    const [avatar, setAvatar] = useState()
+    useEffect(() => {
+        const getAvatar = () => onValue(ref(database, `users/${currentUser.uid}`), snap => {
+            if (snap.exists()) {
+                getDownloadURL(storageRef(storage, `avatars/${currentUser.uid}/${snap.val().photoUrl}`))
+                    .then((url) => {
+                        setAvatar(url)
+                    }).catch((err) => {
+                        console.log(err.message)
+                    })
+            }
+        })
+        getAvatar()
+    }, [])
 
     const handleMode = (event, newMode) => {
         setMode(newMode);
@@ -59,7 +80,13 @@ export default function Layout() {
 
         setTimeout(() => {
             setLoading(false)
-            setOpen(false)
+            signOut(auth)
+                .then(() => {
+                    setLoading(false)
+                    nav('/')
+                }).catch((err) => {
+                    console.log(err.message)
+                });
         }, 2000)
     }
 
@@ -105,7 +132,7 @@ export default function Layout() {
                                         <Avatar
                                             alt={userData.name}
                                             sx={{ width: 32, height: 32 }}
-                                            src='./Assets/Img/sample-avatar.jpg' />
+                                            src={avatar} />
 
                                     </IconButton>
                                 </Tooltip>
