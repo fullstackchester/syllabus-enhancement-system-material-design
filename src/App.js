@@ -18,6 +18,8 @@ import SyllabusAdd from "./Pages/Syllabus/SyllabusAdd";
 import SubjectEdit from "./Pages/Subject/SubjectEdit";
 import SyllabusEdit from "./Pages/Syllabus/SyllabusEdit";
 import AccountProfileEdit from "./Pages/Account/AccountProfileEdit";
+import FacultyEdit from "./Pages/Faculty/FacultyEdit";
+import MyFiles from "./Pages/My Files/MyFiles";
 
 function App() {
 
@@ -46,6 +48,10 @@ function App() {
 
 							<Route exact path='faculty' element={<Faculty />} />
 							<Route exact path='faculty/:uid' element={<FacultyProfile />} />
+							<Route exact path='faculty/edit-faculty/:uid' element={<FacultyEdit />} />
+
+							<Route exact path='my-files/:uid' element={<MyFiles />} />
+
 
 							<Route exact path='account/:uid' element={<Account />} />
 							<Route exact path='account/edit-profile/:uid' element={<AccountProfileEdit />} />

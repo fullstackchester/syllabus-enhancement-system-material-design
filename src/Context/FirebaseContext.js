@@ -35,8 +35,10 @@ export default function FirebaseProvider({ children }) {
                         setUserData(snapshot.val())
 
                     }
-                    if (snapshot.val().photoUrl) {
-                        setPhotoUrl(snapshot.val().photoUrl)
+                })
+                onValue(ref(database, `users/${user.uid}/photoUrl`), snapshot => {
+                    if (snapshot.exists()) {
+                        setPhotoUrl(snapshot.val())
                     }
                 })
             }

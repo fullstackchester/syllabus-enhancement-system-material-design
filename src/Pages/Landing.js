@@ -37,12 +37,14 @@ export default function Landing() {
             else {
                 signInWithEmailAndPassword(auth, email, pass)
                     .then(() => {
+                        setLoading(false)
                         nav('/dashboard')
                     }).catch((err) => {
+                        setLoading(false)
                         setError(err.message)
                     });
             }
-            setLoading(false)
+            
         }, 1500)
     }
 
@@ -120,9 +122,7 @@ export default function Landing() {
                         onClick={() => nav('/signup')}
                     >Sign up</Typography>
                 </Stack>
-
             </Container>
-
         </>
     )
 }

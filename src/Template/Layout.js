@@ -3,31 +3,26 @@ import { Outlet, useNavigate } from 'react-router-dom';
 import './Layout.css';
 import Sidebar from './Sidebar';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
-import CssBaseline from '@mui/material/CssBaseline';
-import { Avatar, Stack, Tooltip } from '@mui/material'
 import { Box } from '@mui/system'
-import DarkModeIcon from '@mui/icons-material/DarkMode';
-import LightModeIcon from '@mui/icons-material/LightMode';
-import ToggleButton from '@mui/material/ToggleButton';
-import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
+import { DarkMode, LightMode, Notifications } from '@mui/icons-material';
 import PoppinsTTf from '../Fonts/Poppins/Poppins-Regular.ttf';
-import Menu from '@mui/material/Menu';
-import MenuItem from '@mui/material/MenuItem';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import IconButton from '@mui/material/IconButton';
 import Logout from '@mui/icons-material/Logout';
 import { useFirebase } from '../Context/FirebaseContext';
 import Button from '@mui/material/Button';
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
-import DialogTitle from '@mui/material/DialogTitle';
+import {
+    Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle,
+    IconButton, ListItemIcon, MenuItem, Menu, ToggleButton, ToggleButtonGroup,
+    CssBaseline, Avatar, Stack, Tooltip, styled, Badge
+} from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 import { signOut } from 'firebase/auth'
 import { auth, database, storage } from '../JS/Firebase';
 import { ref as storageRef, getDownloadURL } from 'firebase/storage';
 import { onValue, ref } from 'firebase/database';
+import NotificationComponent from '../Components/NotificationComponent';
+
+
+
 
 
 export default function Layout() {
@@ -38,17 +33,16 @@ export default function Layout() {
             mode: mode,
         },
     });
-    const { userData, role } = useFirebase()
 
+    const { userData, role, currentUser } = useFirebase()
     const [isLoading, setLoading] = useState(false)
-    const { currentUser } = useFirebase()
     const nav = useNavigate()
 
 
     // for displayin avatar
     const [avatar, setAvatar] = useState()
     useEffect(() => {
-        const getAvatar = () => onValue(ref(database, `users/${currentUser.uid}`), snap => {
+        onValue(ref(database, `users/${currentUser.uid}`), snap => {
             if (snap.exists()) {
                 getDownloadURL(storageRef(storage, `avatars/${currentUser.uid}/${snap.val().photoUrl}`))
                     .then((url) => {
@@ -58,7 +52,6 @@ export default function Layout() {
                     })
             }
         })
-        getAvatar()
     }, [])
 
     const handleMode = (event, newMode) => {
@@ -110,21 +103,22 @@ export default function Layout() {
                                 color='primary'
                                 aria-label="text alignment" >
                                 <ToggleButton value="dark" aria-label="left aligned" onClick={(e) => setMode(e.target.value)}>
-                                    <DarkModeIcon />
+                                    <DarkMode />
                                 </ToggleButton>
                                 <ToggleButton value="light" aria-label="left aligned" onClick={(e) => setMode(e.target.value)}>
-                                    <LightModeIcon />
+                                    <LightMode />
                                 </ToggleButton>
                             </ToggleButtonGroup>
                         </Box>
-                        <Stack spacing={1}>
-
+                        <Stack spacing={1} direction='row'>
+                            <Box>
+                                <NotificationComponent uid={currentUser.uid} />
+                            </Box>
                             <Box sx={{ display: 'flex', alignItems: 'center', textAlign: 'center' }}>
                                 <Tooltip title="Account settings">
                                     <IconButton
                                         onClick={handleClick}
                                         size="small"
-                                        sx={{ ml: 2 }}
                                         aria-controls={open ? 'account-menu' : undefined}
                                         aria-haspopup="true"
                                         aria-expanded={open ? 'true' : undefined}

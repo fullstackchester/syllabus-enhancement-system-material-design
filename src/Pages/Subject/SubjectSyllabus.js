@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react'
 import { onValue, ref } from 'firebase/database';
 import { database } from '../../JS/Firebase';
 import Grid from '@mui/material/Grid';
-import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';

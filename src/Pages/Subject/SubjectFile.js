@@ -1,10 +1,7 @@
-import { Typography } from '@mui/material'
+import React, { useState } from 'react'
+import { Tab, Typography } from '@mui/material'
 import { Box } from '@mui/system'
-import React, { useEffect, useState } from 'react'
-import Tab from '@mui/material/Tab';
-import TabContext from '@mui/lab/TabContext';
-import TabList from '@mui/lab/TabList';
-import TabPanel from '@mui/lab/TabPanel';
+import { TabContext, TabPanel, TabList } from '@mui/lab'
 import { useParams } from 'react-router-dom';
 import SubjectSyllabus from './SubjectSyllabus';
 import SubjectInformation from './SubjectInformation';
@@ -49,7 +46,7 @@ export default function SubjectFile() {
                     </Box>
                     {
                         tabsPanels.map((v, k) =>
-                            <TabPanel key={k} value={v.value} sx={{ flex: '1', padding: '1rem'}}>
+                            <TabPanel key={k} value={v.value} sx={{ flex: '1', padding: '1rem' }}>
                                 {v.children}
                             </TabPanel>)
                     }

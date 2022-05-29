@@ -2,7 +2,7 @@ import { List, ListItem, ListItemButton, ListItemIcon, ListItemText } from '@mui
 import { Box } from '@mui/system'
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
-import { AccountCircle, Article, Dashboard, Group, School } from "@mui/icons-material";
+import { AccountCircle, Article, Dashboard, Group, School, Folder } from "@mui/icons-material";
 import { useFirebase } from '../Context/FirebaseContext';
 import Typography from '@mui/material/Typography';
 import '../index.css'
@@ -32,6 +32,11 @@ export default function Sidebar() {
             label: 'Faculty',
             link: '/faculty',
             icon: <Group color='primary' />
+        },
+        {
+            label: 'My Files',
+            link: `/my-files/${currentUser.uid}`,
+            icon: <Folder color='primary' />
         },
         {
             label: 'Account',
@@ -82,7 +87,6 @@ export default function Sidebar() {
                         })
                     }
                 </List>
-
             </Box>
         </>
     )
