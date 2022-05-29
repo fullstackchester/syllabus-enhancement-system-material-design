@@ -4,22 +4,19 @@ import { Box } from '@mui/system'
 import React, { useState, useRef, useEffect } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useFirebase } from '../../Context/FirebaseContext'
-import { onValue, ref, set, update } from 'firebase/database'
+import { onValue, ref, set } from 'firebase/database'
 import { ref as storageRef, uploadBytes } from 'firebase/storage'
 import { database, storage } from '../../JS/Firebase'
 import { schoolYearList, subjectList } from '../../Data/Data';
-import { v4 } from 'uuid'
 
-export default function SyllabusEdit() {
-
+export default function MyFileAdd() {
     const { postId } = useParams()
+    const { currentUser, userData } = useFirebase()
 
-    const [currentData, setCurrentData] = useState({})
     const nav = useNavigate()
     const [fileName, setFileName] = useState('')
 
     const [loading, setLoading] = useState(false)
-    const [isFetching, setFecthing] = useState(true)
 
     const [subject, setSubject] = useState('')
     const [schoolYear, setSchoolYear] = useState('')
@@ -28,68 +25,48 @@ export default function SyllabusEdit() {
     const [actionStatus, setActionStatus] = useState()
     const [snakcOpen, setSnackOpen] = useState(false)
 
-    const [previousPost, setPreviousPost] = useState({})
-
     const postTitleRef = useRef()
     const postFileRef = useRef()
     const postDescriptionRef = useRef()
     const syRef = useRef()
     const subjectRef = useRef()
 
-    useEffect(() => {
-        onValue(ref(database, `posts/${postId}`), snap => {
-            if (snap.exists()) {
-                setCurrentData(snap.val())
-                setPreviousPost(snap.val())
-                setFecthing(false)
-            }
-        })
-    }, [])
+
 
 
     function addSyllabus(e) {
         e.preventDefault()
         setLoading(true)
-        const updatedSyllabi = {
+        const newSyllabus = {
             postStatus: 'Needs reviewing',
+            postAuthor: userData.name,
+            postId: postId,
             postDate: new Date().toLocaleString(),
             postTitle: postTitleRef.current.value,
             postDescription: postDescriptionRef.current.value,
             postFile: postFileRef.current.files[0].name,
             postFileUrl: `syllabus/${postId}/${postFileRef.current.files[0].name}`,
+            uid: currentUser.uid,
             subjectId: subjectRef.current.value,
             syId: syRef.current.value,
         }
 
-        const history = {
-            historyId: v4(),
-            historyDate: new Date().toLocaleString(),
-            previousPost: currentData
-        }
-
         setTimeout(() => {
-            update(ref(database, `posts/${postId}`), updatedSyllabi)
+            set(ref(database, `posts/${postId}`), newSyllabus)
                 .then(() => {
-                    uploadBytes(storageRef(storage, updatedSyllabi.postFileUrl), postFileRef.current.files[0])
+                    uploadBytes(storageRef(storage, newSyllabus.postFileUrl), postFileRef.current.files[0])
                         .then(() => {
-                            set(ref(database, `history/${postId}/${history.historyId}`), history)
-                                .then(() => {
-                                    setLoading(false)
-                                    setActionStatus('success')
-                                    setActionMessage('Successfully updated syllabi')
-                                    setSnackOpen(true)
-                                }).catch((err) => {
-                                    setLoading(false)
-                                    setActionStatus('error')
-                                    setActionMessage(err.message)
-                                    setSnackOpen(true)
-                                });
+                            setLoading(false)
+                            setActionStatus('success')
+                            setActionMessage('Successfully added new syallabi')
+                            setSnackOpen(true)
                         }).catch((err) => {
                             setLoading(false)
                             setActionStatus('error')
                             setActionMessage(err.message)
                             setSnackOpen(true)
                         });
+
                 }).catch((err) => {
                     setLoading(false)
                     setActionStatus('error')
@@ -98,8 +75,6 @@ export default function SyllabusEdit() {
                 });
         }, 1500)
     }
-
-
     return (
         <>
             <Box sx={{
@@ -109,7 +84,7 @@ export default function SyllabusEdit() {
                 flexDirection: 'column',
                 padding: '1.5rem',
             }}>
-                <Typography variant='h4' gutterBottom>Edit Syllabus</Typography>
+                <Typography variant='h4' gutterBottom>New Syllabus</Typography>
                 <form
                     id='add-syllabus-form'
                     spellCheck={false}
@@ -118,16 +93,13 @@ export default function SyllabusEdit() {
                         <Grid item xs={12} >
                             <TextField
                                 required
-                                id='syllabus-title'
                                 label='Syllabus Title'
                                 size='small'
                                 fullWidth
                                 varinat='outlined'
                                 placeholder='Data Structures and Algorithm Syllabus Syllabi'
                                 type='text'
-                                multiline={true}
-                                maxRows={1}
-                                defaultValue={currentData.postTitle}
+                                multiline={false}
                                 inputRef={postTitleRef}
                             />
                         </Grid>
@@ -136,10 +108,9 @@ export default function SyllabusEdit() {
                                 <InputLabel id="select-subject-label">Select Subject</InputLabel>
                                 <Select
                                     required
-                                    id='select-subject'
                                     label='Select Subject'
                                     labelId="select-subject-label"
-                                    multiline
+                                    id="select-subject"
                                     value={subject}
                                     inputRef={subjectRef}
                                     onChange={(e) => setSubject(e.target.value)}
@@ -157,9 +128,9 @@ export default function SyllabusEdit() {
                                 <InputLabel id="select-school-year-label">Select School Year</InputLabel>
                                 <Select
                                     required
-                                    id='select-school-year'
                                     label='Select School Year'
                                     labelId="select-school-year-label"
+                                    id="select-school-year"
                                     value={schoolYear}
                                     inputRef={syRef}
                                     onChange={(e) => setSchoolYear(e.target.value)}
@@ -182,7 +153,6 @@ export default function SyllabusEdit() {
                                     justifyContent: 'space-between',
                                 }}>
                                 <input
-                                    id='syllabus-file'
                                     type='file'
                                     required
                                     ref={postFileRef}
@@ -194,15 +164,13 @@ export default function SyllabusEdit() {
                         <Grid item xs={12} >
                             <TextField
                                 required
-                                id='syllabus-description'
                                 label='Syllabus Description'
                                 size='small'
                                 fullWidth
-                                variant='outlined'
+                                varinat='outlined'
                                 placeholder='Enter your description'
                                 type='text'
                                 multiline
-                                defaultValue={currentData.postDescription}
                                 rows={8}
                                 inputRef={postDescriptionRef}
                             />
@@ -227,7 +195,7 @@ export default function SyllabusEdit() {
                 onClose={() => {
                     if (actionStatus === 'success') {
                         setSnackOpen(false)
-                        nav(`/syllabus/${postId}`)
+                        nav('/my-files')
                     } else {
                         setSnackOpen(false)
                     }

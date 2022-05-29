@@ -10,16 +10,15 @@ import { database, storage } from '../../JS/Firebase'
 import { schoolYearList, subjectList } from '../../Data/Data';
 import { v4 } from 'uuid'
 
-export default function SyllabusEdit() {
+export default function MyFileEdit() {
 
-    const { postId } = useParams()
+    const { postId, uid } = useParams()
 
     const [currentData, setCurrentData] = useState({})
     const nav = useNavigate()
     const [fileName, setFileName] = useState('')
 
     const [loading, setLoading] = useState(false)
-    const [isFetching, setFecthing] = useState(true)
 
     const [subject, setSubject] = useState('')
     const [schoolYear, setSchoolYear] = useState('')
@@ -27,8 +26,6 @@ export default function SyllabusEdit() {
     const [actionMessage, setActionMessage] = useState('')
     const [actionStatus, setActionStatus] = useState()
     const [snakcOpen, setSnackOpen] = useState(false)
-
-    const [previousPost, setPreviousPost] = useState({})
 
     const postTitleRef = useRef()
     const postFileRef = useRef()
@@ -40,10 +37,20 @@ export default function SyllabusEdit() {
         onValue(ref(database, `posts/${postId}`), snap => {
             if (snap.exists()) {
                 setCurrentData(snap.val())
-                setPreviousPost(snap.val())
-                setFecthing(false)
+                onValue(ref(database, `schoolYear/${snap.val().syId}`), snap => {
+                    if (snap.exists()) {
+                        setSchoolYear(snap.val().syId)
+                    }
+                })
+                onValue(ref(database, `subject/${snap.val().subjectId}`), snap => {
+                    if (snap.exists()) {
+                        setSubject(snap.val().subjectId)
+                    }
+                })
             }
         })
+
+
     }, [])
 
 
@@ -98,7 +105,6 @@ export default function SyllabusEdit() {
                 });
         }, 1500)
     }
-
 
     return (
         <>
@@ -203,7 +209,7 @@ export default function SyllabusEdit() {
                                 type='text'
                                 multiline
                                 defaultValue={currentData.postDescription}
-                                rows={8}
+                                rows={10}
                                 inputRef={postDescriptionRef}
                             />
                         </Grid>
@@ -219,7 +225,7 @@ export default function SyllabusEdit() {
                     form='add-syllabus-form'
                     type='submit'
                     loading={loading}
-                    variant='contained'> Add Syllabus</LoadingButton>
+                    variant='contained'>Save Changes</LoadingButton>
             </Box>
 
             <Snackbar
@@ -227,12 +233,12 @@ export default function SyllabusEdit() {
                 onClose={() => {
                     if (actionStatus === 'success') {
                         setSnackOpen(false)
-                        nav(`/syllabus/${postId}`)
+                        nav(`/my-files/${uid}/${postId}`)
                     } else {
                         setSnackOpen(false)
                     }
                 }}
-                autoHideDuration={1000}>
+                autoHideDuration={6000}>
                 <Alert severity={actionStatus} >
                     {actionMessage}
                 </Alert>

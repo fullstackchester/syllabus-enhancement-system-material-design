@@ -30,7 +30,7 @@ export default function FacultySyllabus({ uid }) {
     return (
         <>
             {facultySyllabus.length !== 0 ?
-                <Grid container spacing={2} sx={{ width: '100%', height: '100%', }}>
+                <Grid container spacing={2} sx={{ width: '100%' }}>
                     {
                         facultySyllabus.map((v, k) =>
                             <Grid item key={k} xs={3}>

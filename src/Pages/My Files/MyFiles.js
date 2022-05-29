@@ -27,9 +27,7 @@ export default function MyFiles() {
         if (post.uid === uid) {
             myPostedSyllabus.push(post)
         }
-    })
-
-    console.log(myPostedSyllabus)
+})
 
     return (
         <>
@@ -56,22 +54,22 @@ export default function MyFiles() {
             }}>
                 <Grid container spacing={2}>
                     {
-                        myPostedSyllabus.map((v, k) =>
-                            <Grid item key={k} xs={3}>
-                                <Card variant="outlined" sx={{ height: '13rem', display: 'flex', flexDirection: 'column' }}>
-                                    <CardHeader
-                                        title={v.postTitle}
-                                        subheader={v.postDate}>
-                                    </CardHeader>
-                                    <CardContent sx={{flex: '1'}}>
+                        myPostedSyllabus
+                            .sort((a, b) => new Date(b.postDate).getTime() - new Date(a.postDate).getTime())
+                            .map((v, k) =>
+                                <Grid item key={k} xs={3}>
+                                    <Card variant="outlined" sx={{ height: '13rem', display: 'flex', flexDirection: 'column' }}>
+                                        <CardContent sx={{ flex: '1' }}>
+                                            <Typography sx={{ fontSize: '1.25rem', fontWeight: 'bold' }}>{v.postTitle}</Typography>
+                                            <Typography sx={{ fontSize: '.8rem' }} color='text.secondary'>{`Posted: ${v.postDate}`}</Typography>
 
-                                    </CardContent>
-                                    <CardActions>
-                                        <Button size='small' onClick={() => nav(`/syllabus/${v.postId}`)}>Open</Button>
-                                    </CardActions>
-                                </Card>
-                            </Grid>
-                        )
+                                        </CardContent>
+                                        <CardActions>
+                                            <Button size='small' onClick={() => nav(`/my-files/${uid}/${v.postId}`)}>Open</Button>
+                                        </CardActions>
+                                    </Card>
+                                </Grid>
+                            )
                     }
                 </Grid>
             </Box>

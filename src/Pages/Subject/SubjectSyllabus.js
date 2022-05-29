@@ -44,11 +44,9 @@ export default function SubjectSyllabus({ subjectId }) {
                                 </CardActions>
                             </Card>
                         </Grid>
-
                     )
                 }
             </Grid>
-
         </>
     )
 }

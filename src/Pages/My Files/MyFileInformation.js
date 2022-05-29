@@ -7,25 +7,26 @@ import DialogContentText from '@mui/material/DialogContentText';
 import { onValue, ref, remove } from 'firebase/database'
 import { getDownloadURL, ref as storageRef } from 'firebase/storage'
 import React, { useEffect, useState } from 'react'
-import SetStatusButton from '../../Components/SetStatusButton'
 import { database, storage } from '../../JS/Firebase'
 import Chip from '@mui/material/Chip';
 import { Delete, Edit } from '@mui/icons-material'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { useFirebase } from '../../Context/FirebaseContext'
 
-export default function SyllabusInformation({ postId }) {
+export default function MyFileInformation({ postId }) {
+
+    const nav = useNavigate()
+    const { role } = useFirebase()
+    const { uid } = useParams()
 
     const [post, setPost] = useState({})
     const [chipColor, setColor] = useState('info')
     const [fileUrl, setFileUrl] = useState()
 
     const [openDeleteDialog, setOpenDeleteDialog] = useState(false)
-    const nav = useNavigate()
 
     const [isLoading, setLoading] = useState(false)
 
-    const { role } = useFirebase()
 
 
     useEffect(() => {
@@ -54,8 +55,6 @@ export default function SyllabusInformation({ postId }) {
         getSyllabi()
     }, [])
 
-
-
     function deleteSyllabi(e) {
         e.preventDefault()
         setLoading(true)
@@ -73,7 +72,6 @@ export default function SyllabusInformation({ postId }) {
         }, 1500)
     }
 
-
     return (
         <>
             <Box sx={{
@@ -85,10 +83,13 @@ export default function SyllabusInformation({ postId }) {
                 padding: '1.25rem 0 1.25rem 0'
             }}>
                 <Stack direction='row' spacing={1}>
-                    <SetStatusButton postId={post.postId} />
                     {role !== 'area chair' &&
                         <>
-                            <IconButton onClick={() => nav(`/syllabus/edit-syllabus/${postId}`)} variant='contained' color='primary' size='small'>
+                            <IconButton
+                                onClick={() => nav(`/my-files/${uid}/edit-syllabi/${postId}`)}
+                                variant='contained'
+                                color='primary'
+                                size='small'>
                                 <Edit />
                             </IconButton>
                             <IconButton onClick={() => setOpenDeleteDialog(true)} variant='contained' color='error' size='small'>

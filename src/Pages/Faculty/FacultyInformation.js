@@ -83,7 +83,8 @@ export default function FacultyInformation({ uid }) {
                             onClick={() => nav(`/faculty/edit-faculty/${uid}`)}
                             sx={{
                                 width: 'max-content',
-                                textTransform: 'none'
+                                textTransform: 'none',
+                                marginTop: '1rem'
                             }}>
                             Edit Faculty</Button>
                     </Stack>
