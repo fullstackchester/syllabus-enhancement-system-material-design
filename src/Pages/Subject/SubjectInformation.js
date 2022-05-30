@@ -18,7 +18,7 @@ export default function SubjectInformation({ subjectId }) {
         },
         {
             label: 'Delete',
-            onClick: () => alert('deleting'),
+            onClick: DeleteSubject,
             color: 'error'
         }
     ]
@@ -31,6 +31,11 @@ export default function SubjectInformation({ subjectId }) {
         })
         getSubject()
     }, [])
+
+    function DeleteSubject(e) {
+        e.preventDefault()
+        alert('TANGINAMO')
+    }
 
 
 

@@ -22,6 +22,7 @@ export const dashboardSubjectTableHeader = [
     'Files'
 ]
 
+
 onValue(ref(database, `posts`), snap => {
     if (snap.exists()) {
         syllabusList = Object.values(snap.val())
@@ -41,7 +42,6 @@ onValue(querySubjects, snap => {
         firstFiveSubjects = Object.values(snap.val())
     }
 })
-
 
 onValue(ref(database, `subject`), snap => {
     if (snap.exists()) {

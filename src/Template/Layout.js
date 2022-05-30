@@ -32,6 +32,13 @@ export default function Layout() {
         palette: {
             mode: mode,
         },
+        overrides: {
+            ListItem: {
+                active: {
+                    backgroundColor: '#1976D2'
+                }
+            }
+        }
     });
 
     const { userData, role, currentUser } = useFirebase()

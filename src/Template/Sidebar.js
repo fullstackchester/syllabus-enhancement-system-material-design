@@ -1,7 +1,7 @@
-import { List, ListItem, ListItemButton, ListItemIcon, ListItemText } from '@mui/material'
+import { List, ListItem, ListItemButton, ListItemIcon, ListItemText, Link } from '@mui/material'
 import { Box } from '@mui/system'
-import React from 'react'
-import { useNavigate } from 'react-router-dom'
+import React, { useState } from 'react'
+import { useNavigate, NavLink } from 'react-router-dom'
 import { AccountCircle, Article, Dashboard, Group, School, Folder } from "@mui/icons-material";
 import { useFirebase } from '../Context/FirebaseContext';
 import Typography from '@mui/material/Typography';
@@ -11,6 +11,7 @@ export default function Sidebar() {
 
     const nav = useNavigate()
     const { currentUser } = useFirebase()
+    const [activeLink, setActiveLink] = useState('Dashboard')
 
     const SidebarLinks = [
         {
@@ -76,12 +77,18 @@ export default function Sidebar() {
                     {
                         SidebarLinks.map((v, k) => {
                             return (
-                                <ListItem key={k} disablePadding>
-                                    <ListItemButton onClick={() => nav(v.link)} color='primary'>
-                                        <ListItemIcon> {v.icon} </ListItemIcon>
-                                        <ListItemText primary={v.label} />
-                                    </ListItemButton>
-                                </ListItem>
+                                <ListItemButton
+                                    key={k}
+                                    color='primary'
+                                    selected={v.label === activeLink}
+                                    onClick={() => {
+                                        nav(v.link)
+                                        setActiveLink(v.label)
+                                    }}
+                                >
+                                    <ListItemIcon> {v.icon} </ListItemIcon>
+                                    <ListItemText primary={v.label} />
+                                </ListItemButton>
                             )
                         })
                     }
