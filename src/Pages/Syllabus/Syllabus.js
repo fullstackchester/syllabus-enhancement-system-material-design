@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Button, CircularProgress, Typography } from '@mui/material';
+import { Button, CircularProgress, Typography, LinearProgress } from '@mui/material';
 import { Box, Container } from '@mui/system';
 import AddIcon from '@mui/icons-material/Add';
 import { onValue, ref } from 'firebase/database';
@@ -47,33 +47,22 @@ export default function Syllabus() {
                     }}>Add</Button>
 
             </Container>
-            {!isFetching ?
-                <Container
-                    sx={{
-                        height: 'calc(95% - 5rem)'
-                    }}>
-                    <DataGrid
-                        columns={columns}
-                        rows={list}
-                        pageSize={8}
-                        rowsPerPageOptions={[8]}
-                        getRowId={(row) => row.postId}
-                        onCellDoubleClick={(cell) => nav(`/syllabus/${cell.id}`)}
-                        checkboxSelection
-                        components={{ Toolbar: GridToolbar }}
-                    />
-                </Container>
-                :
-                <Box
-                    sx={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        height: 'calc(100% - 5rem)'
-                    }}>
-                    <CircularProgress />
-                </Box>
-            }
+            <Container
+                sx={{
+                    height: 'calc(95% - 5rem)',
+                }}>
+                <DataGrid
+                    columns={columns}
+                    rows={list}
+                    loading={isFetching}
+                    pageSize={8}
+                    rowsPerPageOptions={[8]}
+                    getRowId={(row) => row.postId}
+                    onCellDoubleClick={(cell) => nav(`/syllabus/${cell.id}`)}
+                    checkboxSelection
+                    components={{ Toolbar: GridToolbar, LoadingOverlay: LinearProgress }}
+                />
+            </Container>
         </>
     )
 }

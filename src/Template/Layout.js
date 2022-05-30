@@ -12,7 +12,7 @@ import Button from '@mui/material/Button';
 import {
     Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle,
     IconButton, ListItemIcon, MenuItem, Menu, ToggleButton, ToggleButtonGroup,
-    CssBaseline, Avatar, Stack, Tooltip, styled, Badge
+    CssBaseline, Avatar, Stack, Tooltip, styled, Badge, Divider
 } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 import { signOut } from 'firebase/auth'
@@ -88,6 +88,7 @@ export default function Layout() {
             <CssBaseline />
             <div className='template-body'>
                 <Sidebar />
+                <Divider orientation='vertical' />
                 <div className='outlet'>
                     <div className='header'>
                         <Box sx={{
@@ -175,6 +176,7 @@ export default function Layout() {
                             </Box>
                         </Stack>
                     </div>
+                    <Divider />
                     <div className='viewport'>
                         <Outlet />
                     </div>

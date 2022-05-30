@@ -49,7 +49,6 @@ export default function Sidebar() {
             <Box sx={{
                 height: '100%',
                 width: '18%',
-                borderRight: '1px solid #DADCE0',
                 position: 'sticky',
                 top: '0',
                 display: 'flex',
