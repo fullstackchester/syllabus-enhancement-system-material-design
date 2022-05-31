@@ -5,8 +5,17 @@ import AddIcon from '@mui/icons-material/Add';
 import { onValue, ref } from 'firebase/database';
 import { database } from '../../JS/Firebase';
 import { useNavigate } from 'react-router-dom';
-import { DataGrid, GridToolbar } from '@mui/x-data-grid';
+import { DataGrid, GridToolbar, GridToolbarExport, GridToolbarContainer } from '@mui/x-data-grid';
 import { v4 } from 'uuid'
+
+function CustomToolbar() {
+    return (
+        <GridToolbarContainer>
+            <GridToolbar />
+            <GridToolbarExport />
+        </GridToolbarContainer>
+    )
+}
 
 export default function Syllabus() {
 
@@ -44,7 +53,8 @@ export default function Syllabus() {
                     startIcon={<AddIcon />}
                     onClick={() => {
                         nav(`/syllabus/new-syllabus/${v4()}`)
-                    }}>Add</Button>
+                    }}
+                    disableElevation>Add</Button>
 
             </Container>
             <Container
@@ -61,6 +71,7 @@ export default function Syllabus() {
                     onCellDoubleClick={(cell) => nav(`/syllabus/${cell.id}`)}
                     checkboxSelection
                     components={{ Toolbar: GridToolbar, LoadingOverlay: LinearProgress }}
+                    
                 />
             </Container>
         </>

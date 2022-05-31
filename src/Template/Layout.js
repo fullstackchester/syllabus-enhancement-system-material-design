@@ -20,25 +20,22 @@ import { auth, database, storage } from '../JS/Firebase';
 import { ref as storageRef, getDownloadURL } from 'firebase/storage';
 import { onValue, ref } from 'firebase/database';
 import NotificationComponent from '../Components/NotificationComponent';
+import { useSelector } from 'react-redux'
 
 
 
 
 
 export default function Layout() {
+    // states
+    // const selectedMode = useSelector((state) => state.selectMode)
+
     const [mode, setMode] = useState('light')
     const [isOpen, setOpen] = useState(false)
     const customTheme = createTheme({
         palette: {
             mode: mode,
         },
-        overrides: {
-            ListItem: {
-                active: {
-                    backgroundColor: '#1976D2'
-                }
-            }
-        }
     });
 
     const { userData, role, currentUser } = useFirebase()

@@ -34,24 +34,36 @@ function App() {
 			<div className="App">
 				<BrowserRouter>
 					<Routes>
-						<Route index element={<Landing />} />
-						<Route exact path='/' element={<Landing />} />
-						<Route exact path='/signup' element={<Signup />} />
+						<Route index element={
+							<AuthListener>
+								<Landing />
+							</AuthListener>
+						} />
+						<Route exact path='/' element={
+							<AuthListener>
+								<Landing />
+							</AuthListener>
+						} />
+						<Route exact path='/signup' element={
+							<AuthListener>
+								<Signup />
+							</AuthListener>
+						} />
 						<Route exact path='/' element={
 							// Protected Routes will redirect
 							// user from login/authentication page
 							// if not authenticated
+
 							<Protected>
 								<Layout />
-							</Protected>
-						} >
-							<Route index element={<Dashboard />} />
-
-							<Route exact path='syllabus' element={
+							</Protected>}>
+							<Route index element={
 								<Restricted>
-									<Syllabus />
+									<Dashboard />
 								</Restricted>
 							} />
+
+							<Route exact path='syllabus' element={<Syllabus />} />
 							<Route exact path='syllabus/:postId' element={<SyllabusFile />} />
 							<Route exact path='syllabus/new-syllabus/:postId' element={<SyllabusAdd />} />
 							<Route exact path='syllabus/edit-syllabus/:postId' element={<SyllabusEdit />} />
@@ -63,11 +75,7 @@ function App() {
 							<Route exact path='subjects/new-subject/:subjectId' element={<SubjectAdd />} />
 							<Route exact path='subjects/edit-subject/:subjectId' element={<SubjectEdit />} />
 
-							<Route exact path='faculty' element={
-								<Restricted>
-									<Faculty />
-								</Restricted>
-							} />
+							<Route exact path='faculty' element={<Faculty />} />
 							<Route exact path='faculty/:uid' element={<FacultyProfile />} />
 							<Route exact path='faculty/edit-faculty/:uid' element={<FacultyEdit />} />
 

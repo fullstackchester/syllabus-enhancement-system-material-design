@@ -60,6 +60,12 @@ export default function MyFileAdd() {
                             setActionStatus('success')
                             setActionMessage('Successfully added new syallabi')
                             setSnackOpen(true)
+
+                            // after adding information to database and 
+                            // uploading file to storage, add new notification
+                            // data to database to notify the admin/areachair
+                            // for the new syllabi uploaded
+                            
                         }).catch((err) => {
                             setLoading(false)
                             setActionStatus('error')

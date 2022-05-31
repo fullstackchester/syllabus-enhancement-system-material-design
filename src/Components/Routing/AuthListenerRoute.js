@@ -5,11 +5,9 @@ import { useFirebase } from '../../Context/FirebaseContext'
 export default function AuthListener({ children }) {
 
     const { currentUser } = useFirebase()
-    console.log(currentUser.uid)
 
     if (currentUser !== null) {
-        <Navigate to='/dashboard' replace />
-    } else {
-        return children
+        return <Navigate to='/dashboard' replace />
     }
+    return children
 }

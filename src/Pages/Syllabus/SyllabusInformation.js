@@ -146,7 +146,6 @@ export default function SyllabusInformation({ postId }) {
                         sx={{ textTransform: 'none' }}
                         onClick={deleteSyllabi} color='error'>Delete</LoadingButton>
                 </DialogActions>
-
             </Dialog>
         </>
     )
