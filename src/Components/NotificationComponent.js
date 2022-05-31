@@ -79,42 +79,51 @@ export default function NotificationComponent({ uid }) {
                 <MenuList>
                     <Typography component={ListItem} variant='h5' sx={{ fontWeight: 'bold' }}>Notifications</Typography>
                 </MenuList>
-                <MenuList>
-                    {
-                        myNotifs
-                            .sort((x, y) => new Date(y.notificationDate).getTime() - new Date(x.notificationDate).getTime())
-                            .map((v, k) =>
-                                <MenuItem key={k}
-                                    selected={v.notificationStatus === 'unread'}
-                                    onClick={() => {
-                                        nav(`/my-files/${uid}/${v.postId}`)
-                                        setAnchorEl(null)
-                                    }}>
-                                    <ListItemAvatar>
-                                        <Avatar>
-                                            <FileOpen />
-                                        </Avatar>
-                                    </ListItemAvatar>
-                                    <ListItemText
-                                        primary={v.notificationTitle}
-                                        secondary={
-                                            <React.Fragment>
-                                                <Typography
-                                                    sx={{ display: 'block' }}
-                                                    component="span"
-                                                    variant="body2"
-                                                    color="text.primary"
-                                                    noWrap
-                                                >{v.notificationMessage}</Typography>
-                                                {v.notificationDate}
-                                            </React.Fragment>
-                                        }>
+                {myNotifs.length !== 0 ?
+                    <MenuList>
+                        {
+                            myNotifs
+                                .sort((x, y) => new Date(y.notificationDate).getTime() - new Date(x.notificationDate).getTime())
+                                .map((v, k) =>
+                                    <MenuItem key={k}
+                                        selected={v.notificationStatus === 'unread'}
+                                        onClick={() => {
+                                            nav(`/my-files/${uid}/${v.postId}`)
+                                            setAnchorEl(null)
+                                        }}>
+                                        <ListItemAvatar>
+                                            <Avatar>
+                                                <FileOpen />
+                                            </Avatar>
+                                        </ListItemAvatar>
+                                        <ListItemText
+                                            primary={v.notificationTitle}
+                                            secondary={
+                                                <React.Fragment>
+                                                    <Typography
+                                                        sx={{ display: 'block' }}
+                                                        component="span"
+                                                        variant="body2"
+                                                        color="text.primary"
+                                                        noWrap
+                                                    >{v.notificationMessage}</Typography>
+                                                    {v.notificationDate}
+                                                </React.Fragment>
+                                            }>
 
-                                    </ListItemText>
-                                </MenuItem>
-                            )
-                    }
-                </MenuList>
+                                        </ListItemText>
+                                    </MenuItem>
+                                )
+                        }
+                    </MenuList>
+                    :
+                    <MenuList>
+                        <Typography
+                            color='text.secondary'
+                            component={ListItem}
+                            sx={{ fontWeight: 'strong', width: '100rem' }}>
+                            No notifications to show at the moment</Typography>
+                    </MenuList>}
             </Menu>
 
         </>

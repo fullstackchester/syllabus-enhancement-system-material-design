@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom'
 import { database, storage } from '../../JS/Firebase'
 import { onValue, ref } from 'firebase/database'
 import { getDownloadURL, ref as storageRef } from 'firebase/storage'
+import { useFirebase } from '../../Context/FirebaseContext'
 import '../../index.css'
 
 export default function FacultyInformation({ uid }) {
@@ -12,6 +13,7 @@ export default function FacultyInformation({ uid }) {
     const [account, setAccount] = useState({})
     const [avatarImg, setAvatarImg] = useState('')
     const [isFetching, setFecthing] = useState(true)
+    const { role } = useFirebase()
     const nav = useNavigate()
     useEffect(() => {
         onValue(ref(database, `users/${uid}`), snap => {
@@ -76,7 +78,7 @@ export default function FacultyInformation({ uid }) {
                         <Typography sx={{ fontSize: '1rem', fontWeight: 'strong' }}>{`Department: ${account.department}`}</Typography>
                         <Typography sx={{ fontSize: '1rem', fontWeight: 'strong' }}>{`Account Type: ${account.userType}`}</Typography>
 
-                        <Button
+                        {role === 'administrator' && <Button
                             disableElevation
                             variant='contained'
                             size='small'
@@ -86,7 +88,7 @@ export default function FacultyInformation({ uid }) {
                                 textTransform: 'none',
                                 marginTop: '1rem'
                             }}>
-                            Edit Faculty</Button>
+                            Edit Faculty</Button>}
                     </Stack>
                 </Box>
 

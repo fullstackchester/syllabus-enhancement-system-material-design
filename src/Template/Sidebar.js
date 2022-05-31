@@ -10,39 +10,45 @@ import '../index.css'
 export default function Sidebar() {
 
     const nav = useNavigate()
-    const { currentUser } = useFirebase()
+    const { currentUser, role } = useFirebase()
     const [activeLink, setActiveLink] = useState('Dashboard')
 
     const SidebarLinks = [
         {
             label: 'Dashboard',
             link: '/dashboard',
-            icon: <Dashboard color='primary' />
+            icon: <Dashboard color='primary' />,
+            hidden: role !== 'administrator' ? 'none' : '',
         },
         {
             label: 'Syllabus',
             link: '/syllabus',
-            icon: <Article color='primary' />
+            icon: <Article color='primary' />,
+            hidden: role === 'faculty' ? 'none' : '',
         },
         {
             label: 'Subjects',
             link: '/subjects',
-            icon: <School color='primary' />
+            icon: <School color='primary' />,
+            hidden: role === 'faculty' ? 'none' : '',
         },
         {
             label: 'Faculty',
             link: '/faculty',
-            icon: <Group color='primary' />
+            icon: <Group color='primary' />,
+            hidden: role === 'faculty' ? 'none' : '',
         },
         {
             label: 'My Files',
             link: `/my-files/${currentUser.uid}`,
-            icon: <Folder color='primary' />
+            icon: <Folder color='primary' />,
+            hidden: false,
         },
         {
             label: 'Account',
             link: `/account/${currentUser.uid}`,
-            icon: <AccountCircle color='primary' />
+            icon: <AccountCircle color='primary' />,
+            hidden: false,
         },
     ]
     return (
@@ -81,6 +87,7 @@ export default function Sidebar() {
                                     key={k}
                                     color='primary'
                                     selected={v.label === activeLink}
+                                    sx={{ display: v.hidden }}
                                     onClick={() => {
                                         nav(v.link)
                                         setActiveLink(v.label)

@@ -106,7 +106,7 @@ export default function MyFileInformation({ postId }) {
                 marginTop: '1rem',
             }}>
                 <Stack>
-                    <Typography variant='subtitle2' display='block'>{`Author: ${post.postAuthor}`}</Typography>
+                    {/* <Typography variant='subtitle2' display='block'>{`Author: ${post.postAuthor}`}</Typography> */}
                     <Typography variant='subtitle2' display='block'>
                         {`Attachments: `}<Button
                             onClick={() => window.open(fileUrl, '_blank')}
@@ -114,7 +114,7 @@ export default function MyFileInformation({ postId }) {
                             {post.postFile}
                         </Button>
                     </Typography>
-                    <Typography variant='subtitle2' display='block'>{`Subject: `}<Link href='#'>{post.subjectId}</Link>  </Typography>
+                    {role !== 'faculty' && <Typography variant='subtitle2' display='block'>{`Subject: `}<Link href='#'>{post.subjectId}</Link>  </Typography>}
                     <Typography variant='subtitle2' display='block'>{`Posted: ${post.postDate}`}</Typography>
                 </Stack>
             </Box>

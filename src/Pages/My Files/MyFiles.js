@@ -27,7 +27,7 @@ export default function MyFiles() {
         if (post.uid === uid) {
             myPostedSyllabus.push(post)
         }
-})
+    })
 
     return (
         <>
@@ -50,31 +50,38 @@ export default function MyFiles() {
             <Box sx={{
                 height: 'calc(100% - 5rem)',
                 width: '100%',
-                padding: '1.5rem'
+                padding: '1.5rem',
             }}>
-                <Grid container spacing={2}>
-                    {
-                        myPostedSyllabus
-                            .sort((a, b) => new Date(b.postDate).getTime() - new Date(a.postDate).getTime())
-                            .map((v, k) =>
-                                <Grid item key={k} xs={3}>
-                                    <Card variant="outlined" sx={{ height: '13rem', display: 'flex', flexDirection: 'column' }}>
-                                        <CardContent sx={{ flex: '1' }}>
-                                            <Typography sx={{ fontSize: '1.25rem', fontWeight: 'bold' }}>{v.postTitle}</Typography>
-                                            <Typography sx={{ fontSize: '.8rem' }} color='text.secondary'>{`Posted: ${v.postDate}`}</Typography>
+                {myPostedSyllabus.length !== 0 ?
+                    <Grid container spacing={2}>
+                        {
+                            myPostedSyllabus
+                                .sort((a, b) => new Date(b.postDate).getTime() - new Date(a.postDate).getTime())
+                                .map((v, k) =>
+                                    <Grid item key={k} xs={3}>
+                                        <Card variant="outlined" sx={{ height: '13rem', display: 'flex', flexDirection: 'column' }}>
+                                            <CardContent sx={{ flex: '1' }}>
+                                                <Typography sx={{ fontSize: '1.25rem', fontWeight: 'bold' }}>{v.postTitle}</Typography>
+                                                <Typography sx={{ fontSize: '.8rem' }} color='text.secondary'>{`Posted: ${v.postDate}`}</Typography>
 
-                                        </CardContent>
-                                        <CardActions>
-                                            <Button size='small' onClick={() => nav(`/my-files/${uid}/${v.postId}`)}>Open</Button>
-                                        </CardActions>
-                                    </Card>
-                                </Grid>
-                            )
-                    }
-                </Grid>
+                                            </CardContent>
+                                            <CardActions>
+                                                <Button size='small' onClick={() => nav(`/my-files/${uid}/${v.postId}`)}>Open</Button>
+                                            </CardActions>
+                                        </Card>
+                                    </Grid>
+                                )
+                        }
+                    </Grid>
+                    :
+                    <Box sx={{
+                        width: '100%', height: '100%', 
+                        display: 'flex', justifyContent: 'center', alignItems: 'center'
+                    }}>
+                        <Typography variant='subtitle1' sx={{ fontWeight: 'bold' }}>No Files</Typography>
+                    </Box>
+                }
             </Box>
-
-
         </>
     )
 }

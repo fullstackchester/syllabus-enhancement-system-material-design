@@ -16,12 +16,14 @@ export default function FirebaseProvider({ children }) {
     const [loading, setLoading] = useState(true)
     const [photoUrl, setPhotoUrl] = useState('')
     const [role, setRole] = useState()
+    const [department, setDepartment] = useState()
 
     const value = {
         currentUser,
         userData,
         role,
-        photoUrl
+        photoUrl,
+        department
     }
 
     useEffect(() => {
@@ -33,7 +35,7 @@ export default function FirebaseProvider({ children }) {
                     if (snapshot.exists()) {
                         setRole(snapshot.val().userType)
                         setUserData(snapshot.val())
-
+                        setDepartment(snapshot.val().department)
                     }
                 })
                 onValue(ref(database, `users/${user.uid}/photoUrl`), snapshot => {

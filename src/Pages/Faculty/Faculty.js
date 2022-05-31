@@ -1,16 +1,17 @@
 import React, { useEffect, useState } from 'react'
-import { Button, CircularProgress, InputAdornment, TextField, Typography } from '@mui/material';
+import { CircularProgress, Typography } from '@mui/material';
 import { Box, Container } from '@mui/system';
-import SearchIcon from '@mui/icons-material/Search';
-import AddIcon from '@mui/icons-material/Add';
 import { onValue, ref } from 'firebase/database';
 import { database } from '../../JS/Firebase';
 import { useNavigate } from 'react-router-dom';
 import { DataGrid, GridToolbar } from '@mui/x-data-grid';
+import { useFirebase } from '../../Context/FirebaseContext'
 
 export default function Faculty() {
     const [list, setList] = useState([])
     const [isFetching, setFetching] = useState(true)
+    const filteredList = []
+    const { role, department } = useFirebase()
 
     const nav = useNavigate()
     const columns = [
@@ -28,7 +29,13 @@ export default function Faculty() {
             }
         })
     }, [])
-
+    if (role === 'area chair') {
+        list.forEach(i => {
+            if (i.department === department) {
+                filteredList.push(i)
+            }
+        })
+    }
 
     return (
         <>
@@ -39,13 +46,17 @@ export default function Faculty() {
                 justifyContent: 'space-between'
             }}>
                 <Typography variant='h4'>Faculty</Typography>
-                {/* <Box>
+                {/* Add button component was removeed
+                because there is no need to add for an account.
+                faculty / users should sign up for the accounts
+                <Box>
                     <Button variant='contained' startIcon={<AddIcon />}
                         style={{
                             marginRight: '.75rem',
                         }}
                         disableElevation>Add</Button>
-                </Box> */}
+                </Box> 
+                */}
             </Container>
             {!isFetching ?
                 <Container sx={{
@@ -53,7 +64,7 @@ export default function Faculty() {
                 }}>
                     <DataGrid
                         columns={columns}
-                        rows={list}
+                        rows={role === 'area chair' ? filteredList : list}
                         pageSize={8}
                         rowsPerPageOptions={[8]}
                         getRowId={(row) => row.uid}

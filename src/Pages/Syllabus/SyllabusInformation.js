@@ -1,16 +1,14 @@
-import { Box, Button, Link, Stack, Typography, IconButton, DialogTitle } from '@mui/material'
+import {
+    Box, Button, Link, Stack, Typography, IconButton, DialogTitle, Chip,
+    Dialog, DialogActions, DialogContent, DialogContentText, Tooltip
+} from '@mui/material'
 import LoadingButton from '@mui/lab/LoadingButton';
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
 import { onValue, ref, remove } from 'firebase/database'
 import { getDownloadURL, ref as storageRef } from 'firebase/storage'
 import React, { useEffect, useState } from 'react'
 import SetStatusButton from '../../Components/SetStatusButton'
 import { database, storage } from '../../JS/Firebase'
-import Chip from '@mui/material/Chip';
-import { Delete, Edit } from '@mui/icons-material'
+import { Delete, Edit, Download } from '@mui/icons-material'
 import { useNavigate } from 'react-router-dom'
 import { useFirebase } from '../../Context/FirebaseContext'
 
@@ -19,6 +17,7 @@ export default function SyllabusInformation({ postId }) {
     const [post, setPost] = useState({})
     const [chipColor, setColor] = useState('info')
     const [fileUrl, setFileUrl] = useState()
+    const [downloadabelFile, setDownloadableFile] = useState()
 
     const [openDeleteDialog, setOpenDeleteDialog] = useState(false)
     const nav = useNavigate()
@@ -35,6 +34,7 @@ export default function SyllabusInformation({ postId }) {
 
                 getDownloadURL(storageRef(storage, snap.val().postFileUrl))
                     .then((url) => {
+                        setDownloadableFile(url)
                         setFileUrl(`https://drive.google.com/viewerng/viewer?embedded=true&url=${encodeURIComponent(url)}`)
                     })
                     .catch((e) => {
@@ -50,7 +50,6 @@ export default function SyllabusInformation({ postId }) {
                 }
             }
         })
-
         getSyllabi()
     }, [])
 
@@ -85,8 +84,8 @@ export default function SyllabusInformation({ postId }) {
                 padding: '1.25rem 0 1.25rem 0'
             }}>
                 <Stack direction='row' spacing={1}>
-                    <SetStatusButton postId={post.postId} />
-                    {role !== 'area chair' &&
+                    <SetStatusButton post={post} />
+                    {role === 'administrator' &&
                         <>
                             <IconButton onClick={() => nav(`/syllabus/edit-syllabus/${postId}`)} variant='contained' color='primary' size='small'>
                                 <Edit />
@@ -107,11 +106,25 @@ export default function SyllabusInformation({ postId }) {
                 <Stack>
                     <Typography variant='subtitle2' display='block'>{`Author: ${post.postAuthor}`}</Typography>
                     <Typography variant='subtitle2' display='block'>
-                        {`Attachments: `}<Button
-                            onClick={() => window.open(fileUrl, '_blank')}
-                            sx={{ textTransform: 'none' }}>
-                            {post.postFile}
-                        </Button>
+                        {`Attachments: `}
+                        <Tooltip title='Preview File'>
+                            <Button
+                                onClick={() => window.open(fileUrl, '_blank')}
+                                sx={{ textTransform: 'none' }}
+                                size='small'>
+                                {post.postFile}
+                            </Button>
+                        </Tooltip>
+                        <Tooltip title='Download File'>
+                            <IconButton
+                                color='primary'
+                                size='small'
+                                onClick={() => {
+                                    window.open(downloadabelFile, '_self')
+                                }}>
+                                <Download fontSize='small' />
+                            </IconButton>
+                        </Tooltip>
                     </Typography>
                     <Typography variant='subtitle2' display='block'>{`Subject: `}<Link href='#'>{post.subjectId}</Link>  </Typography>
                     <Typography variant='subtitle2' display='block'>{`Posted: ${post.postDate}`}</Typography>
