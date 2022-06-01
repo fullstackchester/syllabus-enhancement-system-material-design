@@ -26,71 +26,86 @@ import MyFileEdit from "./Pages/My Files/MyFileEdit";
 import Protected from "./Components/Routing/ProtectedRoute";
 import AuthListener from "./Components/Routing/AuthListenerRoute";
 import Restricted from "./Components/Routing/RestrictedRoute";
+import Practice from "./Pages/Practice";
+import { ThemeProvider, createTheme } from '@mui/material/styles';
+import { CssBaseline } from '@mui/material'
+import { useSelector, useDispatch } from 'react-redux'
+import { changeTheme } from './JS/States'
 
 function App() {
-
+	const theme = useSelector((state) => state.mode)
+	const customTheme = createTheme({
+		palette: {
+			mode: theme,
+		},
+	});
 	return (
 		<FirebaseProvider>
-			<div className="App">
-				<BrowserRouter>
-					<Routes>
-						<Route index element={
-							<AuthListener>
-								<Landing />
-							</AuthListener>
-						} />
-						<Route exact path='/' element={
-							<AuthListener>
-								<Landing />
-							</AuthListener>
-						} />
-						<Route exact path='/signup' element={
-							<AuthListener>
-								<Signup />
-							</AuthListener>
-						} />
-						<Route exact path='/' element={
-							// Protected Routes will redirect
-							// user from login/authentication page
-							// if not authenticated
-
-							<Protected>
-								<Layout />
-							</Protected>}>
+			<ThemeProvider theme={customTheme}>
+				<CssBaseline />
+				<div className="App">
+					<BrowserRouter>
+						<Routes>
 							<Route index element={
-								<Restricted>
-									<Dashboard />
-								</Restricted>
+								<AuthListener>
+									<Landing />
+								</AuthListener>
 							} />
+							<Route exact path='/' element={
+								<AuthListener>
+									<Landing />
+								</AuthListener>
+							} />
+							<Route exact path='/signup' element={
+								<AuthListener>
+									<Signup />
+								</AuthListener>
+							} />
+							<Route exact path='/' element={
+								// Protected Routes will redirect
+								// user from login/authentication page
+								// if not authenticated
 
-							<Route exact path='syllabus' element={<Syllabus />} />
-							<Route exact path='syllabus/:postId' element={<SyllabusFile />} />
-							<Route exact path='syllabus/new-syllabus/:postId' element={<SyllabusAdd />} />
-							<Route exact path='syllabus/edit-syllabus/:postId' element={<SyllabusEdit />} />
+								<Protected>
+									<Layout />
+								</Protected>}>
+								<Route index element={
+									<Restricted>
+										<Dashboard />
+									</Restricted>
+								} />
+
+								<Route exact path='syllabus' element={<Syllabus />} />
+								<Route exact path='syllabus/:postId' element={<SyllabusFile />} />
+								<Route exact path='syllabus/new-syllabus/:postId' element={<SyllabusAdd />} />
+								<Route exact path='syllabus/edit-syllabus/:postId' element={<SyllabusEdit />} />
 
 
-							<Route exact path='dashboard' element={<Dashboard />} />
-							<Route exact path='subjects' element={<Subject />} />
-							<Route exact path='subjects/:subjectId' element={<SubjectFile />} />
-							<Route exact path='subjects/new-subject/:subjectId' element={<SubjectAdd />} />
-							<Route exact path='subjects/edit-subject/:subjectId' element={<SubjectEdit />} />
+								<Route exact path='dashboard' element={<Dashboard />} />
+								<Route exact path='subjects' element={<Subject />} />
+								<Route exact path='subjects/:subjectId' element={<SubjectFile />} />
+								<Route exact path='subjects/new-subject/:subjectId' element={<SubjectAdd />} />
+								<Route exact path='subjects/edit-subject/:subjectId' element={<SubjectEdit />} />
 
-							<Route exact path='faculty' element={<Faculty />} />
-							<Route exact path='faculty/:uid' element={<FacultyProfile />} />
-							<Route exact path='faculty/edit-faculty/:uid' element={<FacultyEdit />} />
+								<Route exact path='faculty' element={<Faculty />} />
+								<Route exact path='faculty/:uid' element={<FacultyProfile />} />
+								<Route exact path='faculty/edit-faculty/:uid' element={<FacultyEdit />} />
 
-							<Route exact path='my-files/:uid' element={<MyFiles />} />
-							<Route exact path='my-files/:uid/:postId' element={<MyFileView />} />
-							<Route exact path='my-files/:uid/new-syllabi/:postId' element={<MyFileAdd />} />
-							<Route exact path='my-files/:uid/edit-syllabi/:postId' element={<MyFileEdit />} />
+								<Route exact path='my-files/:uid' element={<MyFiles />} />
+								<Route exact path='my-files/:uid/:postId' element={<MyFileView />} />
+								<Route exact path='my-files/:uid/new-syllabi/:postId' element={<MyFileAdd />} />
+								<Route exact path='my-files/:uid/edit-syllabi/:postId' element={<MyFileEdit />} />
 
-							<Route exact path='account/:uid' element={<Account />} />
-							<Route exact path='account/edit-profile/:uid' element={<AccountProfileEdit />} />
-						</Route>
+								<Route exact path='account/:uid' element={<Account />} />
+								<Route exact path='account/edit-profile/:uid' element={<AccountProfileEdit />} />
 
-					</Routes>
-				</BrowserRouter>
-			</div>
+								<Route exact path='practice' element={<Practice />} />
+							</Route>
+
+						</Routes>
+					</BrowserRouter>
+				</div>
+			</ThemeProvider>
 		</FirebaseProvider>
 	)
 }

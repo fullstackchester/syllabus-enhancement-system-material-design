@@ -1,4 +1,4 @@
-import { Card, CardContent, IconButton, TextField, Typography } from '@mui/material'
+import { Card, CardContent, IconButton, TextField, Typography, Tooltip } from '@mui/material'
 import { Box, Container } from '@mui/system'
 import { onValue, ref, set } from 'firebase/database'
 import React, { useState, useEffect, useRef } from 'react'
@@ -66,20 +66,24 @@ export default function SyllabusComments({ postId }) {
                     comment
                         .sort((a, b) => new Date(b.commentDate).getTime() - new Date(a.commentDate).getTime())
                         .map((v, k) =>
-                            <Card
-                                key={k}
-                                variant='outlined'
-                                sx={{
-                                    width: '70%',
-                                    height: 'auto',
-                                    minHeight: '5rem',
-                                    marginTop: '.75rem'
-                                }}>
-                                <CardContent>
-                                    <Typography sx={{ fontSize: '1rem' }} color='primary' >{v.name}</Typography>
-                                    <Typography variant='subtitle1' >{v.commentString}</Typography>
-                                </CardContent>
-                            </Card>
+                            <Tooltip
+                                title={v.commentDate}
+                                placement='right'
+                                key={k}>
+                                <Card
+                                    variant='outlined'
+                                    sx={{
+                                        width: '70%',
+                                        height: 'auto',
+                                        minHeight: '5rem',
+                                        marginTop: '.75rem'
+                                    }}>
+                                    <CardContent>
+                                        <Typography sx={{ fontSize: '1rem' }} color='primary' >{v.name}</Typography>
+                                        <Typography variant='subtitle1' >{v.commentString}</Typography>
+                                    </CardContent>
+                                </Card>
+                            </Tooltip>
                         )
                 }
             </Box>

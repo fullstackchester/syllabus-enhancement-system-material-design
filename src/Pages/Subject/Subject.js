@@ -1,16 +1,13 @@
 import React, { useEffect, useState } from 'react'
-import { Breadcrumbs, Button, CircularProgress, InputAdornment, Link, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Typography } from '@mui/material';
+import { Button, Typography } from '@mui/material';
 import { Box, Container } from '@mui/system';
-import Paper from '@mui/material/Paper';
-import { subjectTableHeader, userTableHeader } from '../../Data/Data';
-import SearchIcon from '@mui/icons-material/Search';
 import AddIcon from '@mui/icons-material/Add';
 import { onValue, ref } from 'firebase/database';
 import { database } from '../../JS/Firebase';
 import { useNavigate } from 'react-router-dom';
 import { v4 } from 'uuid'
-import { DataGrid, GridToolbar, GridToolbarExport } from '@mui/x-data-grid';
 import { useFirebase } from '../../Context/FirebaseContext';
+import CustomDataGrid from '../../Components/DataGrid';
 
 
 export default function Subject() {
@@ -58,35 +55,18 @@ export default function Subject() {
                             disableElevation>Add</Button>}
                 </Box>
             </Container>
-
-            {!isFetching ?
-                <Container
-                    sx={{
-                        height: 'calc(95% - 5rem)'
-                    }}>
-
-                    <DataGrid
-                        columns={columns}
-                        rows={list}
-                        pageSize={8}
-                        rowsPerPageOptions={[8]}
-                        getRowId={(row) => row.subjectId}
-                        onCellDoubleClick={(cell) => nav(`/subjects/${cell.id}`)}
-                        checkboxSelection
-                        components={{ Toolbar: GridToolbar }}
-                    />
-                </Container>
-                :
-                <Box
-                    sx={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        height: 'calc(100% - 5rem)'
-                    }}>
-                    <CircularProgress />
-                </Box>
-            }
+            <Container
+                sx={{
+                    height: 'calc(95% - 5rem)'
+                }}>
+                <CustomDataGrid
+                    columns={columns}
+                    rows={list}
+                    isFetching={isFetching}
+                    getPrimaryKey={(rows) => rows.subjectId}
+                    onClick={(cell) => nav(`/subjects/${cell.id}`)}
+                />
+            </Container>
         </>
     )
 }

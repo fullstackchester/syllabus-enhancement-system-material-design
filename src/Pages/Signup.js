@@ -1,15 +1,16 @@
 import { LoadingButton } from '@mui/lab'
 import {
-    Avatar, Button, Grid, Stack, TextField, FormControl, Link,
+    Avatar, Button, Grid, Stack, TextField, FormControl,
     Select, InputLabel, MenuItem, Snackbar, Alert, Typography,
 } from '@mui/material'
 import { Box, Container } from '@mui/system'
 import React, { useState, useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, Link } from 'react-router-dom'
 import { createUserWithEmailAndPassword } from 'firebase/auth'
 import { set, ref } from 'firebase/database'
 import { uploadBytes, ref as storageRef } from 'firebase/storage'
 import { auth, database, storage } from '../JS/Firebase'
+import ThemeModeSwitch from '../Components/ThemeModeSwitch'
 
 export default function Signup() {
     const nav = useNavigate()
@@ -265,10 +266,21 @@ export default function Signup() {
                 </Box>
                 <Stack direction='row'>
                     <Typography variant='caption' color='text.secondary' sx={{ fontWeight: 'bold' }}>
-                        Already have and account? <Link underline='none' href='/' sx={{ cursor: 'pointer' }}>Login</Link>
+                        Already have and account? <Typography
+                            variant='caption' color='primary'
+                            sx={{ fontWeight: 'bold', cursor: 'pointer' }}
+                            onClick={() => nav('/')}
+                        >Login</Typography>
                     </Typography>
                 </Stack>
             </Container>
+            <Box sx={{
+                position: 'absolute',
+                bottom: '5rem',
+                right: '5rem'
+            }}>
+                <ThemeModeSwitch />
+            </Box>
             <Snackbar
                 open={snakcOpen}
                 onClose={() => {

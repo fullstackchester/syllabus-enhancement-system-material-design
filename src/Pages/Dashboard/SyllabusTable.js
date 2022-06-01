@@ -25,14 +25,17 @@ export default function SyllabusTable() {
                         </TableHead>
                         <TableBody>
                             {
-                                firstFiveSyllabus.map((v, k) => {
-                                    return (
-                                        <TableRow key={k}>
-                                            <TableCell>{v.postTitle}</TableCell>
-                                            <TableCell><StatusChip postStatus={v.postStatus} /></TableCell>
-                                        </TableRow>
-                                    )
-                                })
+                                syllabusList
+                                    .sort((a, b) => new Date(b.postDate).getTime() - new Date(a.postDate).getTime())
+                                    .slice(0, 5)
+                                    .map((v, k) => {
+                                        return (
+                                            <TableRow key={k}>
+                                                <TableCell>{v.postTitle}</TableCell>
+                                                <TableCell><StatusChip postStatus={v.postStatus} /></TableCell>
+                                            </TableRow>
+                                        )
+                                    })
                             }
                         </TableBody>
                     </Table>

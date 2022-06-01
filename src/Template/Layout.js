@@ -4,7 +4,6 @@ import './Layout.css';
 import Sidebar from './Sidebar';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { Box } from '@mui/system'
-import { DarkMode, LightMode, Notifications } from '@mui/icons-material';
 import PoppinsTTf from '../Fonts/Poppins/Poppins-Regular.ttf';
 import Logout from '@mui/icons-material/Logout';
 import { useFirebase } from '../Context/FirebaseContext';
@@ -20,7 +19,7 @@ import { auth, database, storage } from '../JS/Firebase';
 import { ref as storageRef, getDownloadURL } from 'firebase/storage';
 import { onValue, ref } from 'firebase/database';
 import NotificationComponent from '../Components/NotificationComponent';
-import { useSelector } from 'react-redux'
+import ThemeModeSwitch from '../Components/ThemeModeSwitch';
 
 
 
@@ -88,122 +87,106 @@ export default function Layout() {
     }
 
     return (
-        <ThemeProvider theme={customTheme}>
-            <CssBaseline />
-            <div className='template-body'>
-                <Sidebar />
-                <Divider orientation='vertical' />
-                <div className='outlet'>
-                    <div className='header'>
-                        <Box sx={{
-                            display: 'flex',
-                            flexDirection: 'row',
-                            alignItems: 'center'
-                        }}>
-                            <ToggleButtonGroup
-                                value={mode}
-                                onChange={handleMode}
-                                exclusive
-                                size='small'
-                                color='primary'
-                                aria-label="text alignment" >
-                                <ToggleButton value="dark" aria-label="left aligned" onClick={(e) => setMode(e.target.value)}>
-                                    <DarkMode />
-                                </ToggleButton>
-                                <ToggleButton value="light" aria-label="left aligned" onClick={(e) => setMode(e.target.value)}>
-                                    <LightMode />
-                                </ToggleButton>
-                            </ToggleButtonGroup>
+        <div className='template-body'>
+            <Sidebar />
+            <Divider orientation='vertical' />
+            <div className='outlet'>
+                <div className='header'>
+                    <Box sx={{
+                        display: 'flex',
+                        flexDirection: 'row',
+                        alignItems: 'center'
+                    }}>
+                        <ThemeModeSwitch />
+                    </Box>
+                    <Stack spacing={1} direction='row'>
+                        <Box>
+                            <NotificationComponent uid={currentUser.uid} />
                         </Box>
-                        <Stack spacing={1} direction='row'>
-                            <Box>
-                                <NotificationComponent uid={currentUser.uid} />
-                            </Box>
-                            <Box sx={{ display: 'flex', alignItems: 'center', textAlign: 'center' }}>
-                                <Tooltip title="Account settings">
-                                    <IconButton
-                                        onClick={handleClick}
-                                        size="small"
-                                        aria-controls={open ? 'account-menu' : undefined}
-                                        aria-haspopup="true"
-                                        aria-expanded={open ? 'true' : undefined}
-                                    >
-                                        <Avatar
-                                            alt={userData.name}
-                                            sx={{ width: 32, height: 32 }}
-                                            src={avatar} />
-
-                                    </IconButton>
-                                </Tooltip>
-                                <Menu
-                                    anchorEl={anchorEl}
-                                    id="account-menu"
-                                    open={open}
-                                    onClose={handleClose}
-                                    onClick={handleClose}
-                                    PaperProps={{
-                                        elevation: 0,
-                                        sx: {
-                                            overflow: 'visible',
-                                            filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
-                                            mt: 1.5,
-                                            '& .MuiAvatar-root': {
-                                                width: 32,
-                                                height: 32,
-                                                ml: -0.5,
-                                                mr: 1,
-                                            },
-                                            '&:before': {
-                                                content: '""',
-                                                display: 'block',
-                                                position: 'absolute',
-                                                top: 0,
-                                                right: 14,
-                                                width: 10,
-                                                height: 10,
-                                                bgcolor: 'background.paper',
-                                                transform: 'translateY(-50%) rotate(45deg)',
-                                                zIndex: 0,
-                                            },
-                                        },
-                                    }}
-                                    transformOrigin={{ horizontal: 'right', vertical: 'top' }}
-                                    anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+                        <Box sx={{ display: 'flex', alignItems: 'center', textAlign: 'center' }}>
+                            <Tooltip title="Account settings">
+                                <IconButton
+                                    onClick={handleClick}
+                                    size="small"
+                                    aria-controls={open ? 'account-menu' : undefined}
+                                    aria-haspopup="true"
+                                    aria-expanded={open ? 'true' : undefined}
                                 >
-                                    <MenuItem onClick={() => setOpen(true)}>
-                                        <ListItemIcon>
-                                            <Logout fontSize="small" />
-                                        </ListItemIcon>
-                                        Logout
-                                    </MenuItem>
-                                </Menu>
-                            </Box>
-                        </Stack>
-                    </div>
-                    <Divider />
-                    <div className='viewport'>
-                        <Outlet />
-                    </div>
+                                    <Avatar
+                                        alt={userData.name}
+                                        sx={{ width: 32, height: 32 }}
+                                        src={avatar} />
+
+                                </IconButton>
+                            </Tooltip>
+                            <Menu
+                                anchorEl={anchorEl}
+                                id="account-menu"
+                                open={open}
+                                onClose={handleClose}
+                                onClick={handleClose}
+                                PaperProps={{
+                                    elevation: 0,
+                                    sx: {
+                                        overflow: 'visible',
+                                        filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
+                                        mt: 1.5,
+                                        '& .MuiAvatar-root': {
+                                            width: 32,
+                                            height: 32,
+                                            ml: -0.5,
+                                            mr: 1,
+                                        },
+                                        '&:before': {
+                                            content: '""',
+                                            display: 'block',
+                                            position: 'absolute',
+                                            top: 0,
+                                            right: 14,
+                                            width: 10,
+                                            height: 10,
+                                            bgcolor: 'background.paper',
+                                            transform: 'translateY(-50%) rotate(45deg)',
+                                            zIndex: 0,
+                                        },
+                                    },
+                                }}
+                                transformOrigin={{ horizontal: 'right', vertical: 'top' }}
+                                anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+                            >
+                                <MenuItem onClick={() => setOpen(true)}>
+                                    <ListItemIcon>
+                                        <Logout fontSize="small" />
+                                    </ListItemIcon>
+                                    Logout
+                                </MenuItem>
+                            </Menu>
+                        </Box>
+                    </Stack>
                 </div>
-                <Dialog
-                    open={isOpen}
-                    onClose={() => setOpen(false)}
-                >
-                    <DialogTitle>Confirm Account Logout</DialogTitle>
-                    <DialogContent>
-                        <DialogContentText id="alert-dialog-description">
-                            Are you sure you want to logout?
-                        </DialogContentText>
-                    </DialogContent>
-                    <DialogActions>
-                        <Button onClick={() => setOpen(false)}>Cancel</Button>
-                        <LoadingButton loading={isLoading} onClick={logoutAccount} autoFocus>
-                            Logout
-                        </LoadingButton>
-                    </DialogActions>
-                </Dialog>
+                <Divider />
+                <div className='viewport'>
+                    <Outlet />
+                </div>
             </div>
-        </ThemeProvider>
+            <Dialog
+                open={isOpen}
+                onClose={() => setOpen(false)}
+            >
+                <DialogTitle>Confirm Account Logout</DialogTitle>
+                <DialogContent>
+                    <DialogContentText id="alert-dialog-description">
+                        Are you sure you want to logout?
+                    </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={() => setOpen(false)}>Cancel</Button>
+                    <LoadingButton loading={isLoading} onClick={logoutAccount} autoFocus>
+                        Logout
+                    </LoadingButton>
+                </DialogActions>
+            </Dialog>
+        </div>
 
     )
 }

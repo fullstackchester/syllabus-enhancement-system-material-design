@@ -14,7 +14,7 @@ export const subjectTableHeader = [
     'Credit Units'
 ]
 export const syllabusTableHeader = [
-    'Title',
+    'Latest Syllabus',
     'Status'
 ]
 export const dashboardSubjectTableHeader = [

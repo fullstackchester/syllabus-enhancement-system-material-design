@@ -1,4 +1,4 @@
-import { Alert, Button, Link, Stack, TextField, Typography } from '@mui/material'
+import { Alert, Stack, TextField, Typography } from '@mui/material'
 import { Box, Container } from '@mui/system'
 import { signInWithEmailAndPassword } from 'firebase/auth'
 import React, { useState } from 'react'
@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom'
 import { auth } from '../JS/Firebase'
 import '../index.css'
 import { LoadingButton } from '@mui/lab'
+import ThemeModeSwitch from '../Components/ThemeModeSwitch'
 
 export default function Landing() {
     const [email, setEmail] = useState('')
@@ -44,7 +45,7 @@ export default function Landing() {
                         setError(err.message)
                     });
             }
-            
+
         }, 1500)
     }
 
@@ -112,17 +113,23 @@ export default function Landing() {
                     </Box>
 
                 </form>
-
-
                 <Stack direction='row' spacing={1}>
                     <Typography variant='caption' color='text.secondary' sx={{ fontWeight: 'bold' }}>Don't have an Account?</Typography>
                     <Typography
                         variant='caption' color='primary'
-                        sx={{fontWeight: 'bold', cursor: 'pointer'}}
+                        sx={{ fontWeight: 'bold', cursor: 'pointer' }}
                         onClick={() => nav('/signup')}
                     >Sign up</Typography>
                 </Stack>
             </Container>
+
+            <Box sx={{
+                position: 'absolute',
+                bottom: '5rem',
+                right: '5rem'
+            }}>
+                <ThemeModeSwitch />
+            </Box>
         </>
     )
 }

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
-import { Notifications, FileOpen } from '@mui/icons-material'
+import { Notifications, FileOpen, CheckCircleOutline } from '@mui/icons-material'
+import { blue } from '@mui/material/colors'
 import {
     IconButton, styled, Badge, Menu, MenuItem, Tooltip,
     ListItem, Typography, ListItemText, ListItemAvatar, MenuList, Avatar
@@ -92,8 +93,8 @@ export default function NotificationComponent({ uid }) {
                                             setAnchorEl(null)
                                         }}>
                                         <ListItemAvatar>
-                                            <Avatar>
-                                                <FileOpen />
+                                            <Avatar sx={{ bgcolor: blue[500] }}>
+                                                <CheckCircleOutline />
                                             </Avatar>
                                         </ListItemAvatar>
                                         <ListItemText
