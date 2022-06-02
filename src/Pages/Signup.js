@@ -5,7 +5,7 @@ import {
 } from '@mui/material'
 import { Box, Container } from '@mui/system'
 import React, { useState, useEffect } from 'react'
-import { useNavigate, Link } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { createUserWithEmailAndPassword } from 'firebase/auth'
 import { set, ref } from 'firebase/database'
 import { uploadBytes, ref as storageRef } from 'firebase/storage'
@@ -276,8 +276,8 @@ export default function Signup() {
             </Container>
             <Box sx={{
                 position: 'absolute',
-                bottom: '5rem',
-                right: '5rem'
+                bottom: '2rem',
+                left: '2rem'
             }}>
                 <ThemeModeSwitch />
             </Box>

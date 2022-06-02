@@ -30,7 +30,7 @@ import Practice from "./Pages/Practice";
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { CssBaseline } from '@mui/material'
 import { useSelector, useDispatch } from 'react-redux'
-import { changeTheme } from './JS/States'
+import { grey } from '@mui/material/colors'
 
 function App() {
 	const theme = useSelector((state) => state.mode)

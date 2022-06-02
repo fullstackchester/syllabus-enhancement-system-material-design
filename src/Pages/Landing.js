@@ -7,6 +7,7 @@ import { auth } from '../JS/Firebase'
 import '../index.css'
 import { LoadingButton } from '@mui/lab'
 import ThemeModeSwitch from '../Components/ThemeModeSwitch'
+import { AuthError } from '../Data/AuthError'
 
 export default function Landing() {
     const [email, setEmail] = useState('')
@@ -34,6 +35,7 @@ export default function Landing() {
         setTimeout(function () {
             if (email === '' || pass === '') {
                 setError('Email and Password are required')
+                setLoading(false)
             }
             else {
                 signInWithEmailAndPassword(auth, email, pass)
@@ -41,12 +43,15 @@ export default function Landing() {
                         setLoading(false)
                         nav('/dashboard')
                     }).catch((err) => {
-                        setLoading(false)
-                        setError(err.message)
+                        for (let key in AuthError) {
+                            if ((err.code).replace('auth/', '') === key) {
+                                setError(AuthError[key])
+                                setLoading(false)
+                            }
+                        }
                     });
             }
-
-        }, 1500)
+        }, 500)
     }
 
     return (
@@ -125,8 +130,8 @@ export default function Landing() {
 
             <Box sx={{
                 position: 'absolute',
-                bottom: '5rem',
-                right: '5rem'
+                bottom: '2rem',
+                left: '2rem'
             }}>
                 <ThemeModeSwitch />
             </Box>

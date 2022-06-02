@@ -1,4 +1,5 @@
 import { configureStore, createSlice } from '@reduxjs/toolkit'
+import { subjectList } from '../Data/Data'
 
 const themeSlice = createSlice({
     name: 'mode',
@@ -9,19 +10,20 @@ const themeSlice = createSlice({
     }
 })
 
-// const acccountDataSlice = createSlice({
-//     name: 'accountData',
-//     initialState: {},
-//     reducers: {
-//         fetchData(state, action) {
+const subjectSlice = createSlice({
+    name: "subjects",
+    initialState: { value: subjectList },
+    reducers: {
+        addSubject: (state, action) => { },
 
-//         }
-//     }
-// })
-
-const store = configureStore({
-    reducer: themeSlice.reducer
+    }
 })
+
+// const store = configureStore({ reducer: themeSlice.reducer })
+
+const store = configureStore({ reducer: themeSlice.reducer })
+
+
 
 export const changeTheme = themeSlice.actions
 export default store

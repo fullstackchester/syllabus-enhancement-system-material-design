@@ -31,11 +31,6 @@ export default function Layout() {
 
     const [mode, setMode] = useState('light')
     const [isOpen, setOpen] = useState(false)
-    const customTheme = createTheme({
-        palette: {
-            mode: mode,
-        },
-    });
 
     const { userData, role, currentUser } = useFirebase()
     const [isLoading, setLoading] = useState(false)

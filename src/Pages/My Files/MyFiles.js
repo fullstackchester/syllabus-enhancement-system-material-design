@@ -59,11 +59,19 @@ export default function MyFiles() {
                                 .sort((a, b) => new Date(b.postDate).getTime() - new Date(a.postDate).getTime())
                                 .map((v, k) =>
                                     <Grid item key={k} xs={3}>
-                                        <Card variant="outlined" sx={{ height: '13rem', display: 'flex', flexDirection: 'column' }}>
-                                            <CardContent sx={{ flex: '1' }}>
-                                                <Typography sx={{ fontSize: '1.25rem', fontWeight: 'bold' }}>{v.postTitle}</Typography>
-                                                <Typography sx={{ fontSize: '.8rem' }} color='text.secondary'>{`Posted: ${v.postDate}`}</Typography>
+                                        <Card elevation={2} sx={{ height: '13rem', display: 'flex', flexDirection: 'column' }}>
+                                            <CardHeader
+                                                sx={{ fontSize: '.75rem', }}
+                                                title={
+                                                    <Typography sx={{ fontWeight: 'bold' }}>{v.postTitle}</Typography>
+                                                }
+                                                subheader={<Typography sx={{ fontSize: '.8rem', }} color='text.secondary'>
+                                                    {`Posted: ${new Date(v.postDate).toLocaleDateString()}`}
+                                                </Typography>}
+                                            >
 
+                                            </CardHeader>
+                                            <CardContent sx={{ flex: '1' }}>
                                             </CardContent>
                                             <CardActions>
                                                 <Button size='small' onClick={() => nav(`/my-files/${uid}/${v.postId}`)}>Open</Button>
@@ -75,7 +83,7 @@ export default function MyFiles() {
                     </Grid>
                     :
                     <Box sx={{
-                        width: '100%', height: '100%', 
+                        width: '100%', height: '100%',
                         display: 'flex', justifyContent: 'center', alignItems: 'center'
                     }}>
                         <Typography variant='subtitle1' sx={{ fontWeight: 'bold' }}>No Files</Typography>

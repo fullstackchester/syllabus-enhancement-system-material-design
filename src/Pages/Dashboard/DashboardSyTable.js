@@ -24,6 +24,9 @@ export default function DashboardSyTable() {
     const [actionStatus, setActionStatus] = useState()
     const [snakcOpen, setSnackOpen] = useState(false)
 
+
+    const [selected, setSelected] = useState([])
+
     const schoolYearTableHeader = [
         { field: 'syTitle', headerName: 'Title', flex: 1 },
         { field: 'syStart', headerName: 'Start Date', flex: 1 },
@@ -63,14 +66,28 @@ export default function DashboardSyTable() {
         }, 1000)
     }
 
+    function DeleteSy(e) {
+        e.preventDefault()
+        console.log(selected)
+    }
+
     return (
         <>
             <Box sx={{ height: '50vh', marginTop: '3rem' }}>
                 <Stack direction='row' sx={{ alignItems: 'center', justifyContent: 'space-between' }} >
-                    <Typography variant='h5' gutterBottom>School Year</Typography>
+                    <Typography variant='h5' sx={{ flex: '1' }} gutterBottom>School Year</Typography>
+                    {selected.length !== 0 &&
+                        <Button
+                            variant='outlined'
+                            sx={{ textTransform: 'none' }}
+                            color='error'
+                            size='small'
+                            type='button'
+                            onClick={DeleteSy}
+                        >Delete</Button>}
                     <Button
                         variant='outlined'
-                        sx={{ textTransform: 'none' }}
+                        sx={{ textTransform: 'none', marginLeft: '.5rem' }}
                         size='small'
                         type='button'
                         onClick={() => setOpen(true)}>Add</Button>
@@ -80,10 +97,8 @@ export default function DashboardSyTable() {
                     rows={schoolYearList}
                     getRowId={(row) => row.syId}
                     components={{ Toolbar: GridToolbar }}
-                    renderCell={(row) => {
-                        <IconButton color='error'>
-                            <Delete />
-                        </IconButton>
+                    onSelectionModelChange={(id) => {
+                        setSelected(id)
                     }}
                     checkboxSelection
                 />

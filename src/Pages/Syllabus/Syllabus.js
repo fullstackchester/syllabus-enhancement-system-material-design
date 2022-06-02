@@ -1,34 +1,28 @@
 import React, { useEffect, useState } from 'react'
-import { Button, Typography, LinearProgress } from '@mui/material';
+import { Button, Typography, Paper } from '@mui/material';
 import { Box, Container } from '@mui/system';
 import AddIcon from '@mui/icons-material/Add';
 import { onValue, ref } from 'firebase/database';
 import { database } from '../../JS/Firebase';
 import { useNavigate } from 'react-router-dom';
-import { DataGrid, GridToolbar, GridToolbarExport, GridToolbarContainer } from '@mui/x-data-grid';
 import { v4 } from 'uuid'
+import CustomDataGrid from '../../Components/DataGrid';
 
-function CustomToolbar() {
-    return (
-        <GridToolbarContainer>
-            <GridToolbar />
-            <GridToolbarExport />
-        </GridToolbarContainer>
-    )
-}
 
 export default function Syllabus() {
 
+    const nav = useNavigate()
+
     const [list, setList] = useState([])
     const [isFetching, setFetching] = useState(true)
-    const nav = useNavigate()
+    const [selected, setSelected] = useState([])
     const columns = [
         { field: 'postTitle', headerName: 'Title', flex: 1 },
         { field: 'postAuthor', headerName: 'Author', flex: 1 },
         { field: 'postDate', headerName: 'Date Posted', flex: 1 },
         { field: 'postStatus', headerName: 'Status', flex: 1 },
     ];
-
+    
     useEffect(() => {
         onValue(ref(database, 'posts'), snapshot => {
             if (snapshot.exists()) {
@@ -61,17 +55,14 @@ export default function Syllabus() {
                 sx={{
                     height: 'calc(95% - 5rem)',
                 }}>
-                <DataGrid
+
+                <CustomDataGrid
                     columns={columns}
                     rows={list}
-                    loading={isFetching}
-                    pageSize={8}
-                    rowsPerPageOptions={[8]}
-                    getRowId={(row) => row.postId}
-                    onCellDoubleClick={(cell) => nav(`/syllabus/${cell.id}`)}
-                    checkboxSelection
-                    components={{ Toolbar: GridToolbar, LoadingOverlay: LinearProgress }}
-                    
+                    isFetching={isFetching}
+                    onClick={(cell) => nav(`/syllabus/${cell.id}`)}
+                    getPrimaryKey={(row) => row.postId}
+                    selectedItemAction={(post) => setSelected(post)}
                 />
             </Container>
         </>

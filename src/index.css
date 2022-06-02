@@ -60,3 +60,11 @@ body {
   grid-gap: .75rem;
 }
 
+.active-link {
+  background-color: blue;
+}
+
+.nav-link { 
+  text-decoration: none;
+  background-color: blue;
+}
