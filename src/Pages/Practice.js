@@ -1,13 +1,13 @@
 import React, { useEffect } from 'react'
-import { useSelector, useDispatch } from 'react-redux'
-import { useFirebase } from '../Context/FirebaseContext'
+import { Admin, Resource, ListGuesser } from 'react-admin'
+import jsonServerProvider from 'ra-data-json-server';
 
 export default function Practice() {
-
+    
     return (
         <>
-
+            
         </>
     )
-    
+
 }

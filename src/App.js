@@ -37,6 +37,7 @@ function App() {
 	const customTheme = createTheme({
 		palette: {
 			mode: theme,
+
 		},
 	});
 	return (
@@ -51,7 +52,7 @@ function App() {
 									<Landing />
 								</AuthListener>
 							} />
-							<Route exact path='/' element={
+							<Route exact path='/login' element={
 								<AuthListener>
 									<Landing />
 								</AuthListener>
@@ -99,9 +100,9 @@ function App() {
 								<Route exact path='account/:uid' element={<Account />} />
 								<Route exact path='account/edit-profile/:uid' element={<AccountProfileEdit />} />
 
-								<Route exact path='practice' element={<Practice />} />
-							</Route>
 
+							</Route>
+							<Route path='/users' element={<Practice />} />
 						</Routes>
 					</BrowserRouter>
 				</div>

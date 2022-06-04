@@ -12,7 +12,7 @@ export default function Dashboard() {
 
     return (
         <>
-            <Box sx={{ width: '100%', padding: '2rem', }}>
+            <Box sx={{ width: '100%', padding: '1rem', }}>
                 <Typography variant='h4' gutterBottom>Dashboard</Typography>
                 <Grid container spacing={1} sx={{ marginBottom: '3rem' }}>
                     <Grid item xs={6}>

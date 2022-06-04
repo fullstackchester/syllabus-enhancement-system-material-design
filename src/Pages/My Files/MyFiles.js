@@ -43,7 +43,7 @@ export default function MyFiles() {
                     size='small'
                     startIcon={<Add />}
                     onClick={() => {
-                        nav(`/syllabus/new-syllabus/${v4()}`)
+                        nav(`/my-files/${uid}/new-syllabi/${v4()}`)
                     }}
                     disableElevation>Add</Button>
             </Container>

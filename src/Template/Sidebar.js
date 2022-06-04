@@ -1,7 +1,7 @@
-import { Divider, List, ListItemButton, ListItemIcon, ListItemText, Paper, Toolbar } from '@mui/material'
+import { Divider, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Paper, Toolbar, Typography, Stack } from '@mui/material'
 import { Box } from '@mui/system'
-import React, { useState } from 'react'
-import { blue, grey } from '@mui/material/colors';
+import React from 'react'
+import { blue } from '@mui/material/colors';
 import { NavLink } from 'react-router-dom'
 import { AccountCircle, Article, Dashboard, Group, School, Folder } from "@mui/icons-material";
 import { useFirebase } from '../Context/FirebaseContext';
@@ -64,8 +64,16 @@ export default function Sidebar() {
                 }}>
                 <Toolbar
                     sx={{
-                        height: '7rem',
+                        height: '5rem',
+                        display: 'grid',
+                        placeContent: 'center',
+                        alignContent: 'center',
+                        padding: '0'
                     }} >
+                    <Stack direction={`row`} sx={{ alignItems: 'center' }}>
+                        <img src={require('../Assets/logo.svg').default} width={40} height={40} />
+                        <Typography sx={{ fontSize: '1.5rem' }}>CICT-SEMS</Typography>
+                    </Stack>
 
                 </Toolbar>
                 <Divider />
@@ -73,22 +81,32 @@ export default function Sidebar() {
                     {
                         SidebarLinks.map((v, k) => {
                             return (
-                                <ListItemButton
+                                <ListItem
                                     key={k}
-                                    disableRipple
-                                    component={NavLink}
-                                    exact={v.link}
-                                    to={v.link}
-                                    style={({ isActive }) => ({
-                                        color: isActive ? '#FFFFFF' : '',
-                                        backgroundColor: isActive ? blue[500] : '',
-                                    })}
-                                    sx={{ display: v.hidden ? 'none' : '', }}>
-                                    <ListItemIcon sx={{ color: 'inherit' }}>
-                                        {v.icon}
-                                    </ListItemIcon>
-                                    <ListItemText>{v.label}</ListItemText>
-                                </ListItemButton>
+                                    dense
+                                >
+                                    <ListItemButton
+                                        disableRipple
+                                        component={NavLink}
+                                        exact={v.link}
+                                        to={v.link}
+                                        style={({ isActive }) => ({
+                                            color: isActive ? '#FFFFFF' : '',
+                                            backgroundColor: isActive ? blue[500] : '',
+                                        })}
+                                        sx={{
+                                            display: v.hidden ? 'none' : '',
+                                            borderRadius: '.5rem'
+                                        }}>
+                                        <ListItemIcon
+                                            sx={{ color: 'inherit' }}>
+                                            {v.icon}
+                                        </ListItemIcon>
+                                        <ListItemText
+                                            primary={v.label}
+                                        ></ListItemText>
+                                    </ListItemButton>
+                                </ListItem>
                             )
                         })
                     }

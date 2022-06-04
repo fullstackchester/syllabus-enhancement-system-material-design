@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Notifications, FileOpen, CheckCircleOutline } from '@mui/icons-material'
+import { Notifications, CheckCircleOutline } from '@mui/icons-material'
 import { blue } from '@mui/material/colors'
 import {
     IconButton, styled, Badge, Menu, MenuItem, Tooltip,
@@ -19,31 +19,38 @@ export default function NotificationComponent({ uid }) {
 
     const nav = useNavigate()
     const [notifications, setNotifications] = useState([])
-    let unreadCount = 0
-    let myNotifs = []
+    const [unreadCount, setUnreadCount] = useState([])
+    const [anchorEl, setAnchorEl] = useState(null)
+    const open = Boolean(anchorEl)
+
 
     useEffect(() => {
         onValue(ref(database, `notifications`), snap => {
             if (snap.exists()) {
-                setNotifications(Object.values(snap.val()))
+                setNotifications(
+                    Object.values(snap.val()).filter((notif => {
+                        if (notif.uid === uid && notif.notificationType === 'check-post') {
+                            return notif
+                        }
+                    }))
+                )
+                setUnreadCount(
+                    Object.values(snap.val()).filter((notif => {
+                        if (notif.uid === uid && notif.notificationType === 'check-post' && notif.notificationStatus === 'unread') {
+                            return notif
+                        }
+                    }))
+                )
             }
         })
     }, [])
 
-    notifications.forEach(i => {
-        if (i.uid === uid && i.notificationType === 'check-post') {
-            myNotifs.push(i)
-        }
-        if (i.uid === uid && i.notificationType === 'check-post' && i.notificationStatus === 'unread') {
-            unreadCount += 1
-        }
-    })
 
-    const [anchorEl, setAnchorEl] = useState(null);
-    const open = Boolean(anchorEl);
+
+
     const handleClose = () => {
         setAnchorEl(null)
-        myNotifs.forEach(i => {
+        notifications.forEach(i => {
             update(ref(database, `notifications/${i.notificationId}`), { notificationStatus: 'read' })
                 .then(() => {
 
@@ -60,7 +67,7 @@ export default function NotificationComponent({ uid }) {
                 <IconButton
                     id='notification-button'
                     onClick={(e) => setAnchorEl(e.currentTarget)}>
-                    <StyledBadge badgeContent={unreadCount} color="primary">
+                    <StyledBadge badgeContent={unreadCount.length} color="primary">
                         <Notifications />
                     </StyledBadge>
                 </IconButton>
@@ -80,10 +87,10 @@ export default function NotificationComponent({ uid }) {
                 <MenuList>
                     <Typography component={ListItem} variant='h5' sx={{ fontWeight: 'bold' }}>Notifications</Typography>
                 </MenuList>
-                {myNotifs.length !== 0 ?
+                {notifications.length !== 0 ?
                     <MenuList>
                         {
-                            myNotifs
+                            notifications
                                 .sort((x, y) => new Date(y.notificationDate).getTime() - new Date(x.notificationDate).getTime())
                                 .map((v, k) =>
                                     <MenuItem key={k}
