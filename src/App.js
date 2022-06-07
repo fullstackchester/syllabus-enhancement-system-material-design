@@ -87,7 +87,6 @@ function App() {
 								<Route exact path='syllabus/new-syllabus/:postId' element={<SyllabusAdd />} />
 								<Route exact path='syllabus/edit-syllabus/:postId' element={<SyllabusEdit />} />
 
-
 								<Route exact path='subjects' element={<Subject />} />
 								<Route exact path='subjects/:subjectId' element={<SubjectFile />} />
 								<Route exact path='subjects/new-subject/:subjectId' element={<SubjectAdd />} />

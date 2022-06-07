@@ -102,7 +102,10 @@ export default function Landing() {
                         <PasswordField
                             width={'100%'}
                             value={pass}
-                            onChange={(e) => setPass(e.target.value)}
+                            onChange={(e) => {
+                                setPass(e.target.value)
+                                setError('')
+                            }}
                             label='Password'
                             fieldId='password'
                             required={true}

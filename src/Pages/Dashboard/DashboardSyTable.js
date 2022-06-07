@@ -8,11 +8,13 @@ import {
     Paper, Typography, Stack, Button, Dialog, DialogActions, DialogContent, DialogTitle,
     TextField, FormControl, InputLabel, Input, Grid, Snackbar, Alert, IconButton
 } from '@mui/material'
-import { Delete } from '@mui/icons-material'
 import { LoadingButton } from '@mui/lab'
 import { v4 } from 'uuid'
+import { useFirebase } from '../../Context/FirebaseContext'
 
 export default function DashboardSyTable() {
+
+    const { role } = useFirebase()
     const [open, setOpen] = useState(false)
     const [isLoading, setLoading] = useState(false)
 
@@ -76,21 +78,26 @@ export default function DashboardSyTable() {
             <Box sx={{ height: '50vh', marginTop: '3rem' }}>
                 <Stack direction='row' sx={{ alignItems: 'center', justifyContent: 'space-between' }} >
                     <Typography variant='h5' sx={{ flex: '1' }} gutterBottom>School Year</Typography>
-                    {selected.length !== 0 &&
-                        <Button
-                            variant='outlined'
-                            sx={{ textTransform: 'none' }}
-                            color='error'
-                            size='small'
-                            type='button'
-                            onClick={DeleteSy}
-                        >Delete</Button>}
-                    <Button
-                        variant='outlined'
-                        sx={{ textTransform: 'none', marginLeft: '.5rem' }}
-                        size='small'
-                        type='button'
-                        onClick={() => setOpen(true)}>Add</Button>
+                    {
+                        role === 'administrator' &&
+                        <>
+                            {selected.length !== 0 &&
+                                <Button
+                                    variant='outlined'
+                                    sx={{ textTransform: 'none' }}
+                                    color='error'
+                                    size='small'
+                                    type='button'
+                                    onClick={DeleteSy}
+                                >Delete</Button>}
+                            <Button
+                                variant='outlined'
+                                sx={{ textTransform: 'none', marginLeft: '.5rem' }}
+                                size='small'
+                                type='button'
+                                onClick={() => setOpen(true)}>Add</Button>
+                        </>
+                    }
                 </Stack>
                 <DataGrid
                     columns={schoolYearTableHeader}

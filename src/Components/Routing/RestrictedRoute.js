@@ -10,7 +10,5 @@ export default function Restricted({ children }) {
         return <Navigate to={`/my-files/${currentUser.uid}`} replace />
     }
     
-    else {
-        return children
-    }
+    return children
 }
