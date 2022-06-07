@@ -9,10 +9,7 @@ export default function Restricted({ children }) {
     if (role === 'faculty') {
         return <Navigate to={`/my-files/${currentUser.uid}`} replace />
     }
-
-    if (role === "area chair") {
-        return <Navigate to='/syllabus' replace />
-    }
+    
     else {
         return children
     }

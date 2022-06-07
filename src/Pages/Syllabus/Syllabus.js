@@ -1,14 +1,19 @@
-import React, { useEffect, useState } from 'react'
-import { Button, Typography, Paper } from '@mui/material';
-import { Box, Container } from '@mui/system';
+import React, { useEffect, useState, Suspense } from 'react'
+import { Button, Typography, Skeleton, CircularProgress } from '@mui/material';
+import { Container } from '@mui/system';
 import AddIcon from '@mui/icons-material/Add';
 import { onValue, ref } from 'firebase/database';
 import { database } from '../../JS/Firebase';
 import { useNavigate } from 'react-router-dom';
 import { v4 } from 'uuid'
-import CustomDataGrid from '../../Components/DataGrid';
 
-
+const CustomDataGrid = React.lazy(() => {
+    return new Promise(resolve => {
+        setTimeout(() => {
+            resolve(import('../../Components/DataGrid'))
+        }, 750)
+    })
+})
 export default function Syllabus() {
 
     const nav = useNavigate()
@@ -22,7 +27,7 @@ export default function Syllabus() {
         { field: 'postDate', headerName: 'Date Posted', flex: 1 },
         { field: 'postStatus', headerName: 'Status', flex: 1 },
     ];
-    
+
     useEffect(() => {
         onValue(ref(database, 'posts'), snapshot => {
             if (snapshot.exists()) {
@@ -54,16 +59,19 @@ export default function Syllabus() {
             <Container
                 sx={{
                     height: 'calc(95% - 5rem)',
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center '
                 }}>
-
-                <CustomDataGrid
-                    columns={columns}
-                    rows={list}
-                    isFetching={isFetching}
-                    onClick={(cell) => nav(`/syllabus/${cell.id}`)}
-                    getPrimaryKey={(row) => row.postId}
-                    selectedItemAction={(post) => setSelected(post)}
-                />
+                <Suspense fallback={<CircularProgress />}>
+                    <CustomDataGrid
+                        columns={columns}
+                        rows={list}
+                        isFetching={isFetching}
+                        onClick={(cell) => nav(`/syllabus/${cell.id}`)}
+                        getPrimaryKey={(row) => row.postId}
+                        selectedItemAction={(post) => setSelected(post)} />
+                </Suspense>
             </Container>
         </>
     )

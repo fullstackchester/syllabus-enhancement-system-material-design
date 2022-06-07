@@ -9,30 +9,26 @@ import '../../index.css';
 import { database, auth } from '../../JS/Firebase';
 import { updateEmail, updatePassword } from "firebase/auth";
 import { useFirebase } from '../../Context/FirebaseContext';
+import PasswordField from '../../Components/PasswordField';
+import AccountDelete from './AccountDelete';
 
 export default function AccountSecurity({ uid }) {
 
     const { currentUser } = useFirebase()
-    const emailRef = useRef()
-    const passRef = useRef()
+    const [email, setEmail] = useState('')
+    const [pass, setPass] = useState('')
     const [isLoading, setLoading] = useState(false)
     const [actionMessage, setActionMessage] = useState('')
     const [actionStatus, setActionStatus] = useState()
     const [snakcOpen, setSnackOpen] = useState(false)
-    const [confirmDeleteDialogOpen, setConfirmDeleteDialogOpen] = useState(false)
+
+    const [showPass, setShowPass] = useState(false)
 
     const fields = [
         {
             label: 'New Email',
             placeholder: 'johnsmith@gmail.com',
             type: 'email',
-            ref: emailRef
-        },
-        {
-            label: 'New Password',
-            placeholder: 'Use minimum of 6 characters',
-            type: 'password',
-            ref: passRef
         },
     ]
 
@@ -40,18 +36,16 @@ export default function AccountSecurity({ uid }) {
     function saveNewCredentials(e) {
         e.preventDefault()
         setLoading(true)
-        setTimeout(function () {
-            if (emailRef.current.value !== '' && passRef.current.value !== '') {
-                updateEmail(currentUser, emailRef.current.value)
+        if (email !== '' && pass !== '') {
+            setTimeout(() => {
+                updateEmail(currentUser, email)
                     .then(() => {
-                        updatePassword(currentUser, passRef.current.value)
+                        updatePassword(currentUser, pass)
                             .then(() => {
-
                                 setActionStatus('success')
                                 setActionMessage('Succesfull updated email and password')
                                 setSnackOpen(true)
                                 setLoading(false)
-
                             }).catch((err) => {
                                 setActionStatus('error')
                                 setActionMessage(err.message)
@@ -64,21 +58,13 @@ export default function AccountSecurity({ uid }) {
                         setSnackOpen(true)
                         setLoading(false)
                     });
-
-
-                // console.log(emailRef.current.value)
-                // console.log(passRef.current.value)
-                // setActionStatus('success')
-                // setActionMessage('Changing Email and Password')
-                // setSnackOpen(true)
-                // setLoading(false)
-            } else {
-                setActionStatus('error')
-                setActionMessage('Fill up email and password field to proceed.')
-                setSnackOpen(true)
-                setLoading(false)
-            }
-        }, 1500)
+            }, 1500)
+        } else {
+            setActionStatus('error')
+            setActionMessage('Fill up email and password field to proceed.')
+            setSnackOpen(true)
+            setLoading(false)
+        }
     }
     return (
         <>
@@ -91,11 +77,15 @@ export default function AccountSecurity({ uid }) {
                     padding: '1.5rem'
                 }}>
 
-                <Typography variant='h4'>Edit credentials</Typography>
-                <form
+                <Typography variant='h5'>Edit credentials</Typography>
+                <Typography variant='body2'>Change your login credentials. Make sure to use an valid email and strong password.</Typography>
+                <Box
+                    component='form'
                     onSubmit={saveNewCredentials}
                     id='edit-account-security-form'
-                    className='edit-account-security-form'>
+                    className='edit-account-security-form'
+                    spellcheck={false}
+                    sx={{ marginTop: '1rem' }}>
                     {fields.map((v, k) =>
                         <TextField
                             key={k}
@@ -103,51 +93,35 @@ export default function AccountSecurity({ uid }) {
                             variant='outlined'
                             type={v.type}
                             size='small'
-                            inputRef={v.ref}
                             placeholder={v.placeholder}
-                            margin='dense' />
+                            margin='dense'
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            sx={{ marginBottom: '1rem' }} />
                     )}
+                    <PasswordField
+                        width='100%'
+                        label='New Password'
+                        isShowPass={showPass}
+                        value={pass}
+                        onChange={(e) => setPass(e.target.value)}
+                        togglePass={() => showPass ? setShowPass(false) : setShowPass(true)}
+                    />
+                    <Typography variant='caption' color='text.secondary'>Minimum of 6 characters. Add !@#$_ for stronger pattern.</Typography>
                     <LoadingButton
                         type='submit'
                         loading={isLoading}
                         variant='contained'
+                        disableElevation
                         size='small'
                         sx={{
                             width: 'max-content',
                             marginTop: '1.25rem',
                             textTransform: 'none',
                         }}>Save Changes</LoadingButton>
-                </form>
+                </Box>
             </Box>
-
-            <Box sx={{
-                minHeight: '8rem',
-                height: 'auto',
-                padding: '1.5rem',
-                marginTop: '2rem'
-            }}>
-                <Typography variant='h4'>Account Deletion</Typography>
-                <Typography variant='subtitle1'>This will delete all of your data ( basic information, passwords )</Typography>
-                <Button
-                    variant='outlined'
-                    color='error'
-                    size='small'
-                    onClick={() => setConfirmDeleteDialogOpen(true)}
-                    sx={{
-                        textTransform: 'none',
-                    }}>Delete Account</Button>
-            </Box>
-
-            <Dialog open={confirmDeleteDialogOpen} onClose={() => setConfirmDeleteDialogOpen(false)}>
-                <DialogTitle>Confirm Account Deletion</DialogTitle>
-                <DialogContent>
-                    <DialogContentText>Are you sure you want to delete your Account? You will not be able to see important data and updates</DialogContentText>
-                </DialogContent>
-                <DialogActions>
-                    <Button color='info' onClick={() => setConfirmDeleteDialogOpen(false)}>Cancel</Button>
-                    <Button color='error'>Delete</Button>
-                </DialogActions>
-            </Dialog>
+            <AccountDelete />
 
             <Snackbar open={snakcOpen} autoHideDuration={6000} onClose={() => setSnackOpen(false)}  >
                 <Alert severity={actionStatus}>{actionMessage}</Alert>

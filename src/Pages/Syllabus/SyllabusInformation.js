@@ -1,9 +1,9 @@
 import {
     Box, Button, Link, Stack, Typography, IconButton, DialogTitle, Chip,
-    Dialog, DialogActions, DialogContent, DialogContentText, Tooltip
+    Dialog, DialogActions, DialogContent, DialogContentText, Tooltip, Skeleton
 } from '@mui/material'
 import LoadingButton from '@mui/lab/LoadingButton';
-import { onValue, ref, remove } from 'firebase/database'
+import { onValue, ref, remove, get } from 'firebase/database'
 import { getDownloadURL, ref as storageRef } from 'firebase/storage'
 import React, { useEffect, useState } from 'react'
 import SetStatusButton from '../../Components/SetStatusButton'
@@ -11,6 +11,8 @@ import { database, storage } from '../../JS/Firebase'
 import { Delete, Edit, Download } from '@mui/icons-material'
 import { useNavigate } from 'react-router-dom'
 import { useFirebase } from '../../Context/FirebaseContext'
+import CustomData from '../../Components/CustomData';
+
 
 export default function SyllabusInformation({ postId }) {
 
@@ -23,6 +25,7 @@ export default function SyllabusInformation({ postId }) {
     const nav = useNavigate()
 
     const [isLoading, setLoading] = useState(false)
+    const [fetching, setFetching] = useState(true)
 
     const { role } = useFirebase()
 
@@ -31,11 +34,11 @@ export default function SyllabusInformation({ postId }) {
         const getSyllabi = () => onValue(ref(database, `posts/${postId}`), snap => {
             if (snap.exists()) {
                 setPost(snap.val())
-
                 getDownloadURL(storageRef(storage, snap.val().postFileUrl))
                     .then((url) => {
                         setDownloadableFile(url)
                         setFileUrl(`https://drive.google.com/viewerng/viewer?embedded=true&url=${encodeURIComponent(url)}`)
+                        setFetching(false)
                     })
                     .catch((e) => {
                         console.log(e)
@@ -81,7 +84,7 @@ export default function SyllabusInformation({ postId }) {
                 display: 'flex',
                 justifyContent: 'space-between',
                 alignItems: 'center',
-                padding: '1.25rem 0 1.25rem 0'
+                padding: '1.25rem 0 1.25rem 0',
             }}>
                 <Stack direction='row' spacing={1}>
                     <SetStatusButton post={post} />
@@ -98,37 +101,64 @@ export default function SyllabusInformation({ postId }) {
                 </Stack>
                 <Chip label={post.postStatus} color={chipColor} />
             </Box>
-            <Typography variant='h4'>{post.postTitle}</Typography>
-            <Typography variant='body1'>{post.postDescription}</Typography>
-            <Box sx={{
-                marginTop: '1rem',
-            }}>
-                <Stack>
-                    <Typography variant='subtitle2' display='block'>{`Author: ${post.postAuthor}`}</Typography>
-                    <Typography variant='subtitle2' display='block'>
-                        {`Attachments: `}
-                        <Tooltip title='Preview File'>
+            <Box sx={{ height: 'auto', minHeight: 'calc(100% - 2.5rem)', padding: '0' }}>
+                <CustomData type='text' TypoVariant='h4' isFetching={fetching} height={100}>
+                    {post.postTitle}
+                </CustomData>
+                <Box sx={{
+                    margin: '1rem 0 1rem 0',
+                }}>
+                    <Stack direction='column'>
+                        <CustomData type='text' TypoVariant='subtitle2' isFetching={fetching}>
+                            {`Author: ${post.postAuthor}`}
+                        </CustomData>
+                        <CustomData type='text' TypoVariant='subtitle2' isFetching={fetching}>
+                            {`Attachments: `}
+                            <Tooltip title='Preview File'>
+                                <Button
+                                    onClick={() => window.open(fileUrl, '_blank')}
+                                    sx={{ textTransform: 'none' }}
+                                    size='small'>
+                                    {post.postFile}
+                                </Button>
+                            </Tooltip>
+                            <Tooltip title='Download File'>
+                                <IconButton
+                                    color='primary'
+                                    size='small'
+                                    onClick={() => {
+                                        window.open(downloadabelFile, '_self')
+                                    }}>
+                                    <Download fontSize='small' />
+                                </IconButton>
+                            </Tooltip>
+                        </CustomData>
+                        <CustomData type='text' TypoVariant='subtitle2' isFetching={fetching}>
+                            {`Subject: `}
                             <Button
-                                onClick={() => window.open(fileUrl, '_blank')}
-                                sx={{ textTransform: 'none' }}
-                                size='small'>
-                                {post.postFile}
-                            </Button>
-                        </Tooltip>
-                        <Tooltip title='Download File'>
-                            <IconButton
-                                color='primary'
+                                variant='text'
                                 size='small'
-                                onClick={() => {
-                                    window.open(downloadabelFile, '_self')
-                                }}>
-                                <Download fontSize='small' />
-                            </IconButton>
-                        </Tooltip>
-                    </Typography>
-                    <Typography variant='subtitle2' display='block'>{`Subject: `}<Link href='#'>{post.subjectId}</Link>  </Typography>
-                    <Typography variant='subtitle2' display='block'>{`Posted: ${post.postDate}`}</Typography>
-                </Stack>
+                                sx={{ textTransform: 'none' }}
+                                onClick={() => nav(`/subjects/${post.subjectId}`)}>
+                                {(function () {
+                                    let subjectTitle = ''
+                                    onValue(ref(database, `subject/${post.subjectId}`), snapshot => {
+                                        if (snapshot.exists()) {
+                                            subjectTitle = snapshot.val().subjectTitle
+                                        }
+                                    })
+                                    return subjectTitle
+                                })()}
+                            </Button>
+                        </CustomData>
+                        <CustomData type='text' TypoVariant='subtitle2' isFetching={fetching}>
+                            {`Posted: ${post.postDate}`}
+                        </CustomData>
+                    </Stack>
+                </Box>
+                <CustomData type='rectangular' TypoVariant='subtitle1' isFetching={fetching} height={300}>
+                    {post.postDescription}
+                </CustomData>
             </Box>
 
             <Dialog open={openDeleteDialog} onClose={() => setOpenDeleteDialog(false)}>

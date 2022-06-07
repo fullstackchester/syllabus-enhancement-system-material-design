@@ -39,7 +39,9 @@ export default function SyllabusFile() {
                             <Tab value="3" label="Edit History" />
                         </TabList>
                     </Box>
-                    <TabPanel value="1">
+                    <TabPanel value="1" sx={{
+                        height: '100%'
+                    }}>
                         <SyllabusInformation postId={postId} />
                     </TabPanel>
 

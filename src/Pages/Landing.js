@@ -8,11 +8,13 @@ import '../index.css'
 import { LoadingButton } from '@mui/lab'
 import ThemeModeSwitch from '../Components/ThemeModeSwitch'
 import { AuthError } from '../Data/AuthError'
+import PasswordField from '../Components/PasswordField'
 
 export default function Landing() {
     const [email, setEmail] = useState('')
     const [pass, setPass] = useState('')
     const [isLoading, setLoading] = useState(false)
+    const [showPass, setShowPass] = useState(false)
     const nav = useNavigate()
 
     const [error, setError] = useState('')
@@ -21,11 +23,6 @@ export default function Landing() {
             label: 'Email',
             onChange: (e) => { setEmail(e.target.value); setError('') },
             type: 'text'
-        },
-        {
-            label: 'Password',
-            onChange: (e) => { setPass(e.target.value); setError('') },
-            type: 'password'
         },
     ]
 
@@ -99,8 +96,19 @@ export default function Landing() {
                                 size='small'
                                 fullWidth
                                 required={v.required}
-                                onChange={v.onChange} />
+                                onChange={v.onChange}
+                                sx={{ marginBottom: '1rem' }} />
                         )}
+                        <PasswordField
+                            width={'100%'}
+                            value={pass}
+                            onChange={(e) => setPass(e.target.value)}
+                            label='Password'
+                            fieldId='password'
+                            required={true}
+                            isShowPass={showPass}
+                            togglePass={() => showPass ? setShowPass(false) : setShowPass(true)}
+                        />
 
                         <LoadingButton
                             type='submit'

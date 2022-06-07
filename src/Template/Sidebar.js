@@ -16,7 +16,7 @@ export default function Sidebar() {
             label: 'Dashboard',
             link: '/dashboard',
             icon: <Dashboard />,
-            hidden: role !== 'administrator' ? 'none' : '',
+            hidden: role === 'faculty' ? 'none' : '',
         },
         {
             label: 'Syllabus',
@@ -63,15 +63,15 @@ export default function Sidebar() {
                     flexDirection: 'column',
                 }}>
                 <Toolbar
+                    disableGutters
                     sx={{
                         height: '5rem',
                         display: 'grid',
                         placeContent: 'center',
-                        alignContent: 'center',
-                        padding: '0'
+                        alignContent: 'center'
                     }} >
                     <Stack direction={`row`} sx={{ alignItems: 'center' }}>
-                        <img src={require('../Assets/logo.svg').default} width={40} height={40} />
+                        <img src={require('../Assets/logo.svg').default} width={50} height={50} />
                         <Typography sx={{ fontSize: '1.5rem' }}>CICT-SEMS</Typography>
                     </Stack>
 

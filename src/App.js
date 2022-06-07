@@ -30,15 +30,21 @@ import Practice from "./Pages/Practice";
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { CssBaseline } from '@mui/material'
 import { useSelector, useDispatch } from 'react-redux'
-import { grey } from '@mui/material/colors'
 
 function App() {
 	const theme = useSelector((state) => state.mode)
 	const customTheme = createTheme({
 		palette: {
 			mode: theme,
-
 		},
+		typography: {
+			fontFamily: `'Poppins', sans-serif`,
+			fontWeightRegular: 400,
+			fontWeightMedium: 500,
+			fontWeightLight: 300,
+			fontWeightBold: 700,
+
+		}
 	});
 	return (
 		<FirebaseProvider>
@@ -70,11 +76,11 @@ function App() {
 								<Protected>
 									<Layout />
 								</Protected>}>
-								<Route index element={
+								<Route index element={<Dashboard />} />
+								<Route exact path='dashboard' element={
 									<Restricted>
 										<Dashboard />
-									</Restricted>
-								} />
+									</Restricted>} />
 
 								<Route exact path='syllabus' element={<Syllabus />} />
 								<Route exact path='syllabus/:postId' element={<SyllabusFile />} />
@@ -82,7 +88,6 @@ function App() {
 								<Route exact path='syllabus/edit-syllabus/:postId' element={<SyllabusEdit />} />
 
 
-								<Route exact path='dashboard' element={<Dashboard />} />
 								<Route exact path='subjects' element={<Subject />} />
 								<Route exact path='subjects/:subjectId' element={<SubjectFile />} />
 								<Route exact path='subjects/new-subject/:subjectId' element={<SubjectAdd />} />
@@ -100,9 +105,9 @@ function App() {
 								<Route exact path='account/:uid' element={<Account />} />
 								<Route exact path='account/edit-profile/:uid' element={<AccountProfileEdit />} />
 
-
+								<Route path='/practice' element={<Practice />} />
 							</Route>
-							<Route path='/users' element={<Practice />} />
+
 						</Routes>
 					</BrowserRouter>
 				</div>

@@ -1,9 +1,9 @@
 import React from 'react'
 import {
-    Card, CardHeader, CardContent, CardActions, Button, Stack, Typography,
+    Card, CardHeader, CardContent, CardActions, Button,
     Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper,
 } from '@mui/material'
-import { firstFiveSyllabus, syllabusList, syllabusTableHeader } from '../../Data/Data'
+import { syllabusList, syllabusTableHeader } from '../../Data/Data'
 import StatusChip from '../../Components/StatusChip'
 import { useNavigate } from 'react-router-dom'
 

@@ -17,7 +17,7 @@ export default function SubjectTable() {
                 title={`Subjects ${String.fromCharCode(183)} ${subjectList.length}`} >
             </CardHeader>
             <CardContent sx={{ height: '23rem' }}>
-                
+
                 <TableContainer component={Paper} elevation={3}>
                     <Table aria-label="a dense table">
                         <TableHead>

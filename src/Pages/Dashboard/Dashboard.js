@@ -1,10 +1,19 @@
-import { Box, Card, CardContent, CardHeader, Grid, Stack, Typography } from '@mui/material'
-import React from 'react'
-import DoughnutChart from '../../Components/Charts/DoughnutChart'
+import { Box, Grid, Typography, CircularProgress, Skeleton } from '@mui/material'
+import React, { Suspense } from 'react'
 import { useFirebase } from '../../Context/FirebaseContext'
-import DashboardSyTable from './DashboardSyTable'
-import SubjectTable from './SubjectTable'
-import SyllabusTable from './SyllabusTable'
+
+
+const SyllabusTable = React.lazy(() => {
+    return import('./SyllabusTable')
+})
+
+const SubjectTable = React.lazy(() => {
+    return import('./SubjectTable')
+})
+
+const DashboardSyTable = React.lazy(() => {
+    return import('./DashboardSyTable')
+})
 
 export default function Dashboard() {
 
@@ -16,13 +25,20 @@ export default function Dashboard() {
                 <Typography variant='h4' gutterBottom>Dashboard</Typography>
                 <Grid container spacing={1} sx={{ marginBottom: '3rem' }}>
                     <Grid item xs={6}>
-                        <SyllabusTable />
+                        <Suspense fallback={<Skeleton />}>
+                            <SyllabusTable />
+                        </Suspense>
                     </Grid>
                     <Grid item xs={6}>
-                        <SubjectTable />
+                        <Suspense fallback={<Skeleton />}>
+                            <SubjectTable />
+                        </Suspense>
                     </Grid>
                     <Grid item xs={12}>
-                        <DashboardSyTable />
+                        <Suspense fallback={<Skeleton />}>
+                            <DashboardSyTable />
+                        </Suspense>
+
                     </Grid>
                 </Grid>
             </Box>

@@ -86,16 +86,17 @@ export default function AccountProfileEdit() {
 
                     uploadBytes(storageRef(storage, `avatars/${uid}/${avatar.name}`), avatar)
                         .then(() => {
-                            setLoading(false)
                             setActionStatus('success')
                             setActionMessage('Successfully updated profile')
                             setSnackOpen(true)
+                            setLoading(false)
+
                         }).catch((err) => {
 
-                            setLoading(false)
                             setActionStatus('error')
                             setActionMessage(err.message)
                             setSnackOpen(true)
+                            setLoading(false)
 
                         });
 

@@ -12,22 +12,19 @@ export default function MyFiles() {
     const { uid } = useParams()
     const nav = useNavigate()
     const [posts, setPosts] = useState([])
-    let myPostedSyllabus = []
 
 
     useEffect(() => {
         onValue(ref(database, `posts`), snap => {
             if (snap.exists()) {
-                setPosts(Object.values(snap.val()))
+                setPosts(Object.values(snap.val()).filter(post => {
+                    if(post.uid === uid){
+                        return post
+                    }
+                }))
             }
         })
     }, [])
-
-    posts.forEach(post => {
-        if (post.uid === uid) {
-            myPostedSyllabus.push(post)
-        }
-    })
 
     return (
         <>
@@ -52,10 +49,10 @@ export default function MyFiles() {
                 width: '100%',
                 padding: '1.5rem',
             }}>
-                {myPostedSyllabus.length !== 0 ?
+                {posts.length !== 0 ?
                     <Grid container spacing={2}>
                         {
-                            myPostedSyllabus
+                            posts
                                 .sort((a, b) => new Date(b.postDate).getTime() - new Date(a.postDate).getTime())
                                 .map((v, k) =>
                                     <Grid item key={k} xs={3}>
