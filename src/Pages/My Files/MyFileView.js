@@ -14,9 +14,24 @@ export default function MyFileView() {
     const { postId } = useParams()
     const [value, setValue] = useState('1')
 
-    const handleChange = (event, newValue) => {
-        setValue(newValue);
-    };
+    const tabPanelList = [
+        {
+            value: '1',
+            label: 'Syllabi Information',
+            children: <MyFileInformation postId={postId} />
+        },
+        {
+            value: '2',
+            label: 'Comments',
+            children: <MyFileComments postId={postId} />
+        },
+        {
+            value: '3',
+            label: 'Edit History',
+            children: <MyFileHistory postId={postId} />
+        },
+    ]
+
     return (
         <>
             <Box sx={{
@@ -31,17 +46,24 @@ export default function MyFileView() {
                         position: 'sticky',
                         top: '0',
                     }}>
-                        <TabList onChange={handleChange} sx={{ height: '3rem' }} aria-label="basic tabs example">
+                        <TabList onChange={(e, newValue) => setValue(newValue)} sx={{ height: '3rem' }} aria-label="basic tabs example">
                             <Tab value="1" label="Syllabi Information" />
                             <Tab value="2" label="Comments" />
                             <Tab value="3" label="Edit History" />
                         </TabList>
                     </Box>
-                    <TabPanel value="1"><MyFileInformation postId={postId} /></TabPanel>
-                    <TabPanel value="2" style={{ height: 'calc(100% - 3.3rem)', padding: '0' }}><MyFileComments postId={postId} /></TabPanel>
-                    <TabPanel value="3" sx={{ padding: '1rem', height: '100%' }}>
-                        <MyFileHistory postId={postId} />
-                    </TabPanel>
+                    {
+                        tabPanelList.map((v, k) => {
+                            return (
+                                <TabPanel
+                                    key={k}
+                                    value={v.value}
+                                    sx={{ height: '100%', padding: '2rem', overflowY: 'hidden' }}>
+                                    {v.children}
+                                </TabPanel>
+                            )
+                        })
+                    }
                 </TabContext>
             </Box>
         </>

@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from 'react'
-import { Typography } from '@mui/material';
-import { Container } from '@mui/system';
 import { onValue, ref } from 'firebase/database';
 import { database } from '../../JS/Firebase';
 import { useNavigate } from 'react-router-dom';
 import { useFirebase } from '../../Context/FirebaseContext'
 import CustomDataGrid from '../../Components/DataGrid';
+import ListLayout from '../../Components/Layout/ListLayout';
 
 export default function Faculty() {
     const [list, setList] = useState([])
@@ -39,34 +38,14 @@ export default function Faculty() {
 
     return (
         <>
-            <Container sx={{
-                height: '5rem',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'space-between'
-            }}>
-                <Typography variant='h4'>Faculty</Typography>
-                {/* Add button component was removeed
-                because there is no need to add for an account.
-                faculty / users should sign up for the accounts
-                <Box>
-                    <Button variant='contained' startIcon={<AddIcon />}
-                        style={{
-                            marginRight: '.75rem',
-                        }}
-                        disableElevation>Add</Button>
-                </Box> 
-                */}
-            </Container>
-            <Container
-                sx={{ height: 'calc(95% - 5rem)' }}>
+            <ListLayout listTitle='Faculty' btnHidden='none'>
                 <CustomDataGrid
                     columns={columns}
                     isFetching={isFetching}
                     rows={role === 'area chair' ? filteredList : list}
                     getPrimaryKey={(row) => row.uid}
                     onClick={(cell) => nav(`/faculty/${cell.id}`)} />
-            </Container>
+            </ListLayout>
         </>
     )
 }

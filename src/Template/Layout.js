@@ -2,16 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
 import './Layout.css';
 import Sidebar from './Sidebar';
-import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { Box } from '@mui/system'
-import PoppinsTTf from '../Fonts/Poppins/Poppins-Regular.ttf';
 import Logout from '@mui/icons-material/Logout';
 import { useFirebase } from '../Context/FirebaseContext';
 import Button from '@mui/material/Button';
 import {
     Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle,
-    IconButton, ListItemIcon, MenuItem, Menu, ToggleButton, ToggleButtonGroup,
-    CssBaseline, Avatar, Stack, Tooltip, styled, Badge, Divider
+    IconButton, ListItemIcon, MenuItem, Menu,
+    Avatar, Stack, Tooltip, Divider
 } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 import { signOut } from 'firebase/auth'
@@ -26,13 +24,9 @@ import ThemeModeSwitch from '../Components/ThemeModeSwitch';
 
 
 export default function Layout() {
-    // states
-    // const selectedMode = useSelector((state) => state.selectMode)
-
-    const [mode, setMode] = useState('light')
     const [isOpen, setOpen] = useState(false)
 
-    const { userData, role, currentUser } = useFirebase()
+    const { userData, currentUser } = useFirebase()
     const [isLoading, setLoading] = useState(false)
     const nav = useNavigate()
 
@@ -50,11 +44,7 @@ export default function Layout() {
                     })
             }
         })
-    }, [])
-
-    const handleMode = (event, newMode) => {
-        setMode(newMode);
-    };
+    })
 
     const [anchorEl, setAnchorEl] = React.useState(null);
     const open = Boolean(anchorEl);
@@ -160,9 +150,15 @@ export default function Layout() {
                     </Stack>
                 </div>
                 <Divider />
-                <div className='viewport'>
+                <Box sx={{
+                    flex: '1',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    overflowY: 'auto',
+                    overflowX: 'hidden',
+                }}>
                     <Outlet />
-                </div>
+                </Box>
             </div>
             <Dialog
                 open={isOpen}

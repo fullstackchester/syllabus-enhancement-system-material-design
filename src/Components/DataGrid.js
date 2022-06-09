@@ -41,7 +41,6 @@ export default function CustomDataGrid(
                     Toolbar: CustomToolbar,
                     LoadingOverlay: LinearProgress
                 }}
-                autoPageSize
                 checkboxSelection />
         </Box>
 

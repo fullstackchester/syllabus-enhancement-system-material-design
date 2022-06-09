@@ -201,7 +201,7 @@ export default function MyFileAdd() {
                 onClose={() => {
                     if (actionStatus === 'success') {
                         setSnackOpen(false)
-                        nav('/my-files')
+                        nav(-1)
                     } else {
                         setSnackOpen(false)
                     }

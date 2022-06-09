@@ -30,6 +30,8 @@ import Practice from "./Pages/Practice";
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { CssBaseline } from '@mui/material'
 import { useSelector, useDispatch } from 'react-redux'
+import Authentication from "./Pages/Authentication/Authentication";
+import ForgetPassword from "./Pages/Authentication/ForgetPassword";
 
 function App() {
 	const theme = useSelector((state) => state.mode)
@@ -53,25 +55,13 @@ function App() {
 				<div className="App">
 					<BrowserRouter>
 						<Routes>
-							<Route index element={
-								<AuthListener>
-									<Landing />
-								</AuthListener>
-							} />
-							<Route exact path='/login' element={
-								<AuthListener>
-									<Landing />
-								</AuthListener>
-							} />
-							<Route exact path='/signup' element={
-								<AuthListener>
-									<Signup />
-								</AuthListener>
-							} />
+							<Route index element={<Landing />} />
+							<Route exact path='/login' element={<Landing />} />
+							<Route exact path='/signup' element={<Signup />} />
+							<Route exact path='/authentication' element={<Authentication />} >
+								<Route exact path='forget-password' element={<ForgetPassword />} />
+							</Route>
 							<Route exact path='/' element={
-								// Protected Routes will redirect
-								// user from login/authentication page
-								// if not authenticated
 
 								<Protected>
 									<Layout />

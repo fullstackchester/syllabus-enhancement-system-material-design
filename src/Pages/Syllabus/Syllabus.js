@@ -1,17 +1,16 @@
 import React, { useEffect, useState, Suspense } from 'react'
-import { Button, Typography, Skeleton, CircularProgress } from '@mui/material';
-import { Container } from '@mui/system';
-import AddIcon from '@mui/icons-material/Add';
+import { CircularProgress } from '@mui/material';
 import { onValue, ref } from 'firebase/database';
 import { database } from '../../JS/Firebase';
 import { useNavigate } from 'react-router-dom';
 import { v4 } from 'uuid'
+import CustomDataGrid from '../../Components/DataGrid'
 
-const CustomDataGrid = React.lazy(() => {
+const ListLayout = React.lazy(() => {
     return new Promise(resolve => {
         setTimeout(() => {
-            resolve(import('../../Components/DataGrid'))
-        }, 750)
+            resolve(import('../../Components/Layout/ListLayout'))
+        }, 500)
     })
 })
 export default function Syllabus() {
@@ -20,7 +19,7 @@ export default function Syllabus() {
 
     const [list, setList] = useState([])
     const [isFetching, setFetching] = useState(true)
-    const [selected, setSelected] = useState([])
+
     const columns = [
         { field: 'postTitle', headerName: 'Title', flex: 1 },
         { field: 'postAuthor', headerName: 'Author', flex: 1 },
@@ -39,40 +38,19 @@ export default function Syllabus() {
 
     return (
         <>
-            <Container sx={{
-                height: '5rem',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'space-between'
-            }}>
-                <Typography variant='h4'>Syllabus</Typography>
-                <Button
-                    variant='contained'
-                    size='small'
-                    startIcon={<AddIcon />}
-                    onClick={() => {
-                        nav(`/syllabus/new-syllabus/${v4()}`)
-                    }}
-                    disableElevation>Add</Button>
-
-            </Container>
-            <Container
-                sx={{
-                    height: 'calc(95% - 5rem)',
-                    display: 'flex',
-                    justifyContent: 'center',
-                    alignItems: 'center '
-                }}>
-                <Suspense fallback={<CircularProgress />}>
+            <Suspense fallback={<CircularProgress />}>
+                <ListLayout
+                    btnTitle='New Syllabi'
+                    listTitle='Syllabus'
+                    path={`/syllabus/new-syllabus/${v4()}`}>
                     <CustomDataGrid
                         columns={columns}
                         rows={list}
                         isFetching={isFetching}
                         onClick={(cell) => nav(`/syllabus/${cell.id}`)}
-                        getPrimaryKey={(row) => row.postId}
-                        selectedItemAction={(post) => setSelected(post)} />
-                </Suspense>
-            </Container>
+                        getPrimaryKey={(row) => row.postId} />
+                </ListLayout>
+            </Suspense>
         </>
     )
 }

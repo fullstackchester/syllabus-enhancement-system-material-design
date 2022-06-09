@@ -1,8 +1,8 @@
-import { Alert, Stack, TextField, Typography } from '@mui/material'
+import { Alert, Stack, TextField, Typography, Card } from '@mui/material'
 import { Box, Container } from '@mui/system'
 import { signInWithEmailAndPassword } from 'firebase/auth'
 import React, { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, Link } from 'react-router-dom'
 import { auth } from '../JS/Firebase'
 import '../index.css'
 import { LoadingButton } from '@mui/lab'
@@ -18,13 +18,7 @@ export default function Landing() {
     const nav = useNavigate()
 
     const [error, setError] = useState('')
-    const formFields = [
-        {
-            label: 'Email',
-            onChange: (e) => { setEmail(e.target.value); setError('') },
-            type: 'text'
-        },
-    ]
+
 
     function SignUpUser(e) {
         e.preventDefault()
@@ -62,43 +56,37 @@ export default function Landing() {
                     justifyContent: 'center',
                     alignItems: 'center',
                 }}>
-                <form
-                    spellCheck={false}
-                    id='sign-up-user-form'
-                    className='sign-up-user-form'
-                    onSubmit={SignUpUser}>
 
-                    <Box sx={{
-                        borderRadius: '.6rem',
-                        padding: '2rem',
-                        width: '30rem',
-                        height: 'auto',
+                <Box
+                    component={Card}
+                    elevation={3}
+                    sx={{
+                        minWidth: '30rem',
+                        width: '35%',
+                        minHeight: '20rem',
+                        padding: '1.5rem',
                         display: 'flex',
-                        flexDirection: 'column',
-                        alignItems: 'center',
+                        flexDirection: "column"
                     }}>
-
-                        <Typography variant='h4'
-                            component='div'
-                            sx={{
-                                textAlign: 'center',
-                                fontWeight: 'bold',
-                            }}
-                            gutterBottom >CICT-SEMS</Typography>
-
-                        {formFields.map((v, k) =>
-                            <TextField
-                                key={k}
-                                type={v.type}
-                                label={v.label}
-                                variant='outlined'
-                                margin='dense'
-                                size='small'
-                                fullWidth
-                                required={v.required}
-                                onChange={v.onChange}
-                                sx={{ marginBottom: '1rem' }} />
-                        )}
+                    <Typography variant='h5' sx={{ fontWeight: '600' }} >Welcome</Typography>
+                    <Typography variant='subtitle2' color='text.secondary'>Login to your account</Typography>
+                    <Box
+                        component='form'
+                        spellCheck={false}
+                        id='sign-up-user-form'
+                        className='sign-up-user-form'
+                        onSubmit={SignUpUser}
+                    >
+                        <TextField
+                            type='text'
+                            label='Email'
+                            variant='outlined'
+                            margin='dense'
+                            size='small'
+                            fullWidth
+                            required={true}
+                            onChange={(e) => { setEmail(e.target.value); setError('') }}
+                            sx={{ marginTop: '2rem' }} />
                         <PasswordField
                             width={'100%'}
                             value={pass}
@@ -112,6 +100,20 @@ export default function Landing() {
                             isShowPass={showPass}
                             togglePass={() => showPass ? setShowPass(false) : setShowPass(true)}
                         />
+                        <Box sx={{
+                            display: 'flex',
+                            justifyContent: 'space-between',
+                            marginTop: '1rem'
+                        }}>
+                            <Stack direction='row' sx={{ fontWeight: 'bold' }}>
+                                <Typography variant='caption' sx={{ fontWeight: '500' }}>Keep me logged in</Typography>
+                            </Stack>
+                            <Typography
+                                onClick={() => nav(`/authentication/forget-password`)}
+                                variant='caption'
+                                color='primary'
+                                sx={{ fontWeight: '500', cursor: 'pointer' }}>Forget Password?</Typography>
+                        </Box>
 
                         <LoadingButton
                             type='submit'
@@ -125,18 +127,8 @@ export default function Landing() {
                             disableElevation
                             variant='contained'
                             size='medium' >Login</LoadingButton>
-                        {error && <Alert severity='error' sx={{ width: '100%', marginTop: '.75rem' }} >{error}</Alert>}
                     </Box>
-
-                </form>
-                <Stack direction='row' spacing={1}>
-                    <Typography variant='caption' color='text.secondary' sx={{ fontWeight: 'bold' }}>Don't have an Account?</Typography>
-                    <Typography
-                        variant='caption' color='primary'
-                        sx={{ fontWeight: 'bold', cursor: 'pointer' }}
-                        onClick={() => nav('/signup')}
-                    >Sign up</Typography>
-                </Stack>
+                </Box>
             </Container>
 
             <Box sx={{

@@ -65,13 +65,13 @@ export default function Sidebar() {
                 <Toolbar
                     disableGutters
                     sx={{
-                        height: '5rem',
+                        height: '4rem',
                         display: 'grid',
                         placeContent: 'center',
                         alignContent: 'center'
                     }} >
                     <Stack direction={`row`} sx={{ alignItems: 'center' }}>
-                        <img src={require('../Assets/logo.svg').default} width={50} height={50} />
+                        <img alt='CICT logo' src={require('../Assets/logo.svg').default} width={50} height={50} />
                         <Typography sx={{ fontSize: '1.5rem' }}>CICT-SEMS</Typography>
                     </Stack>
 

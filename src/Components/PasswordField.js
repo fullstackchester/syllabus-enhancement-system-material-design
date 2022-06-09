@@ -8,13 +8,13 @@ export default function PasswordField(
         <FormControl
             variant='outlined'
             size='small'
+            margin='dense'
             sx={{ width: width }}>
             <InputLabel htmlFor={fieldId}>{label}</InputLabel>
             <OutlinedInput
                 id={fieldId}
                 label={label}
                 value={value}
-                margin='dense'
                 onChange={onChange}
                 type={isShowPass ? 'text' : 'password'}
                 endAdornment={

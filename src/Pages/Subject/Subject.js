@@ -8,6 +8,7 @@ import { useNavigate } from 'react-router-dom';
 import { v4 } from 'uuid'
 import { useFirebase } from '../../Context/FirebaseContext';
 import CustomDataGrid from '../../Components/DataGrid';
+import ListLayout from '../../Components/Layout/ListLayout';
 
 
 export default function Subject() {
@@ -35,30 +36,12 @@ export default function Subject() {
 
     return (
         <>
-            <Container sx={{
-                height: '5rem',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'space-between'
-            }}>
-                <Typography variant='h4'>Subjects</Typography>
-
-                <Box>
-                    {role !== 'faculty' &&
-                        <Button
-                            variant='contained'
-                            startIcon={<AddIcon />}
-                            size='small'
-                            onClick={() => {
-                                nav(`/subjects/new-subject/${v4()}`)
-                            }}
-                            disableElevation>Add</Button>}
-                </Box>
-            </Container>
-            <Container
-                sx={{
-                    height: 'calc(95% - 5rem)'
-                }}>
+            <ListLayout
+                listTitle='Subjects'
+                btnTitle='New Subject'
+                btnHidden={role === 'administrator' ? '' : 'none'}
+                path={`/subjects/new-subject/${v4()}`}
+            >
                 <CustomDataGrid
                     columns={columns}
                     rows={list}
@@ -66,7 +49,8 @@ export default function Subject() {
                     getPrimaryKey={(rows) => rows.subjectId}
                     onClick={(cell) => nav(`/subjects/${cell.id}`)}
                 />
-            </Container>
+            </ListLayout>
+
         </>
     )
 }
