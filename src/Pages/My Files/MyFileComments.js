@@ -81,7 +81,7 @@ export default function MyFileComments({ postId }) {
                         )
                 }
             </Box>
-            <Divider sx={{ marginTop: '.5rem'}} />
+            <Divider sx={{ marginTop: '.5rem' }} />
             <Box
                 component='form'
                 onSubmit={newComment}

@@ -1,4 +1,4 @@
-import { Box, Container } from '@mui/system'
+import { Box } from '@mui/system'
 import React, { useState } from 'react'
 import { useParams } from 'react-router-dom'
 import Tab from '@mui/material/Tab';
@@ -46,7 +46,7 @@ export default function MyFileView() {
                         position: 'sticky',
                         top: '0',
                     }}>
-                        <TabList onChange={(e, newValue) => setValue(newValue)} sx={{ height: '3rem' }} aria-label="basic tabs example">
+                        <TabList onChange={(e, newValue) => setValue(newValue)} aria-label="basic tabs example">
                             <Tab value="1" label="Syllabi Information" />
                             <Tab value="2" label="Comments" />
                             <Tab value="3" label="Edit History" />

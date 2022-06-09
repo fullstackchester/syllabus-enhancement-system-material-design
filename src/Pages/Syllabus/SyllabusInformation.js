@@ -1,9 +1,9 @@
 import {
     Box, Button, Link, Stack, Typography, IconButton, DialogTitle, Chip,
-    Dialog, DialogActions, DialogContent, DialogContentText, Tooltip, Skeleton
+    Dialog, DialogActions, DialogContent, DialogContentText, Divider
 } from '@mui/material'
 import LoadingButton from '@mui/lab/LoadingButton';
-import { onValue, ref, remove, get } from 'firebase/database'
+import { onValue, ref, remove } from 'firebase/database'
 import { getDownloadURL, ref as storageRef } from 'firebase/storage'
 import React, { useEffect, useState } from 'react'
 import SetStatusButton from '../../Components/SetStatusButton'
@@ -11,7 +11,7 @@ import { database, storage } from '../../JS/Firebase'
 import { Delete, Edit, Download } from '@mui/icons-material'
 import { useNavigate } from 'react-router-dom'
 import { useFirebase } from '../../Context/FirebaseContext'
-import CustomData from '../../Components/CustomData';
+import PostLinkLayout from '../../Components/Layout/PostLinkLayout';
 
 
 export default function SyllabusInformation({ postId }) {
@@ -80,11 +80,10 @@ export default function SyllabusInformation({ postId }) {
         <>
             <Box sx={{
                 width: '100%',
-                height: '2.5rem',
+                height: '3rem',
                 display: 'flex',
                 justifyContent: 'space-between',
                 alignItems: 'center',
-                padding: '1.25rem 0 1.25rem 0',
             }}>
                 <Stack direction='row' spacing={1}>
                     <SetStatusButton post={post} />
@@ -99,9 +98,54 @@ export default function SyllabusInformation({ postId }) {
                         </>
                     }
                 </Stack>
-                <Chip label={post.postStatus} color={chipColor} />
             </Box>
-            <Box sx={{ height: 'auto', minHeight: 'calc(100% - 2.5rem)', padding: '0' }}>
+            <Box
+                component='div'
+                sx={{
+                    height: 'calc(100% - 3rem)',
+                    display: 'flex',
+                    flexDirection: 'column'
+                }}>
+                <Typography variant='h4' sx={{ fontWeight: '300' }} gutterBottom>
+                    {post.postTitle}<Chip
+                        label={post.postStatus}
+                        color={chipColor}
+                        size='small'
+                        sx={{
+                            marginLeft: '1rem',
+                            fontWeight: '500'
+                        }} />
+                </Typography>
+                <PostLinkLayout
+                    Author={post.postAuthor}
+                    File={post.postFile}
+                    Date={post.postDate} />
+                <Divider sx={{ margin: '1rem 0 1rem 0'}} />
+                <Typography variant='body1'>{post.postDescription}</Typography>
+            </Box>
+
+
+            <Dialog open={openDeleteDialog} onClose={() => setOpenDeleteDialog(false)}>
+                <DialogTitle>Confirm Syllabi Deletion</DialogTitle>
+                <DialogContent>
+                    <DialogContentText>
+                        Are you sure you want to delete this syllabi?
+                    </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <Button size='small' sx={{ textTransform: 'none' }} onClick={() => setOpenDeleteDialog(false)}>Cancel</Button>
+                    <LoadingButton
+                        loading={isLoading}
+                        size='small'
+                        sx={{ textTransform: 'none' }}
+                        onClick={deleteSyllabi} color='error'>Delete</LoadingButton>
+                </DialogActions>
+            </Dialog>
+        </>
+    )
+}
+
+{/* <Box sx={{ height: 'auto', minHeight: 'calc(100% - 2.5rem)', padding: '0' }}>
                 <CustomData type='text' TypoVariant='h4' isFetching={fetching} height={100}>
                     {post.postTitle}
                 </CustomData>
@@ -159,24 +203,4 @@ export default function SyllabusInformation({ postId }) {
                 <CustomData type='rectangular' TypoVariant='subtitle1' isFetching={fetching} height={300}>
                     {post.postDescription}
                 </CustomData>
-            </Box>
-
-            <Dialog open={openDeleteDialog} onClose={() => setOpenDeleteDialog(false)}>
-                <DialogTitle>Confirm Syllabi Deletion</DialogTitle>
-                <DialogContent>
-                    <DialogContentText>
-                        Are you sure you want to delete this syllabi?
-                    </DialogContentText>
-                </DialogContent>
-                <DialogActions>
-                    <Button size='small' sx={{ textTransform: 'none' }} onClick={() => setOpenDeleteDialog(false)}>Cancel</Button>
-                    <LoadingButton
-                        loading={isLoading}
-                        size='small'
-                        sx={{ textTransform: 'none' }}
-                        onClick={deleteSyllabi} color='error'>Delete</LoadingButton>
-                </DialogActions>
-            </Dialog>
-        </>
-    )
-}
+            </Box> */}

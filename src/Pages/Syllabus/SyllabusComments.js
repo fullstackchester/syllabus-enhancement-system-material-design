@@ -1,5 +1,5 @@
-import { Card, CardContent, IconButton, TextField, Typography, Tooltip } from '@mui/material'
-import { Box, Container } from '@mui/system'
+import { Card, CardContent, IconButton, TextField, Typography, Divider } from '@mui/material'
+import { Box } from '@mui/system'
 import { onValue, ref, set } from 'firebase/database'
 import React, { useState, useEffect, useRef } from 'react'
 import { database } from '../../JS/Firebase'
@@ -57,62 +57,56 @@ export default function SyllabusComments({ postId }) {
             <Box
                 sx={{
                     height: 'calc(100% - 4rem)',
-                    padding: '.75rem'
-                }}
-                style={{
-                    overflowY: "auto" // added scroll
+                    overflowY: "auto",
+                    paddingBottom: '.5rem',
                 }}>
                 {
                     comment
                         .sort((a, b) => new Date(b.commentDate).getTime() - new Date(a.commentDate).getTime())
                         .map((v, k) =>
-                            <Tooltip
-                                title={v.commentDate}
-                                placement='right'
-                                key={k}>
-                                <Card
-                                    variant='outlined'
-                                    sx={{
-                                        width: '70%',
-                                        height: 'auto',
-                                        minHeight: '5rem',
-                                        marginTop: '.75rem'
-                                    }}>
-                                    <CardContent>
-                                        <Typography sx={{ fontSize: '1rem' }} color='primary' >{v.name}</Typography>
-                                        <Typography variant='subtitle1' >{v.commentString}</Typography>
-                                    </CardContent>
-                                </Card>
-                            </Tooltip>
+                            <Card
+                                key={k}
+                                elevation={2}
+                                sx={{
+                                    width: '70%',
+                                    height: 'auto',
+                                    minHeight: '5rem',
+                                    margin: '.75rem 0 0 .5rem',
+                                }}>
+                                <CardContent>
+                                    <Typography sx={{ fontSize: '1rem' }} color='primary' >{v.name}</Typography>
+                                    <Typography variant='subtitle1' >{v.commentString}</Typography>
+                                </CardContent>
+                            </Card>
                         )
                 }
             </Box>
-            <Box sx={{
-                height: '4rem',
-                padding: '.5rem 0 .5rem 0',
-                display: 'flex',
-                flexDirection: 'row',
-                alignItems: 'center',
-            }}>
-                <form
-                    onSubmit={newComment}
-                    className='horizontal-form'>
-                    <TextField
-                        variant='outlined'
-                        sx={{ flex: 1 }}
-                        size='small'
-                        required={true}
-                        inputRef={commentRef}
-                        type='text'
-                        placeholder='Enter your comments...'
-                    />
-                    <IconButton
-                        color='primary'
-                        type='submit'
-                    >
-                        <SendIcon />
-                    </IconButton>
-                </form>
+            <Divider sx={{ marginTop: '.5rem' }} />
+            <Box
+                component='form'
+                onSubmit={newComment}
+                sx={{
+                    height: '4rem',
+                    display: 'flex',
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    padding: '0',
+                }}>
+                <TextField
+                    variant='outlined'
+                    sx={{ flex: 1 }}
+                    size='small'
+                    required={true}
+                    inputRef={commentRef}
+                    type='text'
+                    placeholder='Enter your comments...'
+                />
+                <IconButton
+                    color='primary'
+                    type='submit'
+                >
+                    <SendIcon />
+                </IconButton>
             </Box>
         </>
     )

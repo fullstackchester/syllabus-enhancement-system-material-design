@@ -53,6 +53,7 @@ export default function SetStatusButton({ post }) {
                 aria-haspopup="true"
                 aria-expanded={open ? 'true' : undefined}
                 onClick={handleClick}
+                sx={{ textTransform: 'none'}}
             >Set Status</Button>
             <Menu
                 id="basic-menu"

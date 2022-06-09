@@ -1,4 +1,4 @@
-import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Link, Typography } from '@mui/material'
+import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Paper } from '@mui/material'
 import { Box } from '@mui/system'
 import { DataGrid } from '@mui/x-data-grid'
 import { onValue, ref } from 'firebase/database'
@@ -36,10 +36,13 @@ export default function SyllabusHistory({ postId }) {
 
     return (
         <>
-            <Box sx={{
-                height: '100%',
-                width: '100%',
-            }}>
+            <Box
+                component={Paper}
+                elevation={1}
+                sx={{
+                    height: '100%', 
+                    width: '100%',
+                }}>
                 <DataGrid
                     columns={columns}
                     rows={list}
