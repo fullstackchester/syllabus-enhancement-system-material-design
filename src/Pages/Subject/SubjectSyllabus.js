@@ -11,29 +11,28 @@ import { useNavigate } from 'react-router-dom';
 
 export default function SubjectSyllabus({ subjectId }) {
     const [posts, setPosts] = useState([])
-    let filteredPosts = []
     const nav = useNavigate()
 
     useEffect(() => {
         onValue(ref(database, `posts`), snap => {
             if (snap.exists()) {
-                setPosts(Object.values(snap.val()))
+                setPosts(Object.values(snap.val()).filter((post) => {
+                    if (post.subjectId === subjectId) {
+                        return post
+                    }
+                }))
             }
         })
     }, [])
 
-    posts.forEach(post => {
-        if (post.subjectId === subjectId) {
-            filteredPosts.push(post)
-        }
-    })
+    
     return (
         <>
             <Grid container spacing={2}>
                 {
-                    filteredPosts.map((v, k) =>
-                        <Grid item key={k} xs={2}>
-                            <Card variant="outlined" sx={{ minHeight: '12rem', display: 'flex', flexDirection: 'column' }}>
+                    posts.map((v, k) =>
+                        <Grid item key={k} xs={3}>
+                            <Card elevation={3} sx={{ minHeight: '12rem', display: 'flex', flexDirection: 'column' }}>
                                 <CardContent sx={{ flex: '1', }}>
                                     <Typography variant='subtitle2' color="text.primary" gutterBottom>
                                         {v.postTitle}

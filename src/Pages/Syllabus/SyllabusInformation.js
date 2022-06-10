@@ -89,10 +89,18 @@ export default function SyllabusInformation({ postId }) {
                     <SetStatusButton post={post} />
                     {role === 'administrator' &&
                         <>
-                            <IconButton onClick={() => nav(`/syllabus/edit-syllabus/${postId}`)} variant='contained' color='primary' size='small'>
+                            <IconButton
+                                onClick={() => nav(`/syllabus/edit-syllabus/${postId}`)}
+                                variant='contained'
+                                color='primary'
+                                size='small'>
                                 <Edit />
                             </IconButton>
-                            <IconButton onClick={() => setOpenDeleteDialog(true)} variant='contained' color='error' size='small'>
+                            <IconButton
+                                onClick={() => setOpenDeleteDialog(true)}
+                                variant='contained'
+                                color='error'
+                                size='small'>
                                 <Delete />
                             </IconButton>
                         </>
@@ -104,7 +112,7 @@ export default function SyllabusInformation({ postId }) {
                 sx={{
                     height: 'calc(100% - 3rem)',
                     display: 'flex',
-                    flexDirection: 'column'
+                    flexDirection: 'column',
                 }}>
                 <Typography variant='h4' sx={{ fontWeight: '300' }} gutterBottom>
                     {post.postTitle}<Chip
@@ -119,12 +127,13 @@ export default function SyllabusInformation({ postId }) {
                 <PostLinkLayout
                     Author={post.postAuthor}
                     File={post.postFile}
-                    Date={post.postDate} />
-                <Divider sx={{ margin: '1rem 0 1rem 0'}} />
+                    Date={post.postDate}
+                    subjectId={post.subjectId}
+                    PreviewUrl={fileUrl}
+                    DownloadUrl={downloadabelFile} />
+                <Divider sx={{ margin: '1rem 0 1rem 0' }} />
                 <Typography variant='body1'>{post.postDescription}</Typography>
             </Box>
-
-
             <Dialog open={openDeleteDialog} onClose={() => setOpenDeleteDialog(false)}>
                 <DialogTitle>Confirm Syllabi Deletion</DialogTitle>
                 <DialogContent>
@@ -145,62 +154,3 @@ export default function SyllabusInformation({ postId }) {
     )
 }
 
-{/* <Box sx={{ height: 'auto', minHeight: 'calc(100% - 2.5rem)', padding: '0' }}>
-                <CustomData type='text' TypoVariant='h4' isFetching={fetching} height={100}>
-                    {post.postTitle}
-                </CustomData>
-                <Box sx={{
-                    margin: '1rem 0 1rem 0',
-                }}>
-                    <Stack direction='column'>
-                        <CustomData type='text' TypoVariant='subtitle2' isFetching={fetching}>
-                            {`Author: ${post.postAuthor}`}
-                        </CustomData>
-                        <CustomData type='text' TypoVariant='subtitle2' isFetching={fetching}>
-                            {`Attachments: `}
-                            <Tooltip title='Preview File'>
-                                <Button
-                                    onClick={() => window.open(fileUrl, '_blank')}
-                                    sx={{ textTransform: 'none' }}
-                                    size='small'>
-                                    {post.postFile}
-                                </Button>
-                            </Tooltip>
-                            <Tooltip title='Download File'>
-                                <IconButton
-                                    color='primary'
-                                    size='small'
-                                    onClick={() => {
-                                        window.open(downloadabelFile, '_self')
-                                    }}>
-                                    <Download fontSize='small' />
-                                </IconButton>
-                            </Tooltip>
-                        </CustomData>
-                        <CustomData type='text' TypoVariant='subtitle2' isFetching={fetching}>
-                            {`Subject: `}
-                            <Button
-                                variant='text'
-                                size='small'
-                                sx={{ textTransform: 'none' }}
-                                onClick={() => nav(`/subjects/${post.subjectId}`)}>
-                                {(function () {
-                                    let subjectTitle = ''
-                                    onValue(ref(database, `subject/${post.subjectId}`), snapshot => {
-                                        if (snapshot.exists()) {
-                                            subjectTitle = snapshot.val().subjectTitle
-                                        }
-                                    })
-                                    return subjectTitle
-                                })()}
-                            </Button>
-                        </CustomData>
-                        <CustomData type='text' TypoVariant='subtitle2' isFetching={fetching}>
-                            {`Posted: ${post.postDate}`}
-                        </CustomData>
-                    </Stack>
-                </Box>
-                <CustomData type='rectangular' TypoVariant='subtitle1' isFetching={fetching} height={300}>
-                    {post.postDescription}
-                </CustomData>
-            </Box> */}

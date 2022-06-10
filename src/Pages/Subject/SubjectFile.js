@@ -39,14 +39,16 @@ export default function SubjectFile() {
                         position: 'sticky',
                         top: '0',
                     }}>
-                        <TabList onChange={handleChange} sx={{ height: '3rem' }} aria-label="basic tabs example">
+                        <TabList onChange={handleChange} aria-label="basic tabs example">
                             <Tab value="1" label="Subject Information" />
                             <Tab value="2" label="Syllabus" />
                         </TabList>
                     </Box>
                     {
                         tabsPanels.map((v, k) =>
-                            <TabPanel key={k} value={v.value} sx={{ flex: '1', padding: '1rem' }}>
+                            <TabPanel
+                                key={k} value={v.value}
+                                sx={{ height: '100%', paddingY: '2rem', paddingX: '3rem' }}>
                                 {v.children}
                             </TabPanel>)
                     }
