@@ -9,7 +9,6 @@ import ListLayout from '../../Components/Layout/ListLayout';
 export default function Faculty() {
     const [list, setList] = useState([])
     const [isFetching, setFetching] = useState(true)
-    const filteredList = []
     const { role, department } = useFirebase()
 
     const nav = useNavigate()
@@ -23,18 +22,19 @@ export default function Faculty() {
     useEffect(() => {
         onValue(ref(database, 'users'), snapshot => {
             if (snapshot.exists()) {
-                setList(Object.values(snapshot.val()))
+                if (role === 'area chair') {
+                    setList(Object.values(snapshot.val()).filter((user) => {
+                        if (user.department === department) {
+                            return user
+                        }
+                    }))
+                } else {
+                    setList(Object.values(snapshot.val()))
+                }
                 setFetching(false)
             }
         })
     }, [])
-    if (role === 'area chair') {
-        list.forEach(i => {
-            if (i.department === department) {
-                filteredList.push(i)
-            }
-        })
-    }
 
     return (
         <>
@@ -42,7 +42,7 @@ export default function Faculty() {
                 <CustomDataGrid
                     columns={columns}
                     isFetching={isFetching}
-                    rows={role === 'area chair' ? filteredList : list}
+                    rows={list}
                     getPrimaryKey={(row) => row.uid}
                     onClick={(cell) => nav(`/faculty/${cell.id}`)} />
             </ListLayout>

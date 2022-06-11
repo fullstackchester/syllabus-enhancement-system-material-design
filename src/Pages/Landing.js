@@ -9,6 +9,7 @@ import { LoadingButton } from '@mui/lab'
 import ThemeModeSwitch from '../Components/ThemeModeSwitch'
 import { AuthError } from '../Data/AuthError'
 import PasswordField from '../Components/PasswordField'
+import { motion } from 'framer-motion'
 
 export default function Landing() {
     const [email, setEmail] = useState('')
@@ -49,6 +50,10 @@ export default function Landing() {
         <>
             <Container
                 maxWidth='xl'
+                component={motion.div}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
                 sx={{
                     height: '100vh',
                     display: 'flex',

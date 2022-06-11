@@ -32,6 +32,7 @@ import { CssBaseline } from '@mui/material'
 import { useSelector, useDispatch } from 'react-redux'
 import Authentication from "./Pages/Authentication/Authentication";
 import ForgetPassword from "./Pages/Authentication/ForgetPassword";
+import '@fontsource/poppins'
 
 function App() {
 	const theme = useSelector((state) => state.mode)

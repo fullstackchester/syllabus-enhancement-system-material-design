@@ -26,12 +26,13 @@ export default function Subject() {
     ];
 
     useEffect(() => {
-        onValue(ref(database, 'subject'), snapshot => {
+        const getList = () => onValue(ref(database, 'subject'), snapshot => {
             if (snapshot.exists()) {
                 setList(Object.values(snapshot.val()))
                 setFetching(false)
             }
         })
+        return getList()
     }, [])
 
     return (

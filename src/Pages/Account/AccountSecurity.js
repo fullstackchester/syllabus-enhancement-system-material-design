@@ -82,10 +82,13 @@ export default function AccountSecurity({ uid }) {
                 <Box
                     component='form'
                     onSubmit={saveNewCredentials}
-                    id='edit-account-security-form'
-                    className='edit-account-security-form'
                     spellcheck={false}
-                    sx={{ marginTop: '1rem' }}>
+                    sx={{
+                        marginTop: '1rem',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        width: '50%',
+                    }}>
                     {fields.map((v, k) =>
                         <TextField
                             key={k}

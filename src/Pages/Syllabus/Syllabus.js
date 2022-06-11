@@ -1,18 +1,11 @@
-import React, { useEffect, useState, Suspense } from 'react'
-import { CircularProgress } from '@mui/material';
+import React, { useEffect, useState } from 'react'
 import { onValue, ref } from 'firebase/database';
 import { database } from '../../JS/Firebase';
 import { useNavigate } from 'react-router-dom';
 import { v4 } from 'uuid'
 import CustomDataGrid from '../../Components/DataGrid'
+import ListLayout from '../../Components/Layout/ListLayout';
 
-const ListLayout = React.lazy(() => {
-    return new Promise(resolve => {
-        setTimeout(() => {
-            resolve(import('../../Components/Layout/ListLayout'))
-        }, 500)
-    })
-})
 export default function Syllabus() {
 
     const nav = useNavigate()
@@ -28,29 +21,28 @@ export default function Syllabus() {
     ];
 
     useEffect(() => {
-        onValue(ref(database, 'posts'), snapshot => {
+        const getList = () => onValue(ref(database, 'posts'), snapshot => {
             if (snapshot.exists()) {
                 setList(Object.values(snapshot.val()))
                 setFetching(false)
             }
         })
+        return getList()
     }, [])
 
     return (
         <>
-            <Suspense fallback={<CircularProgress />}>
-                <ListLayout
-                    btnTitle='New Syllabi'
-                    listTitle='Syllabus'
-                    path={`/syllabus/new-syllabus/${v4()}`}>
-                    <CustomDataGrid
-                        columns={columns}
-                        rows={list}
-                        isFetching={isFetching}
-                        onClick={(cell) => nav(`/syllabus/${cell.id}`)}
-                        getPrimaryKey={(row) => row.postId} />
-                </ListLayout>
-            </Suspense>
+            <ListLayout
+                btnTitle='New Syllabi'
+                listTitle='Syllabus'
+                path={`/syllabus/new-syllabus/${v4()}`}>
+                <CustomDataGrid
+                    columns={columns}
+                    rows={list}
+                    isFetching={isFetching}
+                    onClick={(cell) => nav(`/syllabus/${cell.id}`)}
+                    getPrimaryKey={(row) => row.postId} />
+            </ListLayout>
         </>
     )
 }

@@ -33,7 +33,19 @@ export default function AccountProfile({ uid }) {
             <Box sx={{
                 padding: '0px',
             }}>
-                <img className='cover-photo' />
+                <Box
+                    id='cover-photo'
+                    className='cover-photo'
+                    component='img'
+                    sx={{
+                        height: '15rem',
+                        width: '100%',
+                        objectFit: 'cover',
+                        opacity: '50%',
+                    }}
+                >
+
+                </Box>
                 <Box
                     sx={{
                         position: 'relative',
