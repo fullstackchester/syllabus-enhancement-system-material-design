@@ -1,25 +1,19 @@
 import React from 'react'
 import {
-    Card, CardHeader, CardContent, CardActions, Button, Stack,
-    Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Typography,
+    Card, CardContent,
+    Table, TableBody, TableCell, TableContainer, TableHead, TableRow,
 } from '@mui/material'
-import { firstFiveSubjects, dashboardSubjectTableHeader, syllabusList, subjectList } from '../../Data/Data'
-import StatusChip from '../../Components/StatusChip'
-import { useNavigate } from 'react-router-dom'
-import { Box } from '@mui/system'
+import { firstFiveSubjects, dashboardSubjectTableHeader, syllabusList } from '../../Data/Data'
 
 export default function SubjectTable() {
-    const nav = useNavigate()
 
     return (
-        <Card sx={{ width: '100%' }} variant='outlined'>
-            <CardHeader
-                title={`Subjects ${String.fromCharCode(183)} ${subjectList.length}`} >
-            </CardHeader>
-            <CardContent sx={{ height: '23rem' }}>
-
-                <TableContainer component={Paper} elevation={3}>
-                    <Table aria-label="a dense table">
+        <Card
+            sx={{ width: '100%' }}
+            elevation={3} >
+            <CardContent sx={{ height: '17rem' }}>
+                <TableContainer>
+                    <Table aria-label="a dense table" size='small'>
                         <TableHead>
                             <TableRow>
                                 {dashboardSubjectTableHeader.map((v) =>
@@ -47,9 +41,6 @@ export default function SubjectTable() {
                     </Table>
                 </TableContainer>
             </CardContent>
-            <CardActions>
-                <Button onClick={() => nav('/subjects')} size='small' variant='text' sx={{ textTransform: 'none' }}>View All</Button>
-            </CardActions>
         </Card>
     )
 }

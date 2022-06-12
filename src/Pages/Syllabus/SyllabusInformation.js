@@ -38,10 +38,12 @@ export default function SyllabusInformation({ postId }) {
                     .then((url) => {
                         setDownloadableFile(url)
                         setFileUrl(`https://drive.google.com/viewerng/viewer?embedded=true&url=${encodeURIComponent(url)}`)
-                        setFetching(false)
                     })
                     .catch((e) => {
                         console.log(e)
+                    })
+                    .finally(() => {
+                        setFetching(false)
                     })
 
                 if (snap.val().postStatus === 'Approved') {

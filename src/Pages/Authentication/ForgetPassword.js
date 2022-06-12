@@ -50,7 +50,7 @@ export default function ForgetPassword() {
                         flexDirection: "column"
                     }}>
                     <Typography variant='h5' sx={{ fontWeight: '600' }} >Forget Password</Typography>
-                    <Typography variant='subtitle2' color='text.secondary'>Enter your email so we can send the password reset mail</Typography>
+                    <Typography variant='body2' color='text.secondary'>Enter your email so we can send the password reset mail</Typography>
                     <Box
                         component='form'
                         spellCheck={false}

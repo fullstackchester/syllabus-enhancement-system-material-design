@@ -107,15 +107,12 @@ export default function Landing() {
                         />
                         <Box sx={{
                             display: 'flex',
-                            justifyContent: 'space-between',
+                            justifyContent: 'flex-end',
                             marginTop: '1rem'
                         }}>
-                            <Stack direction='row' sx={{ fontWeight: 'bold' }}>
-                                <Typography variant='caption' sx={{ fontWeight: '500' }}>Keep me logged in</Typography>
-                            </Stack>
                             <Typography
                                 onClick={() => nav(`/authentication/forget-password`)}
-                                variant='caption'
+                                variant='body2'
                                 color='primary'
                                 sx={{ fontWeight: '500', cursor: 'pointer' }}>Forget Password?</Typography>
                         </Box>
@@ -133,6 +130,17 @@ export default function Landing() {
                             variant='contained'
                             size='medium' >Login</LoadingButton>
                     </Box>
+                    <Stack direction='row' sx={{ marginTop: '1rem', justifyContent: 'center' }}>
+                        <Typography variant='body2'> Don't have an account?</Typography>
+                        <Typography
+                            variant='body2'
+                            color='primary'
+                            sx={{
+                                marginLeft: '.5rem',
+                                cursor: 'pointer',
+                            }}
+                            onClick={() => nav('/signup')}>Sign up</Typography>
+                    </Stack>
                 </Box>
             </Container>
 

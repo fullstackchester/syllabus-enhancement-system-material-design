@@ -41,12 +41,11 @@ function App() {
 			mode: theme,
 		},
 		typography: {
-			fontFamily: `'Poppins', sans-serif`,
+			fontFamily: `'Open Sans', sans-serif`,
 			fontWeightRegular: 400,
 			fontWeightMedium: 500,
 			fontWeightLight: 300,
 			fontWeightBold: 700,
-
 		}
 	});
 	return (

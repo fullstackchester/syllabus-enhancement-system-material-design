@@ -66,14 +66,20 @@ export default function Sidebar() {
                     disableGutters
                     sx={{
                         height: '4rem',
-                        display: 'grid',
-                        placeContent: 'center',
-                        alignContent: 'center'
+                        display: 'flex',
+                        flexDirection: 'row',
+                        padding: '1rem',
                     }} >
-                    <Stack direction={`row`} sx={{ alignItems: 'center' }}>
-                        <img alt='CICT logo' src={require('../Assets/logo.svg').default} width={50} height={50} />
-                        <Typography sx={{ fontSize: '1.5rem' }}>CICT-SEMS</Typography>
-                    </Stack>
+                    <img
+                        alt='CICT logo'
+                        src={require('../Assets/Img/bulsu-logo.png')}
+                        width={45}
+                        height={45} />
+                    <Typography
+                        variant='h4'
+                        sx={{
+                            marginLeft: '.75rem',
+                        }}>CICT</Typography>
 
                 </Toolbar>
                 <Divider />
@@ -96,15 +102,21 @@ export default function Sidebar() {
                                         })}
                                         sx={{
                                             display: v.hidden ? 'none' : '',
-                                            borderRadius: '.5rem'
+                                            borderRadius: '.5rem',
                                         }}>
                                         <ListItemIcon
                                             sx={{ color: 'inherit' }}>
                                             {v.icon}
                                         </ListItemIcon>
                                         <ListItemText
-                                            primary={v.label}
-                                        ></ListItemText>
+                                            primary={
+                                                <Typography
+                                                    variant='body2'
+                                                    sx={{ fontWeight: '500'}}>
+                                                    {v.label}
+                                                </Typography>}
+                                        >
+                                        </ListItemText>
                                     </ListItemButton>
                                 </ListItem>
                             )

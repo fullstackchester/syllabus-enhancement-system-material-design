@@ -1,17 +1,18 @@
 import React from 'react'
-import { Doughnut, Pie } from 'react-chartjs-2'
+import { Doughnut } from 'react-chartjs-2'
 import Chart from 'chart.js/auto';
 
-export default function DoughnutChart() {
+export default function DoughnutChart(
+    { total, }
+) {
 
     const plugins = [{
         beforeDraw: function (chart, args, options) {
             const { ctx, chartArea: { left, right, top, bottom, width, height } } = chart;
             ctx.save();
             ctx.font = 'bold 1rem Roboto';
-            ctx.fillStyle = '#52525b'
             ctx.textAlign = 'center'
-            var text = '19'
+            var text = total
             ctx.fillText(text, width / 2, height / 2 + top);
         }
     }]
@@ -21,6 +22,7 @@ export default function DoughnutChart() {
         datasets: [{
             data: [6, 10, 3],
             backgroundColor: ['#4ade80', '#38bdf8', '#f87171'],
+            borderColor: ['#4ade80', '#38bdf8', '#f87171'],
             pointStyle: 'circle'
         }],
         borderColor: '#333',
@@ -28,12 +30,17 @@ export default function DoughnutChart() {
         plugins: [plugins]
     }
     return (
-        <>
-            <Pie
-                data={data}
-                options={{ maintainAspectRatio: false }}
-                plugins={plugins} />
-
-        </>
+        <Doughnut
+            data={data}
+            options={{
+                responsive: false,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                }
+            }}
+            plugins={plugins} />
     )
 }

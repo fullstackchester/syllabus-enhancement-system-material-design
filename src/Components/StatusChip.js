@@ -7,7 +7,7 @@ export default function StatusChip({postStatus}) {
     useEffect(() => {
         if (postStatus === 'Approved') {
             setChipColor('success')
-        } else if (postStatus === 'Needs revision') {
+        } else if (postStatus === 'Needs revisions') {
             setChipColor('error')
         } else {
             setChipColor('primary')
@@ -15,7 +15,7 @@ export default function StatusChip({postStatus}) {
     }, [])
     return (
         <>
-            <Chip color={chipColor} label={postStatus} size='small' />
+            <Chip color={chipColor} label={postStatus} size='small' sx={{ fontWeight: '600'}} />
         </>
     )
 }
