@@ -9,29 +9,29 @@ import { Box } from '@mui/system';
 
 
 
-export default function SyllabusChart() {
+export default function AccountChart() {
     const [post, setPost] = useState([])
-    const [approved, setApproved] = useState([])
-    const [revise, setRevise] = useState([])
-    const [review, setReview] = useState([])
+    const [BA, setBA] = useState([])
+    const [WMAD, setWMAD] = useState([])
+    const [SERMGT, setSERMGT] = useState([])
     let total = 0
 
     useEffect(() => {
-        onValue(ref(database, 'posts'), snapshot => {
+        onValue(ref(database, 'users'), snapshot => {
             if (snapshot.exists()) {
                 setPost(Object.values(snapshot.val()))
-                setApproved(Object.values(snapshot.val()).filter(post => {
-                    if (post.postStatus === 'Approved') {
+                setWMAD(Object.values(snapshot.val()).filter(post => {
+                    if (post.department === 'Web and Mobile Application Development') {
                         return post
                     }
                 }))
-                setRevise(Object.values(snapshot.val()).filter(post => {
-                    if (post.postStatus === 'Needs revisions') {
+                setSERMGT(Object.values(snapshot.val()).filter(post => {
+                    if (post.department === 'Service Management') {
                         return post
                     }
                 }))
-                setReview(Object.values(snapshot.val()).filter(post => {
-                    if (post.postStatus === 'Needs reviewing') {
+                setBA(Object.values(snapshot.val()).filter(post => {
+                    if (post.department === 'Business Analytics') {
                         return post
                     }
                 }))
@@ -41,9 +41,9 @@ export default function SyllabusChart() {
     }, [])
 
     const data = {
-        labels: ['Approved', 'Needs Reviews', 'Need Revisions'],
+        labels: ['Business Analytics', 'Web and Mobile', 'Service Management'],
         datasets: [{
-            data: [approved.length, review.length, revise.length],
+            data: [BA.length, WMAD.length, SERMGT.length],
             backgroundColor: [green[400], blue[500], red[600]],
             borderColor: [green[400], blue[500], red[600]],
             pointStyle: 'circle'
@@ -55,20 +55,23 @@ export default function SyllabusChart() {
     return (
         <Card
             elevation={3}
-            sx={{ width: '100%' }}>
+            sx={{
+                width: '100%',
+                height: 'auto'
+            }}>
             <CardContent
                 sx={{
-                    height: '100%',
+                    height: 'auto',
                     display: 'flex',
                     flexDirection: 'row',
-                    flexWrap: 'wrap'
+                    flexWrap: 'wrap',
                 }}>
                 <Typography
                     variant='h6'
                     sx={{
                         width: '100%',
                     }}
-                    gutterBottom>Syllabus</Typography>
+                    gutterBottom>Users</Typography>
                 <Box
                     sx={{
                         height: '10rem',
@@ -98,13 +101,13 @@ export default function SyllabusChart() {
                         gutterBottom>{`TOTAL: ${post.length}`}</Typography>
                     <Typography
                         variant='body2'
-                        color='text.success'>{`APPROVED: ${approved.length}`}</Typography>
+                        color='text.success'>{`BA: ${BA.length}`}</Typography>
                     <Typography
                         variant='body2'
-                        color=''>{`REVISE: ${revise.length}`}</Typography>
+                        color=''>{`WMAD: ${WMAD.length}`}</Typography>
                     <Typography
                         variant='body2'
-                        color=''>{`REVIEW: ${review.length}`}</Typography>
+                        color=''>{`SMP: ${SERMGT.length}`}</Typography>
 
                 </Stack>
             </CardContent>

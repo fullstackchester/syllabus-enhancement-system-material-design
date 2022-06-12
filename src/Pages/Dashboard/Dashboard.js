@@ -1,7 +1,7 @@
 import { Box, Grid, Typography, CircularProgress, Skeleton, Card, CardContent } from '@mui/material'
 import React, { Suspense } from 'react'
-import DoughnutChart from '../../Components/Charts/DoughnutChart'
 import { useFirebase } from '../../Context/FirebaseContext'
+import AccountChart from './AccountChart'
 import SyllabusChart from './SyllabusChart'
 
 
@@ -21,6 +21,10 @@ export default function Dashboard() {
 
     const { currentUser } = useFirebase()
 
+    const CHART_BOXES = [
+        <SyllabusChart />, <AccountChart />, <></>
+    ]
+
     return (
         <>
             <Box sx={{
@@ -33,25 +37,15 @@ export default function Dashboard() {
                     container
                     spacing={3}
                     sx={{ marginBottom: '3rem' }}>
-                    <Grid
-                        item
-                        xs={4}>
-                        <SyllabusChart />
-                    </Grid>
-                    <Grid item xs={4}>
-                        <Card
-                            elevation={3}
-                            sx={{ width: '100%', height: '15rem' }}>
-
-                        </Card>
-                    </Grid>
-                    <Grid item xs={4}>
-                        <Card
-                            elevation={3}
-                            sx={{ width: '100%', height: '15rem' }}>
-
-                        </Card>
-                    </Grid>
+                    {
+                        CHART_BOXES.map((v, k) =>
+                            <Grid
+                                key={k}
+                                item
+                                xs={4}>
+                                {v}
+                            </Grid>)
+                    }
                     <Grid item xs={6}>
                         <Suspense fallback={<Skeleton />}>
                             <SyllabusTable />
