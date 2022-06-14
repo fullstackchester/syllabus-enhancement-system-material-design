@@ -1,28 +1,43 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import {
-    Card, CardContent, Table, TableBody, TableCell, TableContainer, TableHead, TableRow,
+    Card, CardContent, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography
 } from '@mui/material'
-import { syllabusList, syllabusTableHeader } from '../../Data/Data'
 import StatusChip from '../../Components/StatusChip'
+import { database } from '../../JS/Firebase'
+import { onValue, ref } from 'firebase/database'
 
 export default function SyllabusTable() {
+    const [list, setList] = useState([])
+    const postTableHeader = [
+        'Title', 'Status'
+    ]
+
+    useEffect(() => {
+        const getList = () => onValue(ref(database, 'posts'), snapshot => {
+            if (snapshot.exists()) {
+                setList(Object.values(snapshot.val()))
+            }
+        })
+        getList()
+    })
 
     return (
         <Card
             sx={{ width: '100%' }}
             elevation={3}>
             <CardContent sx={{ height: 'auto', minHeight: '17rem' }}>
-                <TableContainer>
+                <Typography variant='h6' gutterBottom>Latest Syllabus</Typography>
+                <TableContainer sx={{ height: 'auto', minHeight: '14rem' }}>
                     <Table aria-label="a dense table" size='small'>
                         <TableHead>
                             <TableRow>
-                                {syllabusTableHeader.map((v) =>
+                                {postTableHeader.map((v) =>
                                     <TableCell key={v} align='left'>{v}</TableCell>)}
                             </TableRow>
                         </TableHead>
                         <TableBody>
                             {
-                                syllabusList
+                                list
                                     .sort((a, b) => new Date(b.postDate).getTime() - new Date(a.postDate).getTime())
                                     .slice(0, 5)
                                     .map((v, k) => {

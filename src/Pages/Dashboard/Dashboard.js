@@ -2,6 +2,7 @@ import { Box, Grid, Typography, CircularProgress, Skeleton, Card, CardContent } 
 import React, { Suspense } from 'react'
 import { useFirebase } from '../../Context/FirebaseContext'
 import AccountChart from './AccountChart'
+import SchoolYearAccordionTable from './SchoolYearAccordionTable'
 import SyllabusChart from './SyllabusChart'
 
 
@@ -22,7 +23,7 @@ export default function Dashboard() {
     const { currentUser } = useFirebase()
 
     const CHART_BOXES = [
-        <SyllabusChart />, <AccountChart />, <></>
+        <SyllabusChart />, <AccountChart />, <SchoolYearAccordionTable />
     ]
 
     return (
