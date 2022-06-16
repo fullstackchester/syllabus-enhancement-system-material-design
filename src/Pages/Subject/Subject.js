@@ -1,7 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import { Button, Typography } from '@mui/material';
-import { Box, Container } from '@mui/system';
-import AddIcon from '@mui/icons-material/Add';
 import { onValue, ref } from 'firebase/database';
 import { database } from '../../JS/Firebase';
 import { useNavigate } from 'react-router-dom';
@@ -36,22 +33,19 @@ export default function Subject() {
     }, [])
 
     return (
-        <>
-            <ListLayout
-                listTitle='Subjects'
-                btnTitle='New Subject'
-                btnHidden={role === 'administrator' ? '' : 'none'}
-                path={`/subjects/new-subject/${v4()}`}
-            >
-                <CustomDataGrid
-                    columns={columns}
-                    rows={list}
-                    isFetching={isFetching}
-                    getPrimaryKey={(rows) => rows.subjectId}
-                    onClick={(cell) => nav(`/subjects/${cell.id}`)}
-                />
-            </ListLayout>
-
-        </>
+        <ListLayout
+            listTitle='Subjects'
+            btnTitle='New Subject'
+            btnHidden={role === 'administrator' ? '' : 'none'}
+            path={`/subjects/new-subject/${v4()}`}
+        >
+            <CustomDataGrid
+                columns={columns}
+                rows={list}
+                isFetching={isFetching}
+                getPrimaryKey={(rows) => rows.subjectId}
+                onClick={(cell) => nav(`/subjects/${cell.id}`)}
+            />
+        </ListLayout>
     )
 }

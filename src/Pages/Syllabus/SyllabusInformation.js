@@ -12,6 +12,7 @@ import { Delete, Edit, Download } from '@mui/icons-material'
 import { useNavigate } from 'react-router-dom'
 import { useFirebase } from '../../Context/FirebaseContext'
 import PostLinkLayout from '../../Components/Layout/PostLinkLayout';
+import StatusChip from '../../Components/StatusChip';
 
 
 export default function SyllabusInformation({ postId }) {
@@ -117,14 +118,7 @@ export default function SyllabusInformation({ postId }) {
                     flexDirection: 'column',
                 }}>
                 <Typography variant='h4' sx={{ fontWeight: '300' }} gutterBottom>
-                    {post.postTitle}<Chip
-                        label={post.postStatus}
-                        color={chipColor}
-                        size='small'
-                        sx={{
-                            marginLeft: '1rem',
-                            fontWeight: '500'
-                        }} />
+                    {post.postTitle} <StatusChip postStatus={post.postStatus} />
                 </Typography>
                 <PostLinkLayout
                     Author={post.postAuthor}

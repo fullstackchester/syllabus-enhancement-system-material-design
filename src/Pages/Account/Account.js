@@ -32,28 +32,33 @@ export default function Account() {
                         position: 'sticky',
                         top: '0',
                     }}>
-                        <TabList onChange={handleChange} sx={{ height: '3rem' }} aria-label="basic tabs example">
+                        <TabList onChange={handleChange} aria-label="basic tabs example">
                             <Tab value="1" label="Profile" />
                             <Tab value="2" label="Security" />
                         </TabList>
                     </Box>
-                    <TabPanel
-                        value="1"
-                        style={{
-                            height: 'calc(100% - 3rem)',
-                            padding: '0'
-                        }}>
-                        <AccountProfile uid={uid} />
-                    </TabPanel>
-                    <TabPanel
-                        value="2"
-                        style={{
-                            height: 'calc(100% - 3rem)',
-                            padding: '0'
-                        }}>
-                        <AccountSecurity uid={uid} />
-                        
-                    </TabPanel>
+                    {
+                        [
+                            {
+                                value: '1',
+                                panel: <AccountProfile uid={uid} />
+                            },
+                            {
+                                value: '2',
+                                panel: <AccountSecurity uid={uid} />
+                            },
+                        ].map((v, k) =>
+                            <TabPanel
+                                key={k}
+                                value={v.value}
+                                style={{
+                                    height: '100%',
+                                    padding: '0',
+                                }}>
+                                {v.panel}
+                            </TabPanel>
+                        )
+                    }
                 </TabContext>
 
 
@@ -61,3 +66,22 @@ export default function Account() {
         </>
     )
 }
+
+{/* <TabPanel
+    value="1"
+    style={{
+        height: '100%',
+        padding: '0',
+        border: '1px solid red'
+    }}>
+    <AccountProfile uid={uid} />
+</TabPanel>
+<TabPanel
+    value="2"
+    style={{
+        height: '100%',
+        padding: '0',
+        border: '1px solid red'
+    }}>
+    <AccountSecurity uid={uid} />
+</TabPanel> */}

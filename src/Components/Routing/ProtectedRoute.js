@@ -6,9 +6,9 @@ import { useFirebase } from '../../Context/FirebaseContext'
 export default function Protected({ children }) {
 
     const { currentUser } = useFirebase()
+
     if (currentUser === null) {
         return <Navigate to='/' replace />
-    } else {
-        return children
     }
+    return children
 }

@@ -3,6 +3,7 @@ import { Typography, Button } from '@mui/material'
 import { Container } from '@mui/system'
 import AddIcon from '@mui/icons-material/Add';
 import { useNavigate } from 'react-router-dom';
+import { motion } from 'framer-motion'
 
 export default function ListLayout(
     { path, btnTitle, btnHidden, listTitle, children }

@@ -31,18 +31,16 @@ export default function Syllabus() {
     }, [])
 
     return (
-        <>
-            <ListLayout
-                btnTitle='New Syllabi'
-                listTitle='Syllabus'
-                path={`/syllabus/new-syllabus/${v4()}`}>
-                <CustomDataGrid
-                    columns={columns}
-                    rows={list}
-                    isFetching={isFetching}
-                    onClick={(cell) => nav(`/syllabus/${cell.id}`)}
-                    getPrimaryKey={(row) => row.postId} />
-            </ListLayout>
-        </>
+        <ListLayout
+            btnTitle='New Syllabi'
+            listTitle='Syllabus'
+            path={`/syllabus/new-syllabus/${v4()}`}>
+            <CustomDataGrid
+                columns={columns}
+                rows={list}
+                isFetching={isFetching}
+                onClick={(cell) => nav(`/syllabus/${cell.id}`)}
+                getPrimaryKey={(row) => row.postId} />
+        </ListLayout>
     )
 }

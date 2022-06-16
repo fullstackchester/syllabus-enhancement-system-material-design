@@ -37,8 +37,7 @@ export default function AccountDelete() {
             <Box sx={{
                 minHeight: '8rem',
                 height: 'auto',
-                padding: '1.5rem',
-                marginTop: '2rem',
+                marginTop: '5rem',
             }}>
                 <Typography variant='h5'>Account Deletion</Typography>
                 <Typography variant='body2'>Delete your account, including the personal data, passwords, and files.</Typography>

@@ -24,7 +24,6 @@ import MyFileView from "./Pages/My Files/MyFileView";
 import MyFileAdd from "./Pages/My Files/MyFileAdd";
 import MyFileEdit from "./Pages/My Files/MyFileEdit";
 import Protected from "./Components/Routing/ProtectedRoute";
-import AuthListener from "./Components/Routing/AuthListenerRoute";
 import Restricted from "./Components/Routing/RestrictedRoute";
 import Practice from "./Pages/Practice";
 import { ThemeProvider, createTheme } from '@mui/material/styles';
@@ -33,6 +32,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import Authentication from "./Pages/Authentication/Authentication";
 import ForgetPassword from "./Pages/Authentication/ForgetPassword";
 import '@fontsource/poppins'
+import AuthListener from "./Components/Routing/AuthListenerRoute";
 
 function App() {
 	const theme = useSelector((state) => state.mode)
@@ -55,34 +55,32 @@ function App() {
 				<div className="App">
 					<BrowserRouter>
 						<Routes>
-							<Route index element={<Landing />} />
-							<Route exact path='/login' element={<Landing />} />
+							<Route index element={<AuthListener><Landing /></AuthListener>} />
+							<Route exact path='/' element={<AuthListener><Landing /></AuthListener>} />
 							<Route exact path='/signup' element={<Signup />} />
 							<Route exact path='/authentication' element={<Authentication />} >
 								<Route exact path='forget-password' element={<ForgetPassword />} />
 							</Route>
-							<Route exact path='/' element={
 
-								<Protected>
-									<Layout />
-								</Protected>}>
-								<Route index element={<Dashboard />} />
-								<Route exact path='dashboard' element={
-									<Restricted>
-										<Dashboard />
-									</Restricted>} />
+							<Route
+								exact
+								path='/'
+								element={<Protected><Layout /></Protected>}>
 
-								<Route exact path='syllabus' element={<Syllabus />} />
+								<Route index element={<Restricted><Dashboard /></Restricted>} />
+								<Route exact path='dashboard' element={<Restricted><Dashboard /></Restricted>} />
+
+								<Route exact path='syllabus' element={<Restricted><Syllabus /></Restricted>} />
 								<Route exact path='syllabus/:postId' element={<SyllabusFile />} />
 								<Route exact path='syllabus/new-syllabus/:postId' element={<SyllabusAdd />} />
 								<Route exact path='syllabus/edit-syllabus/:postId' element={<SyllabusEdit />} />
 
-								<Route exact path='subjects' element={<Subject />} />
+								<Route exact path='subjects' element={<Restricted><Subject /></Restricted>} />
 								<Route exact path='subjects/:subjectId' element={<SubjectFile />} />
 								<Route exact path='subjects/new-subject/:subjectId' element={<SubjectAdd />} />
 								<Route exact path='subjects/edit-subject/:subjectId' element={<SubjectEdit />} />
 
-								<Route exact path='faculty' element={<Faculty />} />
+								<Route exact path='faculty' element={<Restricted><Faculty /></Restricted>} />
 								<Route exact path='faculty/:uid' element={<FacultyProfile />} />
 								<Route exact path='faculty/edit-faculty/:uid' element={<FacultyEdit />} />
 
@@ -96,7 +94,6 @@ function App() {
 
 								<Route path='/practice' element={<Practice />} />
 							</Route>
-
 						</Routes>
 					</BrowserRouter>
 				</div>

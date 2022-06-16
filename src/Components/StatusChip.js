@@ -1,21 +1,12 @@
 import { Chip } from '@mui/material'
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 
-export default function StatusChip({postStatus}) {
-    const [chipColor, setChipColor] = useState()
-
-    useEffect(() => {
-        if (postStatus === 'Approved') {
-            setChipColor('success')
-        } else if (postStatus === 'Needs revisions') {
-            setChipColor('error')
-        } else {
-            setChipColor('primary')
-        }
-    }, [])
+export default function StatusChip({ postStatus }) {
     return (
-        <>
-            <Chip color={chipColor} label={postStatus} size='small' sx={{ fontWeight: '600'}} />
-        </>
+        <Chip
+            color={postStatus === 'Approved' ? 'success' : postStatus === 'Needs revisions' ? 'error' : 'primary'}
+            label={postStatus}
+            size='small'
+            sx={{ fontWeight: '600' }} />
     )
 }

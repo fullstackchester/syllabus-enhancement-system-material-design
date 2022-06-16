@@ -19,7 +19,7 @@ export default function SyllabusTable() {
             }
         })
         getList()
-    })
+    }, [])
 
     return (
         <Card

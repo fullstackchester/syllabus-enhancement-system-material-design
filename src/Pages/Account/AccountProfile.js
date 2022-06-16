@@ -1,5 +1,6 @@
 import { Avatar, Button, Stack, Typography, Skeleton } from '@mui/material'
 import { Box } from '@mui/system'
+import { blue } from '@mui/material/colors'
 import { onValue, ref } from 'firebase/database'
 import { getDownloadURL, ref as storageRef } from 'firebase/storage'
 import React, { useEffect, useState } from 'react'
@@ -11,9 +12,10 @@ export default function AccountProfile({ uid }) {
 
     const [account, setAccount] = useState({})
     const [avatarImg, setAvatarImg] = useState()
+
     const nav = useNavigate()
     useEffect(() => {
-        onValue(ref(database, `users/${uid}`), snap => {
+        const getData = () => onValue(ref(database, `users/${uid}`), snap => {
             if (snap.exists()) {
                 setAccount(snap.val())
             }
@@ -26,6 +28,7 @@ export default function AccountProfile({ uid }) {
                     })
             }
         })
+        getData()
     }, [])
 
     return (
@@ -57,16 +60,20 @@ export default function AccountProfile({ uid }) {
                         alignItems: 'center',
                         width: '90%',
                     }}>
-                    {avatarImg ? <Avatar
-                        id='profile-avatar'
-                        alt={account.name}
-                        src={avatarImg}
-                        sx={{
-                            width: '10rem',
-                            height: '10rem',
-                            marginRight: '1rem',
-                            border: '.3rem solid'
-                        }} />
+                    {avatarImg !== null ?
+                        <Avatar
+                            id='profile-avatar'
+                            alt={account.name}
+                            src={avatarImg}
+                            sx={{
+                                width: '10rem',
+                                height: '10rem',
+                                marginRight: '1rem',
+                                border: '.3rem solid',
+                                backgroundColor: blue[800],
+                            }} >
+                            {account.name}
+                        </Avatar>
                         :
                         <Skeleton
                             variant="circular"

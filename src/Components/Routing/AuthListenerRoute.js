@@ -3,7 +3,6 @@ import { Navigate } from 'react-router-dom'
 import { useFirebase } from '../../Context/FirebaseContext'
 
 export default function AuthListener({ children }) {
-
     const { currentUser } = useFirebase()
 
     if (currentUser !== null) {
@@ -11,3 +10,5 @@ export default function AuthListener({ children }) {
     }
     return children
 }
+
+

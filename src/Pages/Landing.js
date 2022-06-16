@@ -2,7 +2,7 @@ import { Alert, Stack, TextField, Typography, Card } from '@mui/material'
 import { Box, Container } from '@mui/system'
 import { signInWithEmailAndPassword } from 'firebase/auth'
 import React, { useState } from 'react'
-import { useNavigate, Link } from 'react-router-dom'
+import { useNavigate, Navigate } from 'react-router-dom'
 import { auth } from '../JS/Firebase'
 import '../index.css'
 import { LoadingButton } from '@mui/lab'
@@ -10,6 +10,7 @@ import ThemeModeSwitch from '../Components/ThemeModeSwitch'
 import { AuthError } from '../Data/AuthError'
 import PasswordField from '../Components/PasswordField'
 import { motion } from 'framer-motion'
+import { useFirebase } from '../Context/FirebaseContext'
 
 export default function Landing() {
     const [email, setEmail] = useState('')
@@ -19,6 +20,8 @@ export default function Landing() {
     const nav = useNavigate()
 
     const [error, setError] = useState('')
+    const { currentUser } = useFirebase()
+
 
 
     function SignUpUser(e) {
@@ -33,7 +36,6 @@ export default function Landing() {
                 signInWithEmailAndPassword(auth, email, pass)
                     .then(() => {
                         setLoading(false)
-                        nav('/dashboard')
                     }).catch((err) => {
                         for (let key in AuthError) {
                             if ((err.code).replace('auth/', '') === key) {
@@ -153,4 +155,6 @@ export default function Landing() {
             </Box>
         </>
     )
+
+
 }

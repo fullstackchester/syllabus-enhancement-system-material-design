@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import { Typography, Card, CardContent, CardActions, Stack, Button } from '@mui/material'
-import { blue, red, green, grey } from '@mui/material/colors'
-import { Doughnut } from 'react-chartjs-2'
-import Chart from 'chart.js/auto';
+import { blue, red, green } from '@mui/material/colors'
 import { database } from '../../JS/Firebase'
 import { onValue, ref } from 'firebase/database'
 import { Box } from '@mui/system';
+import DoughnutChart from '../../Components/Charts/DoughnutChart';
 
 
 
@@ -17,7 +16,7 @@ export default function AccountChart() {
     let total = 0
 
     useEffect(() => {
-        onValue(ref(database, 'users'), snapshot => {
+        const getData = () => onValue(ref(database, 'users'), snapshot => {
             if (snapshot.exists()) {
                 setPost(Object.values(snapshot.val()))
                 setWMAD(Object.values(snapshot.val()).filter(post => {
@@ -38,19 +37,8 @@ export default function AccountChart() {
                 total = Object.values(snapshot.val()).length
             }
         })
+        getData()
     }, [])
-
-    const data = {
-        labels: ['Business Analytics', 'Web and Mobile', 'Service Management'],
-        datasets: [{
-            data: [BA.length, WMAD.length, SERMGT.length],
-            backgroundColor: [green[400], blue[500], red[600]],
-            borderColor: [green[400], blue[500], red[600]],
-            pointStyle: 'circle'
-        }],
-        borderColor: '#333',
-        hoverOffset: 4,
-    }
 
     return (
         <Card
@@ -77,17 +65,9 @@ export default function AccountChart() {
                         height: '10rem',
                         width: '60%',
                     }}>
-                    <Doughnut
-                        data={data}
-                        options={{
-                            responsive: true,
-                            maintainAspectRatio: false,
-                            plugins: {
-                                legend: {
-                                    display: false
-                                },
-                            }
-                        }} />
+                    <DoughnutChart
+                        chartData={[BA.length, WMAD.length, SERMGT.length]}
+                        chartLabel={['Business Analytics', 'Web and Mobile', 'Service Management']} />
                 </Box>
                 <Stack
                     direction='column'

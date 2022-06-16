@@ -113,7 +113,8 @@ export default function MyFileEdit() {
                 height: '100%',
                 display: 'flex',
                 flexDirection: 'column',
-                padding: '1.5rem',
+                paddingX: '3rem',
+                paddingY: '2rem',
             }}>
                 <Typography variant='h4' gutterBottom>Edit Syllabus</Typography>
                 <form

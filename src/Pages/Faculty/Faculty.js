@@ -20,7 +20,7 @@ export default function Faculty() {
     ];
 
     useEffect(() => {
-        onValue(ref(database, 'users'), snapshot => {
+        const getList = () => onValue(ref(database, 'users'), snapshot => {
             if (snapshot.exists()) {
                 if (role === 'area chair') {
                     setList(Object.values(snapshot.val()).filter((user) => {
@@ -34,18 +34,17 @@ export default function Faculty() {
                 setFetching(false)
             }
         })
+        getList()
     }, [])
 
     return (
-        <>
-            <ListLayout listTitle='Faculty' btnHidden='none'>
-                <CustomDataGrid
-                    columns={columns}
-                    isFetching={isFetching}
-                    rows={list}
-                    getPrimaryKey={(row) => row.uid}
-                    onClick={(cell) => nav(`/faculty/${cell.id}`)} />
-            </ListLayout>
-        </>
+        <ListLayout listTitle='Faculty' btnHidden='none'>
+            <CustomDataGrid
+                columns={columns}
+                isFetching={isFetching}
+                rows={list}
+                getPrimaryKey={(row) => row.uid}
+                onClick={(cell) => nav(`/faculty/${cell.id}`)} />
+        </ListLayout>
     )
 }

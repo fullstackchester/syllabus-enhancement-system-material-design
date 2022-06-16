@@ -1,10 +1,9 @@
 import React from 'react'
 import { Doughnut } from 'react-chartjs-2'
+import { blue, red, green, grey } from '@mui/material/colors'
 import Chart from 'chart.js/auto';
 
-export default function DoughnutChart(
-    { total, }
-) {
+export default function DoughnutChart({ total, chartLabel, chartData }) {
 
     const plugins = [{
         beforeDraw: function (chart, args, options) {
@@ -18,11 +17,11 @@ export default function DoughnutChart(
     }]
 
     const data = {
-        labels: ['Approved', 'Needs Reviews', 'Need Revisions'],
+        labels: chartLabel.map((v) => v),
         datasets: [{
-            data: [6, 10, 3],
-            backgroundColor: ['#4ade80', '#38bdf8', '#f87171'],
-            borderColor: ['#4ade80', '#38bdf8', '#f87171'],
+            data: chartData.map((v) => v),
+            backgroundColor: [green[400], blue[500], red[600]],
+            borderColor: [green[400], blue[500], red[600]],
             pointStyle: 'circle'
         }],
         borderColor: '#333',
@@ -33,14 +32,13 @@ export default function DoughnutChart(
         <Doughnut
             data={data}
             options={{
-                responsive: false,
+                responsive: true,
                 maintainAspectRatio: false,
                 plugins: {
                     legend: {
                         display: false
                     },
                 }
-            }}
-            plugins={plugins} />
+            }} />
     )
 }

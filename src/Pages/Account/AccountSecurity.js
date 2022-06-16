@@ -74,7 +74,8 @@ export default function AccountSecurity({ uid }) {
                     height: 'auto',
                     display: 'flex',
                     flexDirection: 'column',
-                    padding: '1.5rem'
+                    paddingX: '3rem',
+                    paddingY: '2rem'
                 }}>
 
                 <Typography variant='h5'>Edit credentials</Typography>
@@ -123,8 +124,9 @@ export default function AccountSecurity({ uid }) {
                             textTransform: 'none',
                         }}>Save Changes</LoadingButton>
                 </Box>
+                <AccountDelete />
             </Box>
-            <AccountDelete />
+
 
             <Snackbar open={snakcOpen} autoHideDuration={6000} onClose={() => setSnackOpen(false)}  >
                 <Alert severity={actionStatus}>{actionMessage}</Alert>

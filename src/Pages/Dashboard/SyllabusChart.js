@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import { Typography, Card, CardContent, CardActions, Stack, Button } from '@mui/material'
-import { blue, red, green } from '@mui/material/colors'
-import { Doughnut } from 'react-chartjs-2'
-import Chart from 'chart.js/auto';
 import { database } from '../../JS/Firebase'
 import { onValue, ref } from 'firebase/database'
 import { Box } from '@mui/system'
+import { motion } from 'framer-motion'
+import DoughnutChart from '../../Components/Charts/DoughnutChart';
 
 
 
@@ -14,10 +13,11 @@ export default function SyllabusChart() {
     const [approved, setApproved] = useState([])
     const [revise, setRevise] = useState([])
     const [review, setReview] = useState([])
+    const [expand, setExpand] = useState(false)
     let total = 0
 
     useEffect(() => {
-        onValue(ref(database, 'posts'), snapshot => {
+        const getData = () => onValue(ref(database, 'posts'), snapshot => {
             if (snapshot.exists()) {
                 setPost(Object.values(snapshot.val()))
                 setApproved(Object.values(snapshot.val()).filter(post => {
@@ -38,23 +38,17 @@ export default function SyllabusChart() {
                 total = Object.values(snapshot.val()).length
             }
         })
-    }, [])
 
-    const data = {
-        labels: ['Approved', 'Needs Reviews', 'Need Revisions'],
-        datasets: [{
-            data: [approved.length, review.length, revise.length],
-            backgroundColor: [green[400], blue[500], red[600]],
-            borderColor: [green[400], blue[500], red[600]],
-            pointStyle: 'circle'
-        }],
-        borderColor: '#333',
-        hoverOffset: 4,
-    }
+        getData()
+    }, [])
 
     return (
         <Card
             elevation={3}
+            component={motion.div}
+            initial={{ scale: 1 }}
+            animate={{ scale: expand ? 1.2 : 1 }}
+            style={{ scale: expand }}
             sx={{ width: '100%' }}>
             <CardContent
                 sx={{
@@ -74,17 +68,9 @@ export default function SyllabusChart() {
                         height: '10rem',
                         width: '60%',
                     }}>
-                    <Doughnut
-                        data={data}
-                        options={{
-                            responsive: true,
-                            maintainAspectRatio: false,
-                            plugins: {
-                                legend: {
-                                    display: false
-                                },
-                            }
-                        }} />
+                    <DoughnutChart
+                        chartLabel={['Approved', 'Needs Reviews', 'Need Revisions']}
+                        chartData={[approved.length, review.length, revise.length]} />
                 </Box>
                 <Stack
                     direction='column'
@@ -105,12 +91,12 @@ export default function SyllabusChart() {
                     <Typography
                         variant='body2'
                         color=''>{`REVIEW: ${review.length}`}</Typography>
-
                 </Stack>
             </CardContent>
             <CardActions>
                 <Button
-                    size='small'>See all syllabus</Button>
+                    size='small'
+                    onClick={() => !expand ? setExpand(true) : setExpand(false)}>Expand</Button>
             </CardActions>
         </Card>
     )
