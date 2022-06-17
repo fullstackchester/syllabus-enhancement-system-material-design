@@ -27,15 +27,19 @@ import Protected from "./Components/Routing/ProtectedRoute";
 import Restricted from "./Components/Routing/RestrictedRoute";
 import Practice from "./Pages/Practice";
 import { ThemeProvider, createTheme } from '@mui/material/styles';
-import { CssBaseline } from '@mui/material'
-import { useSelector, useDispatch } from 'react-redux'
+import { CssBaseline, Dialog, Alert, Snackbar } from '@mui/material'
+import { useDispatch, useSelector } from 'react-redux'
 import Authentication from "./Pages/Authentication/Authentication";
 import ForgetPassword from "./Pages/Authentication/ForgetPassword";
-import '@fontsource/poppins'
 import AuthListener from "./Components/Routing/AuthListenerRoute";
+import { notify } from './Features/PopAlert'
 
 function App() {
-	const theme = useSelector((state) => state.mode)
+
+	const dispatch = useDispatch()
+	const theme = useSelector((state) => state.theme.mode)
+	const POP_ALERT = useSelector((state) => state.alert.value)
+
 	const customTheme = createTheme({
 		palette: {
 			mode: theme,
@@ -97,6 +101,22 @@ function App() {
 						</Routes>
 					</BrowserRouter>
 				</div>
+
+				<Snackbar
+					open={POP_ALERT.visible}
+					anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+					onClose={() => {
+						dispatch(notify({
+							status: 'error',
+							message: '',
+							visible: false
+						}))
+					}}
+					autoHideDuration={5000} >
+					<Alert severity={POP_ALERT.status} >
+						{POP_ALERT.message}
+					</Alert>
+				</Snackbar>
 			</ThemeProvider>
 		</FirebaseProvider>
 	)

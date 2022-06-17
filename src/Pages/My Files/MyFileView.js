@@ -33,39 +33,42 @@ export default function MyFileView() {
     ]
 
     return (
-        <>
-            <Box sx={{
-                height: '100%',
-                display: 'flex',
-                flexDirection: 'column'
-            }}>
-                <TabContext value={value}>
-                    <Box sx={{
-                        borderBottom: 1,
-                        borderColor: 'divider',
-                        position: 'sticky',
-                        top: '0',
-                    }}>
-                        <TabList onChange={(e, newValue) => setValue(newValue)} aria-label="basic tabs example">
-                            <Tab value="1" label="Syllabi Information" />
-                            <Tab value="2" label="Comments" />
-                            <Tab value="3" label="Edit History" />
-                        </TabList>
-                    </Box>
-                    {
-                        tabPanelList.map((v, k) => {
-                            return (
-                                <TabPanel
-                                    key={k}
-                                    value={v.value}
-                                    sx={{ height: '100%', padding: '2rem', overflowY: 'hidden' }}>
-                                    {v.children}
-                                </TabPanel>
-                            )
-                        })
-                    }
-                </TabContext>
-            </Box>
-        </>
+        <Box sx={{
+            height: '100%',
+            display: 'flex',
+            flexDirection: 'column'
+        }}>
+            <TabContext value={value}>
+                <Box sx={{
+                    borderBottom: 1,
+                    borderColor: 'divider',
+                    position: 'sticky',
+                    top: '0',
+                }}>
+                    <TabList onChange={(e, newValue) => setValue(newValue)} aria-label="basic tabs example">
+                        <Tab value="1" label="Syllabi Information" />
+                        <Tab value="2" label="Comments" />
+                        <Tab value="3" label="Edit History" />
+                    </TabList>
+                </Box>
+                {
+                    tabPanelList.map((v, k) => {
+                        return (
+                            <TabPanel
+                                key={k}
+                                value={v.value}
+                                sx={{
+                                    height: '100%',
+                                    paddingY: '2rem',
+                                    paddingX: '3rem',
+                                    overflowY: 'hidden'
+                                }}>
+                                {v.children}
+                            </TabPanel>
+                        )
+                    })
+                }
+            </TabContext>
+        </Box>
     )
 }

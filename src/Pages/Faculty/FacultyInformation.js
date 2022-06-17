@@ -7,72 +7,61 @@ import { onValue, ref } from 'firebase/database'
 import { getDownloadURL, ref as storageRef } from 'firebase/storage'
 import { useFirebase } from '../../Context/FirebaseContext'
 import '../../index.css'
+import ProfileAvatar from '../../Components/ProfileAvatar'
 
 export default function FacultyInformation({ uid }) {
 
     const [account, setAccount] = useState({})
-    const [avatarImg, setAvatarImg] = useState('')
-    const [isFetching, setFecthing] = useState(true)
     const { role } = useFirebase()
     const nav = useNavigate()
     useEffect(() => {
-        onValue(ref(database, `users/${uid}`), snap => {
+        const getFaculty = () => onValue(ref(database, `users/${uid}`), snap => {
             if (snap.exists()) {
                 setAccount(snap.val())
-                if (snap.val().photoUrl !== '') {
-                    getDownloadURL(storageRef(storage, `avatars/${uid}/${snap.val().photoUrl}`))
-                        .then((url) => {
-                            setAvatarImg(url)
-                        }).catch((err) => {
-                            console.log(err)
-                        })
-                }
-                setFecthing(false)
             }
 
         })
+
+        getFaculty()
     }, [])
+
     return (
         <>
             <Box sx={{
                 padding: '0px',
             }}>
-                <img className='cover-photo' />
+                <Box
+                    id='cover-photo'
+                    className='cover-photo'
+                    component='img'
+                    sx={{
+                        height: '15rem',
+                        width: '100%',
+                        objectFit: 'cover',
+                        opacity: '50%',
+                    }}></Box>
                 <Box
                     sx={{
                         position: 'relative',
-                        top: '-3rem',
-                        right: '-2rem',
+                        top: '-5rem',
                         display: 'flex',
                         flexDirection: 'row',
                         flexWrap: 'wrap',
                         alignItems: 'center',
-                        width: '90%',
+                        width: '100%',
+                        padding: '1rem 2rem 1rem 2rem'
                     }}>
-                    {avatarImg !== '' ?
-                        <Avatar
-                            id='profile-avatar'
-                            alt={account.name}
-                            src={avatarImg}
-                            sx={{
-                                width: '10rem',
-                                height: '10rem',
-                                marginRight: '1rem',
-                                border: '.3rem solid'
-                            }} />
-                        :
-                        <Skeleton
-                            variant="circular"
-                            sx={{
-                                width: '10rem',
-                                height: '10rem',
-                                marginRight: '1rem',
-                            }} />
-                    }
-                    <Stack sx={{
-                        flex: '1',
-                        marginTop: '3rem'
-                    }}>
+                    <ProfileAvatar
+                        uid={uid}
+                        height={200}
+                        width={200}
+                        border='.3rem' />
+                    <Stack
+                        sx={{
+                            flex: '1',
+                            marginTop: '3.5rem',
+                            marginLeft: '1rem'
+                        }}>
                         <Typography variant='h3'>{account.name}</Typography>
                         <Typography sx={{ fontSize: '1rem', fontWeight: 'strong' }}>{`Employee ID: ${account.employeeId}`}</Typography>
                         <Typography sx={{ fontSize: '1rem', fontWeight: 'strong' }}>{`Department: ${account.department}`}</Typography>
@@ -91,8 +80,6 @@ export default function FacultyInformation({ uid }) {
                             Edit Faculty</Button>}
                     </Stack>
                 </Box>
-
-
             </Box>
         </>
     )

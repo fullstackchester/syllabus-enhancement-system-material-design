@@ -1,11 +1,16 @@
-import { Alert, Avatar, Button, FormControl, Grid, InputLabel, MenuItem, Select, Snackbar, Stack, TextField, Typography } from '@mui/material'
+import {
+    Avatar, Button, FormControl, Grid, InputLabel,
+    MenuItem, Select, Stack, TextField, Typography
+} from '@mui/material'
 import { Box } from '@mui/system'
-import LoadingButton from '@mui/lab/LoadingButton'
 import React, { useEffect, useState, useRef } from 'react'
 import { onValue, ref, update } from 'firebase/database'
 import { database, storage } from '../../JS/Firebase'
 import { useNavigate, useParams } from 'react-router-dom'
 import { ref as storageRef, getDownloadURL, uploadBytes } from "firebase/storage";
+import { notify } from '../../Features/PopAlert'
+import { useDispatch } from 'react-redux'
+import FormButton from '../../Components/FormButton'
 
 export default function AccountProfileEdit() {
 
@@ -15,12 +20,6 @@ export default function AccountProfileEdit() {
     const [dept, setDept] = useState('')
     const { uid } = useParams()
     const nav = useNavigate()
-
-
-    //for handling event notifications
-    const [actionMessage, setActionMessage] = useState('')
-    const [actionStatus, setActionStatus] = useState()
-    const [snakcOpen, setSnackOpen] = useState(false)
 
 
     // textfield references
@@ -34,6 +33,8 @@ export default function AccountProfileEdit() {
     //saving to database
     const [avatar, setAvatar] = useState()
     const [preview, setPreview] = useState()
+
+    const dispatch = useDispatch()
     useEffect(() => {
         if (avatar) {
             const reader = new FileReader()
@@ -80,35 +81,37 @@ export default function AccountProfileEdit() {
         }
 
 
-        setTimeout(() => {
-            update(ref(database, `users/${uid}`), updatedProfile)
-                .then(() => {
+        update(ref(database, `users/${uid}`), updatedProfile)
+            .then(() => {
+                uploadBytes(storageRef(storage, `avatars/${uid}/${avatar.name}`), avatar)
+                    .then(() => {
 
-                    uploadBytes(storageRef(storage, `avatars/${uid}/${avatar.name}`), avatar)
-                        .then(() => {
-                            setActionStatus('success')
-                            setActionMessage('Successfully updated profile')
-                            setSnackOpen(true)
-                            setLoading(false)
+                        dispatch(notify({
+                            status: 'success',
+                            message: 'Successfully updated profile',
+                            visible: true
+                        }))
+                        setLoading(false)
+                        nav(-1)
 
-                        }).catch((err) => {
+                    }).catch((err) => {
+                        dispatch(notify({
+                            status: 'error',
+                            message: err.message,
+                            visible: true
+                        }))
+                        setLoading(false)
 
-                            setActionStatus('error')
-                            setActionMessage(err.message)
-                            setSnackOpen(true)
-                            setLoading(false)
+                    });
+            }).catch((err) => {
+                setLoading(false)
 
-                        });
-
-                }).catch((err) => {
-                    setLoading(false)
-                    setActionStatus('error')
-                    setActionMessage(err.message)
-                    setSnackOpen(true)
-                });
-
-            setLoading(false)
-        }, 1500)
+                dispatch(notify({
+                    status: 'error',
+                    message: err.message,
+                    visible: true
+                }))
+            })
     }
 
     const updateProfileTextFields = [
@@ -133,129 +136,101 @@ export default function AccountProfileEdit() {
     ]
 
     return (
-        <>
-            <Box sx={{
-                width: '70%',
-                height: '100%',
-                display: 'flex',
-                flexDirection: 'column',
-                padding: '1.5rem',
-            }}>
-                <Typography variant='h4' gutterBottom>Edit Profile</Typography>
-                <form
-                    id='update-profile-form'
-                    spellCheck={false}
-                    onSubmit={UpdateProfile}>
-                    <Grid container spacing={2}>
-
-
-                        <Grid item xs={6}>
-                            <Stack direction='row' spacing={2} sx={{ alignItems: 'center' }}>
-                                <Avatar
-                                    src={preview}
-                                    sx={{ width: '8rem', height: '8rem', border: '.1rem solid' }}
-                                />
-                                <Button
-                                    size='small'
-                                    variant='outlined'
-                                    component='label'
-                                    disableElevation
-                                    sx={{
-                                        height: 'max-content',
-                                        textTransform: 'none'
-                                    }}>
-                                    <input
-                                        ref={photoRef}
-                                        type='file'
-                                        accept={`image/*`}
-                                        onChange={(e) => {
-                                            const file = e.target.files[0]
-                                            if (file) {
-                                                setAvatar(file)
-                                            } else {
-                                                setAvatar(null)
-                                            }
-                                        }}
-                                        hidden />
-                                    Change
-                                </Button>
-                            </Stack>
-                        </Grid>
-                        {
-                            updateProfileTextFields.map((v, k) =>
-                                <Grid item key={k} xs={12}>
-                                    <TextField
-                                        id={v.id}
-                                        label={v.label}
-                                        type={v.type}
-                                        placeholder={v.placeholder}
-                                        variant='outlined'
-                                        size='small'
-                                        defaultValue={v.defaultValue}
-                                        inputRef={v.ref}
-                                        required
-                                        multiline
-                                        fullWidth
-                                        rows={v.row} />
-                                </Grid>
-                            )
-                        }
-
-                        <Grid item xs={12}>
-                            <FormControl fullWidth size='small'>
-                                <InputLabel id="user-department">Department</InputLabel>
-                                <Select
-                                    labelId="user-department"
-                                    id="select-department"
-                                    value={dept}
-                                    label="Department"
-                                    onChange={(e) => setDept(e.target.value)}
-                                    inputRef={deptRef}
-                                    required
-                                >
-                                    <MenuItem value=''>Select Department</MenuItem>
-                                    {
-                                        [
-                                            'Web and Mobile Application Development',
-                                            'Business Analytics',
-                                            'Service Management'
-                                        ].map((v) =>
-                                            <MenuItem key={v} value={v}>{v}</MenuItem>
-                                        )
-                                    }
-                                </Select>
-                            </FormControl>
-                        </Grid>
+        <Box sx={{
+            width: '70%',
+            height: '100%',
+            display: 'flex',
+            flexDirection: 'column',
+            paddingX: '3rem',
+            paddingY: '2rem',
+        }}>
+            <Typography variant='h4' gutterBottom>Edit Profile</Typography>
+            <Box
+                component='form'
+                id='update-profile-form'
+                spellCheck={false}
+                onSubmit={UpdateProfile}>
+                <Grid container spacing={3}>
+                    <Grid item xs={6}>
+                        <Stack direction='row' spacing={2} sx={{ alignItems: 'center' }}>
+                            <Avatar
+                                src={preview}
+                                sx={{ width: '8rem', height: '8rem', border: '.1rem solid' }}
+                            />
+                            <Button
+                                size='small'
+                                variant='outlined'
+                                component='label'
+                                disableElevation
+                                sx={{
+                                    height: 'max-content',
+                                    textTransform: 'none'
+                                }}>
+                                <input
+                                    ref={photoRef}
+                                    type='file'
+                                    accept={`image/*`}
+                                    onChange={(e) => {
+                                        const file = e.target.files[0]
+                                        if (file) {
+                                            setAvatar(file)
+                                        } else {
+                                            setAvatar(null)
+                                        }
+                                    }}
+                                    hidden />
+                                Change
+                            </Button>
+                        </Stack>
                     </Grid>
-
-
-                </form>
-                <LoadingButton
-                    sx={{
-                        marginTop: '1rem',
-                        width: 'max-content',
-                        textTransform: 'none'
-                    }}
-                    form='update-profile-form'
-                    type='submit'
-                    loading={isLoading}
-                    variant='contained'>Update Profile</LoadingButton>
-            </Box>
-            <Snackbar
-                open={snakcOpen}
-                onClose={() => {
-                    if (actionStatus === 'success') {
-                        setSnackOpen(false)
-                        nav(`/account/${uid}`)
-                    } else {
-                        setSnackOpen(false)
+                    {
+                        updateProfileTextFields.map((v, k) =>
+                            <Grid item key={k} xs={12}>
+                                <TextField
+                                    id={v.id}
+                                    label={v.label}
+                                    type={v.type}
+                                    placeholder={v.placeholder}
+                                    variant='outlined'
+                                    size='small'
+                                    defaultValue={v.defaultValue}
+                                    inputRef={v.ref}
+                                    required
+                                    multiline
+                                    fullWidth
+                                    rows={v.row} />
+                            </Grid>
+                        )
                     }
-                }}
-                autoHideDuration={3000}>
-                <Alert severity={actionStatus} >
-                    {actionMessage}
-                </Alert>
-            </Snackbar>
-        </>
+
+                    <Grid item xs={12}>
+                        <FormControl fullWidth size='small'>
+                            <InputLabel id="user-department">Department</InputLabel>
+                            <Select
+                                labelId="user-department"
+                                id="select-department"
+                                value={dept}
+                                label="Department"
+                                onChange={(e) => setDept(e.target.value)}
+                                inputRef={deptRef}
+                                required
+                            >
+                                <MenuItem value=''>Select Department</MenuItem>
+                                {
+                                    [
+                                        'Web and Mobile Application Development',
+                                        'Business Analytics',
+                                        'Service Management'
+                                    ].map((v) =>
+                                        <MenuItem key={v} value={v}>{v}</MenuItem>
+                                    )
+                                }
+                            </Select>
+                        </FormControl>
+                    </Grid>
+                </Grid>
+                <FormButton label='Update Profile' isLoading={isLoading} />
+            </Box>
+        </Box>
     )
 }

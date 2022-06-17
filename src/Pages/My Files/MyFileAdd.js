@@ -31,9 +31,6 @@ export default function MyFileAdd() {
     const syRef = useRef()
     const subjectRef = useRef()
 
-
-
-
     function addSyllabus(e) {
         e.preventDefault()
         setLoading(true)
@@ -65,7 +62,7 @@ export default function MyFileAdd() {
                             // uploading file to storage, add new notification
                             // data to database to notify the admin/areachair
                             // for the new syllabi uploaded
-                            
+
                         }).catch((err) => {
                             setLoading(false)
                             setActionStatus('error')
@@ -88,7 +85,8 @@ export default function MyFileAdd() {
                 height: '100%',
                 display: 'flex',
                 flexDirection: 'column',
-                padding: '1.5rem',
+                paddingX: '3rem',
+                paddingY: '2rem'
             }}>
                 <Typography variant='h4' gutterBottom>New Syllabus</Typography>
                 <form
@@ -206,7 +204,7 @@ export default function MyFileAdd() {
                         setSnackOpen(false)
                     }
                 }}
-                autoHideDuration={1000}>
+                autoHideDuration={3000}>
                 <Alert severity={actionStatus} >
                     {actionMessage}
                 </Alert>

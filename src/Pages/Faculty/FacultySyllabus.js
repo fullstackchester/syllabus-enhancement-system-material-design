@@ -10,29 +10,33 @@ export default function FacultySyllabus({ uid }) {
 
     const [syllabus, setSyllabus] = useState([])
     const nav = useNavigate()
-    let facultySyllabus = []
 
     useEffect(() => {
         const getSyllabus = () => onValue(ref(database, `posts`), snap => {
             if (snap.exists()) {
-                setSyllabus(Object.values(snap.val()))
+                setSyllabus(Object.values(snap.val()).filter((post) => {
+                    if (post.uid === uid) {
+                        return post
+                    }
+                }))
             }
         })
         getSyllabus()
     }, [])
 
-    syllabus.forEach(syllabi => {
-        if (syllabi.uid === uid) {
-            facultySyllabus.push(syllabi)
-        }
-    })
-
     return (
         <>
-            {facultySyllabus.length !== 0 ?
-                <Grid container spacing={2} sx={{ width: '100%' }}>
+            {syllabus.length !== 0 ?
+                <Grid
+                    container
+                    spacing={2}
+                    sx={{
+                        width: '100%',
+                        paddingX: '3rem',
+                        paddingY: '2rem'
+                    }}>
                     {
-                        facultySyllabus.map((v, k) =>
+                        syllabus.map((v, k) =>
                             <Grid item key={k} xs={3}>
                                 <Card variant="outlined" sx={{ minHeight: '12rem', display: 'flex', flexDirection: 'column' }}>
                                     <CardContent sx={{ flex: '1', }}>

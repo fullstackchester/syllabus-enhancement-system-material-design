@@ -1,10 +1,12 @@
 import React, { useState, useEffect, useRef } from 'react'
-import { TextField, Alert, Snackbar, Typography, Grid } from '@mui/material'
+import { TextField, Typography, Grid } from '@mui/material'
 import { Box } from '@mui/system'
 import { ref, onValue, update } from 'firebase/database';
 import { database } from '../../JS/Firebase';
 import { useNavigate, useParams } from 'react-router-dom';
-import { LoadingButton } from '@mui/lab';
+import { notify } from '../../Features/PopAlert';
+import { useDispatch } from 'react-redux';
+import FormButton from '../../Components/FormButton';
 
 export default function SubjectEdit() {
 
@@ -12,9 +14,8 @@ export default function SubjectEdit() {
     const [currentSub, setCurrentSub] = useState({})
     const [loading, setLoading] = useState(false)
 
-    const [actionMessage, setActionMessage] = useState('')
-    const [actionStatus, setActionStatus] = useState()
-    const [snakcOpen, setSnackOpen] = useState(false)
+    const dispatch = useDispatch()
+
 
     const titleRef = useRef()
     const codeRef = useRef()
@@ -42,22 +43,23 @@ export default function SubjectEdit() {
             subjectDescription: descRef.current.value,
         }
 
-        setTimeout(() => {
-            update(ref(database, `subject/${subjectId}`), updatedSub)
-                .then(() => {
-                    setLoading(false)
-                    setActionStatus('success')
-                    setActionMessage('Successfully updated subject')
-                    setSnackOpen(true)
-                }).catch((err) => {
-                    setLoading(false)
-                    setActionStatus('error')
-                    setActionMessage(err.message)
-                    setSnackOpen(true)
-                });
-            setLoading(false)
-        }, 1500)
-
+        update(ref(database, `subject/${subjectId}`), updatedSub)
+            .then(() => {
+                setLoading(false)
+                dispatch(notify({
+                    status: 'success',
+                    message: 'Successfully updated Subject',
+                    visible: true
+                }))
+                nav(-1)
+            }).catch((err) => {
+                setLoading(false)
+                dispatch(notify({
+                    status: 'error',
+                    message: err.message,
+                    visible: true
+                }))
+            });
     }
 
     const editSubjectTextfields = [
@@ -112,71 +114,48 @@ export default function SubjectEdit() {
     ]
 
     return (
-        <>
-            <Box sx={{
-                width: '70%',
-                height: '85%',
-                display: 'flex',
-                flexDirection: 'column',
-                padding: '1.5rem',
-            }}>
-                <Typography variant='h4' gutterBottom>Edit Subject</Typography>
-                <form
-                    id='edit-subject-form'
-                    spellCheck={false}
-                    onSubmit={saveChanges}>
-                    <Grid container spacing={2}>
-                        {
-                            editSubjectTextfields.map((v, key) =>
-                                <Grid key={key} item xs={v.width}>
-                                    <TextField
-                                        id={v.id}
-                                        size='small'
-                                        placeholder={v.placeHolder}
-                                        variant='outlined'
-                                        sx={{ width: '100%' }}
-                                        required={v.required}
-                                        label={v.label}
-                                        type={v.type}
-                                        rows={v.rows}
-                                        inputRef={v.ref}
-                                        defaultValue={v.value}
-                                        multiline={v.multiline}
+        <Box sx={{
+            width: '70%',
+            height: '100%',
+            display: 'flex',
+            flexDirection: 'column',
+            paddingX: '3rem',
+            paddingY: '2rem',
+        }}>
+            <Typography variant='h4' gutterBottom>Edit Subject</Typography>
+            <Box
+                component='form'
+                id='edit-subject-form'
+                spellCheck={false}
+                onSubmit={saveChanges}>
+                <Grid container spacing={3}>
+                    {
+                        editSubjectTextfields.map((v, key) =>
+                            <Grid key={key} item xs={v.width}>
+                                <TextField
+                                    id={v.id}
+                                    size='small'
+                                    placeholder={v.placeHolder}
+                                    variant='outlined'
+                                    sx={{ width: '100%' }}
+                                    required={v.required}
+                                    label={v.label}
+                                    type={v.type}
+                                    rows={v.rows}
+                                    inputRef={v.ref}
+                                    defaultValue={v.value}
+                                    multiline={v.multiline}
 
-                                    />
-                                </Grid>
-                            )
-                        }
-                    </Grid>
-                </form>
-                <LoadingButton
-                    sx={{
-                        marginTop: '1rem',
-                        width: 'max-content',
-                        textTransform: 'none'
-                    }}
-                    form='edit-subject-form'
-                    type='submit'
-                    loading={loading}
-                    variant='contained' > Add Subject</LoadingButton>
-            </Box>
-
-            <Snackbar
-                open={snakcOpen}
-                onClose={() => {
-                    if (actionStatus === 'success') {
-                        setSnackOpen(false)
-                        nav('/subjects')
-                    } else {
-                        setSnackOpen(false)
+                                />
+                            </Grid>
+                        )
                     }
-                }}
-                autoHideDuration={1000}>
-                <Alert severity={actionStatus} >
-                    {actionMessage}
-                </Alert>
-            </Snackbar>
-        </>
-
+                </Grid>
+                <FormButton
+                    isLoading={loading}
+                    label='Save Changes'
+                />
+            </Box>
+        </Box>
     )
 }

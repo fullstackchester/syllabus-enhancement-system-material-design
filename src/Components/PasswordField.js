@@ -4,13 +4,13 @@ import { VisibilityOff, Visibility } from '@mui/icons-material'
 
 
 export default function PasswordField(
-    { width, fieldId, togglePass, isShowPass, label, value, onChange }) {
+    { width, fieldId, togglePass, isShowPass, label, value, onChange, require }) {
     return (
         <FormControl
             variant='outlined'
             size='small'
             margin='dense'
-            required
+            required={require}
             sx={{ width: width }}>
             <InputLabel htmlFor={fieldId}>{label}</InputLabel>
             <OutlinedInput

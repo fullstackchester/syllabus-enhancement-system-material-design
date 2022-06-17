@@ -1,7 +1,7 @@
 import { Switch, FormControlLabel, styled, Tooltip } from '@mui/material'
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { changeTheme } from '../JS/States'
+import { toLight, toDark } from '../Features/Theme'
 
 const MaterialUISwitch = styled(Switch)(({ theme }) => ({
     width: 62,
@@ -51,18 +51,16 @@ const MaterialUISwitch = styled(Switch)(({ theme }) => ({
 }));
 export default function ThemeModeSwitch() {
 
-    const theme = useSelector((state) => state.mode)
+    const theme = useSelector((state) => state.theme.mode)
     const dispatch = useDispatch()
     return (
-        <>
-            <Tooltip title={theme === 'dark' ? 'Switch to Light mode' : 'Switch to Dark mode'}>
-                <FormControlLabel
-                    control={<MaterialUISwitch sx={{ m: 1 }}
-                        checked={theme === 'light'}
-                        onChange={ () => theme === 'light' ? dispatch(changeTheme.toDark()) : dispatch(changeTheme.toLight()) }
-                    />}
-                />
-            </Tooltip>
-        </>
+        <Tooltip title={theme === 'dark' ? 'Switch to Light mode' : 'Switch to Dark mode'}>
+            <FormControlLabel
+                control={<MaterialUISwitch sx={{ m: 1 }}
+                    checked={theme === 'light'}
+                    onChange={() => theme === 'light' ? dispatch(toDark()) : dispatch(toLight())}
+                />}
+            />
+        </Tooltip>
     )
 }

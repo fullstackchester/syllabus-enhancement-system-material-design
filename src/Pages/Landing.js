@@ -2,7 +2,7 @@ import { Alert, Stack, TextField, Typography, Card } from '@mui/material'
 import { Box, Container } from '@mui/system'
 import { signInWithEmailAndPassword } from 'firebase/auth'
 import React, { useState } from 'react'
-import { useNavigate, Navigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { auth } from '../JS/Firebase'
 import '../index.css'
 import { LoadingButton } from '@mui/lab'
@@ -11,41 +11,49 @@ import { AuthError } from '../Data/AuthError'
 import PasswordField from '../Components/PasswordField'
 import { motion } from 'framer-motion'
 import { useFirebase } from '../Context/FirebaseContext'
+import { notify } from '../Features/PopAlert'
+import { useDispatch } from 'react-redux'
 
 export default function Landing() {
     const [email, setEmail] = useState('')
     const [pass, setPass] = useState('')
     const [isLoading, setLoading] = useState(false)
     const [showPass, setShowPass] = useState(false)
+
+    const dispatch = useDispatch()
     const nav = useNavigate()
 
     const [error, setError] = useState('')
     const { currentUser } = useFirebase()
 
-
-
     function SignUpUser(e) {
         e.preventDefault()
         setLoading(true)
-        setTimeout(function () {
-            if (email === '' || pass === '') {
-                setError('Email and Password are required')
-                setLoading(false)
-            }
-            else {
-                signInWithEmailAndPassword(auth, email, pass)
-                    .then(() => {
-                        setLoading(false)
-                    }).catch((err) => {
-                        for (let key in AuthError) {
-                            if ((err.code).replace('auth/', '') === key) {
-                                setError(AuthError[key])
-                                setLoading(false)
-                            }
+        if (email === '' || pass === '') {
+            dispatch(notify({
+                status: 'error',
+                message: 'Email and Password and required',
+                visible: true
+            }))
+            setLoading(false)
+        }
+        else {
+            signInWithEmailAndPassword(auth, email, pass)
+                .then(() => {
+                    setLoading(false)
+                }).catch((err) => {
+                    for (let key in AuthError) {
+                        if ((err.code).replace('auth/', '') === key) {
+                            dispatch(notify({
+                                status: 'error',
+                                message: AuthError[key],
+                                visible: true
+                            }))
+                            setLoading(false)
                         }
-                    });
-            }
-        }, 500)
+                    }
+                });
+        }
     }
 
     return (
@@ -63,7 +71,6 @@ export default function Landing() {
                     justifyContent: 'center',
                     alignItems: 'center',
                 }}>
-
                 <Box
                     component={Card}
                     elevation={3}
@@ -91,7 +98,6 @@ export default function Landing() {
                             margin='dense'
                             size='small'
                             fullWidth
-                            required={true}
                             onChange={(e) => { setEmail(e.target.value); setError('') }}
                             sx={{ marginTop: '2rem' }} />
                         <PasswordField
@@ -101,9 +107,9 @@ export default function Landing() {
                                 setPass(e.target.value)
                                 setError('')
                             }}
+                            require={false}
                             label='Password'
                             fieldId='password'
-                            required={true}
                             isShowPass={showPass}
                             togglePass={() => showPass ? setShowPass(false) : setShowPass(true)}
                         />

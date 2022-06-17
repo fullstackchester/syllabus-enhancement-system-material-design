@@ -25,7 +25,7 @@ export default function NotificationComponent({ uid }) {
 
 
     useEffect(() => {
-        onValue(ref(database, `notifications`), snap => {
+        const getNotifications = () => onValue(ref(database, `notifications`), snap => {
             if (snap.exists()) {
                 setNotifications(
                     Object.values(snap.val()).filter((notif => {
@@ -43,23 +43,9 @@ export default function NotificationComponent({ uid }) {
                 )
             }
         })
+
+        getNotifications()
     }, [])
-
-
-
-
-    const handleClose = () => {
-        setAnchorEl(null)
-        notifications.forEach(i => {
-            update(ref(database, `notifications/${i.notificationId}`), { notificationStatus: 'read' })
-                .then(() => {
-
-                })
-                .catch((err) => {
-                    console.log(err)
-                })
-        })
-    }
 
     return (
         <>
@@ -67,7 +53,9 @@ export default function NotificationComponent({ uid }) {
                 <IconButton
                     id='notification-button'
                     onClick={(e) => setAnchorEl(e.currentTarget)}>
-                    <StyledBadge badgeContent={unreadCount.length} color="primary">
+                    <StyledBadge
+                        badgeContent={unreadCount.length}
+                        color="primary">
                         <Notifications />
                     </StyledBadge>
                 </IconButton>
@@ -76,7 +64,18 @@ export default function NotificationComponent({ uid }) {
                 id="basic-menu"
                 anchorEl={anchorEl}
                 open={open}
-                onClose={handleClose}
+                onClose={() => {
+                    setAnchorEl(null)
+                    notifications.forEach(i => {
+                        update(ref(database, `notifications/${i.notificationId}`), { notificationStatus: 'read' })
+                            .then(() => {
+
+                            })
+                            .catch((err) => {
+                                console.log(err)
+                            })
+                    })
+                }}
                 sx={{
                     width: '50vw',
                     maxHeight: '90vh'
@@ -85,7 +84,10 @@ export default function NotificationComponent({ uid }) {
                     'aria-labelledby': 'notification-button',
                 }} >
                 <MenuList>
-                    <Typography component={ListItem} variant='h5' sx={{ fontWeight: 'bold' }}>Notifications</Typography>
+                    <Typography
+                        component={ListItem}
+                        variant='h5'
+                        sx={{ fontWeight: 'bold' }}>Notifications</Typography>
                 </MenuList>
                 {notifications.length !== 0 ?
                     <MenuList>

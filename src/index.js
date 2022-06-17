@@ -3,13 +3,26 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import { Provider } from 'react-redux'
-import store from './JS/States'
+import { configureStore } from '@reduxjs/toolkit';
+import themeReducer from './Features/Theme'
+import alertReducer from './Features/PopAlert'
+import profileReducer from './Features/Profile'
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
+const root = ReactDOM.createRoot(document.getElementById('root'))
+
+const store = configureStore({
+	reducer: {
+		theme: themeReducer,
+		alert: alertReducer,
+		profile: profileReducer,
+	}
+})
+
 root.render(
-	<Provider store={store}>
-		<React.StrictMode>
+
+	<React.StrictMode>
+		<Provider store={store}>
 			<App />
-		</React.StrictMode>
-	</Provider>
+		</Provider>
+	</React.StrictMode>
 );

@@ -83,20 +83,16 @@ export default function MyFileInformation({ postId }) {
                 padding: '1.25rem 0 1.25rem 0'
             }}>
                 <Stack direction='row' spacing={1}>
-                    {role !== 'area chair' &&
-                        <>
-                            <IconButton
-                                onClick={() => nav(`/my-files/${uid}/edit-syllabi/${postId}`)}
-                                variant='contained'
-                                color='primary'
-                                size='small'>
-                                <Edit />
-                            </IconButton>
-                            <IconButton onClick={() => setOpenDeleteDialog(true)} variant='contained' color='error' size='small'>
-                                <Delete />
-                            </IconButton>
-                        </>
-                    }
+                    <IconButton
+                        onClick={() => nav(`/my-files/${uid}/edit-syllabi/${postId}`)}
+                        variant='contained'
+                        color='primary'
+                        size='small'>
+                        <Edit />
+                    </IconButton>
+                    <IconButton onClick={() => setOpenDeleteDialog(true)} variant='contained' color='error' size='small'>
+                        <Delete />
+                    </IconButton>
                 </Stack>
                 <Chip label={post.postStatus} color={chipColor} />
             </Box>
