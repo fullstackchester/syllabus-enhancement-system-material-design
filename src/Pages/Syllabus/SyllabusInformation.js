@@ -1,32 +1,35 @@
 import {
-    Box, Button, Link, Stack, Typography, IconButton, DialogTitle, Chip,
-    Dialog, DialogActions, DialogContent, DialogContentText, Divider
+    Box, Stack, Typography, IconButton, Divider
 } from '@mui/material'
-import LoadingButton from '@mui/lab/LoadingButton';
 import { onValue, ref, remove } from 'firebase/database'
 import { getDownloadURL, ref as storageRef } from 'firebase/storage'
 import React, { useEffect, useState } from 'react'
 import SetStatusButton from '../../Components/SetStatusButton'
 import { database, storage } from '../../JS/Firebase'
-import { Delete, Edit, Download } from '@mui/icons-material'
+import { Delete, Edit, FormatColorReset } from '@mui/icons-material'
 import { useNavigate } from 'react-router-dom'
 import { useFirebase } from '../../Context/FirebaseContext'
 import PostLinkLayout from '../../Components/Layout/PostLinkLayout';
 import StatusChip from '../../Components/StatusChip';
+import DialogBox from '../../Components/DialogBox';
+import { notify } from '../../Features/PopAlert'
+import { useDispatch } from 'react-redux'
+
 
 
 export default function SyllabusInformation({ postId }) {
 
+    const dispatch = useDispatch()
     const [post, setPost] = useState({})
-    const [chipColor, setColor] = useState('info')
     const [fileUrl, setFileUrl] = useState()
     const [downloadabelFile, setDownloadableFile] = useState()
 
-    const [openDeleteDialog, setOpenDeleteDialog] = useState(false)
+    const [openDialog, setOpenDialog] = useState(false)
     const nav = useNavigate()
 
     const [isLoading, setLoading] = useState(false)
-    const [fetching, setFetching] = useState(true)
+    const [isFetching, setFetching] = useState(true)
+
 
     const { role } = useFirebase()
 
@@ -43,39 +46,35 @@ export default function SyllabusInformation({ postId }) {
                     .catch((e) => {
                         console.log(e)
                     })
-                    .finally(() => {
-                        setFetching(false)
-                    })
-
-                if (snap.val().postStatus === 'Approved') {
-                    setColor('success')
-                } else if (snap.val().postStatus === 'Needs revisions') {
-                    setColor('error')
-                } else {
-                    setColor('info')
-                }
             }
         })
+
         getSyllabi()
     }, [])
 
 
-
-    function deleteSyllabi(e) {
+    function deleteSyllabus(e) {
         e.preventDefault()
         setLoading(true)
 
-        setTimeout(() => {
-            remove(ref(database, `posts/${postId}`))
-                .then(() => {
-                    setLoading(false)
-                    setOpenDeleteDialog(false)
-                    nav('/syllabus')
-                }).catch((err) => {
-                    console.log(err.message)
-                });
+        remove(ref(database, `posts/${postId}`))
+            .then(() => {
+                setLoading(false)
+                setOpenDialog(false)
 
-        }, 1500)
+                dispatch(notify({
+                    status: 'success',
+                    message: 'Successfully deleted syllabus',
+                    visible: true
+                }))
+                nav('/syllabus')
+            }).catch((err) => {
+                dispatch(notify({
+                    status: 'success',
+                    message: err.message,
+                    visible: true
+                }))
+            });
     }
 
 
@@ -100,7 +99,7 @@ export default function SyllabusInformation({ postId }) {
                                 <Edit />
                             </IconButton>
                             <IconButton
-                                onClick={() => setOpenDeleteDialog(true)}
+                                onClick={() => setOpenDialog(true)}
                                 variant='contained'
                                 color='error'
                                 size='small'>
@@ -120,6 +119,7 @@ export default function SyllabusInformation({ postId }) {
                 <Typography variant='h4' sx={{ fontWeight: '300' }} gutterBottom>
                     {post.postTitle} <StatusChip postStatus={post.postStatus} />
                 </Typography>
+
                 <PostLinkLayout
                     Author={post.postAuthor}
                     File={post.postFile}
@@ -127,25 +127,21 @@ export default function SyllabusInformation({ postId }) {
                     subjectId={post.subjectId}
                     PreviewUrl={fileUrl}
                     DownloadUrl={downloadabelFile} />
+
+
                 <Divider sx={{ margin: '1rem 0 1rem 0' }} />
                 <Typography variant='body1'>{post.postDescription}</Typography>
             </Box>
-            <Dialog open={openDeleteDialog} onClose={() => setOpenDeleteDialog(false)}>
-                <DialogTitle>Confirm Syllabi Deletion</DialogTitle>
-                <DialogContent>
-                    <DialogContentText>
-                        Are you sure you want to delete this syllabi?
-                    </DialogContentText>
-                </DialogContent>
-                <DialogActions>
-                    <Button size='small' sx={{ textTransform: 'none' }} onClick={() => setOpenDeleteDialog(false)}>Cancel</Button>
-                    <LoadingButton
-                        loading={isLoading}
-                        size='small'
-                        sx={{ textTransform: 'none' }}
-                        onClick={deleteSyllabi} color='error'>Delete</LoadingButton>
-                </DialogActions>
-            </Dialog>
+
+            <DialogBox
+                isOpen={openDialog}
+                title='Confirm Syllabi Deletion'
+                message='Are you sure you want to delete this syllabi?'
+                handleClick={deleteSyllabus}
+                handleClose={() => setOpenDialog(false)}
+                isLoading={isLoading}
+                btnLabel='Delete'
+            />
         </>
     )
 }

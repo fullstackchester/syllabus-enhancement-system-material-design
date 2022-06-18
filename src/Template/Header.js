@@ -14,7 +14,7 @@ import { useNavigate } from 'react-router-dom';
 import { auth } from '../JS/Firebase';
 import { signOut } from 'firebase/auth';
 import ProfileAvatar from '../Components/ProfileAvatar';
-import { Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Button } from '@mui/material'
+import { Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Button, Paper } from '@mui/material'
 import LoadingButton from '@mui/lab/LoadingButton';
 
 
@@ -53,6 +53,8 @@ export default function Header({ ACCOUNT_NAME }) {
                 justifyContent: 'space-between',
                 alignItems: 'center',
                 padding: '1rem',
+                borderRadius: '0',
+                boxShadow: '0 0 0 0'
             }}>
             <ThemeModeSwitch />
             <Stack spacing={1} direction='row'>

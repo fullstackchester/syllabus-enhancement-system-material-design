@@ -1,6 +1,6 @@
 import { LoadingButton } from '@mui/lab'
 import {
-    Avatar, Button, Grid, Stack, TextField, FormControl,
+    Avatar, Button, Grid, Stack, TextField, FormControl, Paper,
     Select, InputLabel, MenuItem, Snackbar, Alert, Typography,
 } from '@mui/material'
 import { Box, Container } from '@mui/system'
@@ -11,6 +11,7 @@ import { set, ref } from 'firebase/database'
 import { uploadBytes, ref as storageRef } from 'firebase/storage'
 import { auth, database, storage } from '../JS/Firebase'
 import ThemeModeSwitch from '../Components/ThemeModeSwitch'
+import { motion } from 'framer-motion'
 
 export default function Signup() {
     const nav = useNavigate()
@@ -154,19 +155,34 @@ export default function Signup() {
     ]
     return (
         <>
-            <Container maxWidth='xl' sx={{
-                height: '100vh',
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'center',
-                alignItems: 'center',
-            }}>
-                <Box sx={{ width: '35%', minWidth: '30rem', minHeight: '60vh', padding: '1rem' }}>
-                    <form
+            <Container
+                maxWidth='xl'
+                component={motion.div}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opactity: 0 }}
+                sx={{
+                    height: '100vh',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                }}>
+                <Box
+                    component={Paper}
+                    elevation={3}
+                    sx={{
+                        width: '40%',
+                        minWidth: '30rem',
+                        minHeight: '60vh',
+                        paddingX: '3rem',
+                        paddingY: '2rem',
+                    }}>
+                    <Box
+                        component='form'
                         id='sign-up-form'
                         onSubmit={signupUser}>
                         <Grid container spacing={2}>
-                            {/* UPPER PART OF GRID */}
                             <Grid item xs={12} >
                                 <Stack direction='row' spacing={1} sx={{ justifyContent: 'center', alignItems: 'center' }}>
                                     <Avatar
@@ -262,17 +278,18 @@ export default function Signup() {
                             </Grid>
                         </Grid>
 
-                    </form>
+                    </Box>
+                    <Stack direction='row'>
+                        <Typography variant='caption' color='text.secondary' sx={{ fontWeight: 'bold' }}>
+                            Already have and account? <Typography
+                                variant='caption' color='primary'
+                                sx={{ fontWeight: 'bold', cursor: 'pointer' }}
+                                onClick={() => nav('/')}
+                            >Login</Typography>
+                        </Typography>
+                    </Stack>
                 </Box>
-                <Stack direction='row'>
-                    <Typography variant='caption' color='text.secondary' sx={{ fontWeight: 'bold' }}>
-                        Already have and account? <Typography
-                            variant='caption' color='primary'
-                            sx={{ fontWeight: 'bold', cursor: 'pointer' }}
-                            onClick={() => nav('/')}
-                        >Login</Typography>
-                    </Typography>
-                </Stack>
+
             </Container>
             <Box sx={{
                 position: 'absolute',
@@ -281,6 +298,8 @@ export default function Signup() {
             }}>
                 <ThemeModeSwitch />
             </Box>
+
+
             <Snackbar
                 open={snakcOpen}
                 onClose={() => {

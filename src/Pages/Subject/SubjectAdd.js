@@ -1,12 +1,13 @@
-import { TextField, Alert, Snackbar, Typography, Grid } from '@mui/material'
+import { TextField, Typography, Grid } from '@mui/material'
 import { Box } from '@mui/system'
 import React, { useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
-import LoadingButton from '@mui/lab/LoadingButton';
 import '../../index.css'
 import { ref, set } from 'firebase/database';
 import { database } from '../../JS/Firebase';
-import { subjectList } from '../../Data/Data';
+import FormButton from '../../Components/FormButton';
+import { notify } from '../../Features/PopAlert'
+import { useDispatch } from 'react-redux'
 
 export default function SubjectAdd() {
 
@@ -17,18 +18,8 @@ export default function SubjectAdd() {
     const { subjectId } = useParams()
     const [loading, setLoading] = useState(false)
 
-    const [actionMessage, setActionMessage] = useState('')
-    const [actionStatus, setActionStatus] = useState()
-    const [snakcOpen, setSnackOpen] = useState(false)
-
-    const [error, setError] = useState('')
-    const [show, setShow] = useState(false)
-
     const nav = useNavigate()
-    function addSubject(e) {
-        e.preventDefault()
-        alert('tanginamo')
-    }
+    const dispatch = useDispatch()
 
 
     const addSubjectTextfields = [
@@ -76,7 +67,6 @@ export default function SubjectAdd() {
         e.preventDefault()
         setLoading(true)
 
-
         const newSubject = {
             subjectId: subjectId,
             courseCode: courseCode,
@@ -85,82 +75,60 @@ export default function SubjectAdd() {
             creditUnits: creditUnits,
         }
 
-        setTimeout(() => {
-            set(ref(database, `subject/${subjectId}`), newSubject)
-                .then(() => {
-                    setLoading(false)
-                    setActionStatus('success')
-                    setActionMessage('Successfully added new subject')
-                    setSnackOpen(true)
-                }).catch((err) => {
-                    setLoading(false)
-                    setActionStatus('error')
-                    setActionMessage(err.message)
-                    setSnackOpen(true)
-                });
-        }, 1500)
+        set(ref(database, `subject/${subjectId}`), newSubject)
+            .then(() => {
+                setLoading(false)
+                dispatch(notify({
+                    status: 'success',
+                    message: 'Successfully added subject',
+                    visible: true,
+                }))
+                nav(-1)
+
+            }).catch((err) => {
+                setLoading(false)
+                dispatch(notify({
+                    status: 'error',
+                    message: err.message,
+                    visible: true,
+                }))
+            });
     }
     return (
-        <>
-            <Box sx={{
-                width: '70%',
-                height: '85%',
-                display: 'flex',
-                flexDirection: 'column',
-                padding: '1.5rem',
-            }}>
-                <Typography variant='h4' gutterBottom>New Subject</Typography>
-                <form
-                    id='add-subject-form'
-                    spellCheck={false}
-                    onSubmit={addSubject}>
-                    <Grid container spacing={2}>
-                        {
-                            addSubjectTextfields.map((v, key) =>
-                                <Grid key={key} item xs={v.width}>
-                                    <TextField
-                                        size='small'
-                                        placeholder={v.placeHolder}
-                                        variant='outlined'
-                                        sx={{ width: '100%' }}
-                                        required={v.required}
-                                        label={v.label} type={v.type}
-                                        onChange={v.onChange}
-                                        rows={v.maxRows}
-                                        multiline={v.multiline} />
-                                </Grid>
-                            )
-                        }
-                    </Grid>
-                </form>
-
-                <LoadingButton
-                    sx={{
-                        marginTop: '1rem',
-                        width: 'max-content',
-                        textTransform: 'none'
-                    }}
-                    form='add-subject-form'
-                    type='submit'
-                    loading={loading}
-                    variant='contained' > Add Subject</LoadingButton>
-            </Box>
-
-            <Snackbar
-                open={snakcOpen}
-                onClose={() => {
-                    if (actionStatus === 'success') {
-                        setSnackOpen(false)
-                        nav('/subjects')
-                    } else {
-                        setSnackOpen(false)
+        <Box sx={{
+            width: '70%',
+            height: '100%',
+            display: 'flex',
+            flexDirection: 'column',
+            paddingX: '3rem',
+            paddingY: '2rem',
+        }}>
+            <Typography variant='h4' gutterBottom>New Subject</Typography>
+            <Box
+                component='form'
+                id='add-subject-form'
+                spellCheck={false}
+                onSubmit={addSubject}>
+                <Grid container spacing={3}>
+                    {
+                        addSubjectTextfields.map((v, key) =>
+                            <Grid key={key} item xs={v.width}>
+                                <TextField
+                                    size='small'
+                                    placeholder={v.placeHolder}
+                                    variant='outlined'
+                                    sx={{ width: '100%' }}
+                                    required={v.required}
+                                    label={v.label} type={v.type}
+                                    onChange={v.onChange}
+                                    rows={v.maxRows}
+                                    multiline={v.multiline} />
+                            </Grid>
+                        )
                     }
-                }}
-                autoHideDuration={1000}>
-                <Alert severity={actionStatus} >
-                    {actionMessage}
-                </Alert>
-            </Snackbar>
-        </>
+                </Grid>
+                <FormButton label='Add Subject' isLoading={loading} />
+            </Box>
+        </Box>
     )
 }

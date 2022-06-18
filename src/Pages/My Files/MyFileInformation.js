@@ -1,30 +1,28 @@
-import { Box, Button, Link, Stack, Typography, IconButton, DialogTitle } from '@mui/material'
-import LoadingButton from '@mui/lab/LoadingButton';
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
+import { Box, Stack, Typography, IconButton, Divider } from '@mui/material'
 import { onValue, ref, remove } from 'firebase/database'
 import { getDownloadURL, ref as storageRef } from 'firebase/storage'
 import React, { useEffect, useState } from 'react'
 import { database, storage } from '../../JS/Firebase'
-import Chip from '@mui/material/Chip';
 import { Delete, Edit } from '@mui/icons-material'
 import { useNavigate, useParams } from 'react-router-dom'
-import { useFirebase } from '../../Context/FirebaseContext'
+import { notify } from '../../Features/PopAlert'
+import { useDispatch } from 'react-redux'
+import StatusChip from '../../Components/StatusChip';
+import PostLinkLayout from '../../Components/Layout/PostLinkLayout';
+import DialogBox from '../../Components/DialogBox'
 
 export default function MyFileInformation({ postId }) {
 
     const nav = useNavigate()
-    const { role } = useFirebase()
+    const dispatch = useDispatch()
     const { uid } = useParams()
 
     const [post, setPost] = useState({})
-    const [chipColor, setColor] = useState('info')
     const [fileUrl, setFileUrl] = useState()
+    const [downloadabelFile, setDownloadableFile] = useState()
 
-    const [openDeleteDialog, setOpenDeleteDialog] = useState(false)
 
+    const [openDialog, setOpenDialog] = useState(false)
     const [isLoading, setLoading] = useState(false)
 
 
@@ -33,22 +31,14 @@ export default function MyFileInformation({ postId }) {
         const getSyllabi = () => onValue(ref(database, `posts/${postId}`), snap => {
             if (snap.exists()) {
                 setPost(snap.val())
-
                 getDownloadURL(storageRef(storage, snap.val().postFileUrl))
                     .then((url) => {
+                        setDownloadableFile(url)
                         setFileUrl(`https://drive.google.com/viewerng/viewer?embedded=true&url=${encodeURIComponent(url)}`)
                     })
                     .catch((e) => {
                         console.log(e)
                     })
-
-                if (snap.val().postStatus === 'Approved') {
-                    setColor('success')
-                } else if (snap.val().postStatus === 'Needs revisions') {
-                    setColor('error')
-                } else {
-                    setColor('info')
-                }
             }
         })
 
@@ -58,18 +48,24 @@ export default function MyFileInformation({ postId }) {
     function deleteSyllabi(e) {
         e.preventDefault()
         setLoading(true)
-
         setTimeout(() => {
             remove(ref(database, `posts/${postId}`))
                 .then(() => {
-                    setLoading(false)
-                    setOpenDeleteDialog(false)
-                    nav('/syllabus')
+                    dispatch(notify({
+                        status: 'success',
+                        message: 'Successfully deleted syllabus',
+                        visible: true
+                    }))
+                    nav(-1)
                 }).catch((err) => {
-                    console.log(err.message)
-                });
-
-        }, 1500)
+                    dispatch(notify({
+                        status: 'error',
+                        message: err.message,
+                        visible: true
+                    }))
+                })
+            setLoading(false)
+        }, 2000)
     }
 
     return (
@@ -90,48 +86,43 @@ export default function MyFileInformation({ postId }) {
                         size='small'>
                         <Edit />
                     </IconButton>
-                    <IconButton onClick={() => setOpenDeleteDialog(true)} variant='contained' color='error' size='small'>
+                    <IconButton
+                        onClick={() => setOpenDialog(true)}
+                        variant='contained'
+                        color='error'
+                        size='small'>
                         <Delete />
                     </IconButton>
                 </Stack>
-                <Chip label={post.postStatus} color={chipColor} />
             </Box>
-            <Typography variant='h4'>{post.postTitle}</Typography>
-            <Typography variant='body1'>{post.postDescription}</Typography>
-            <Box sx={{
-                marginTop: '1rem',
-            }}>
-                <Stack>
-                    {/* <Typography variant='subtitle2' display='block'>{`Author: ${post.postAuthor}`}</Typography> */}
-                    <Typography variant='subtitle2' display='block'>
-                        {`Attachments: `}<Button
-                            onClick={() => window.open(fileUrl, '_blank')}
-                            sx={{ textTransform: 'none' }}>
-                            {post.postFile}
-                        </Button>
-                    </Typography>
-                    {role !== 'faculty' && <Typography variant='subtitle2' display='block'>{`Subject: `}<Link href='#'>{post.subjectId}</Link>  </Typography>}
-                    <Typography variant='subtitle2' display='block'>{`Posted: ${post.postDate}`}</Typography>
-                </Stack>
+            <Box
+                component='div'
+                sx={{
+                    height: 'calc(100% - 3rem)',
+                    display: 'flex',
+                    flexDirection: 'column',
+                }}>
+                <Typography variant='h4' sx={{ fontWeight: '300' }} gutterBottom>
+                    {post.postTitle} <StatusChip postStatus={post.postStatus} />
+                </Typography>
+                <PostLinkLayout
+                    File={post.postFile}
+                    Date={post.postDate}
+                    PreviewUrl={fileUrl}
+                    DownloadUrl={downloadabelFile} />
+                <Divider sx={{ margin: '1rem 0 1rem 0' }} />
+                <Typography variant='body1'>{post.postDescription}</Typography>
             </Box>
 
-            <Dialog open={openDeleteDialog} onClose={() => setOpenDeleteDialog(false)}>
-                <DialogTitle>Confirm Syllabi Deletion</DialogTitle>
-                <DialogContent>
-                    <DialogContentText>
-                        Are you sure you want to delete this syllabi?
-                    </DialogContentText>
-                </DialogContent>
-                <DialogActions>
-                    <Button size='small' sx={{ textTransform: 'none' }} onClick={() => setOpenDeleteDialog(false)}>Cancel</Button>
-                    <LoadingButton
-                        loading={isLoading}
-                        size='small'
-                        sx={{ textTransform: 'none' }}
-                        onClick={deleteSyllabi} color='error'>Delete</LoadingButton>
-                </DialogActions>
-
-            </Dialog>
+            <DialogBox
+                isOpen={openDialog}
+                title='Confirm file deletion'
+                message='Are you sure you want to delete this file?'
+                handleClick={deleteSyllabi}
+                handleClose={() => setOpenDialog(false)}
+                btnLabel='Delete'
+                isLoading={isLoading}
+            />
         </>
     )
 }

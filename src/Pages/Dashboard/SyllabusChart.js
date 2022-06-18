@@ -49,7 +49,9 @@ export default function SyllabusChart() {
             initial={{ scale: 1 }}
             animate={{ scale: expand ? 1.2 : 1 }}
             style={{ scale: expand }}
-            sx={{ width: '100%' }}>
+            sx={{
+                width: '100%',
+            }}>
             <CardContent
                 sx={{
                     height: '100%',

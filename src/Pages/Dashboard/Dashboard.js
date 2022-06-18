@@ -52,8 +52,8 @@ export default function Dashboard() {
                         CHART_BOXES.map((v, k) =>
                             <Grid
                                 key={k}
-                                item
-                                xs={4}>
+                                xs={4}
+                                item>
                                 {v}
                             </Grid>)
                     }

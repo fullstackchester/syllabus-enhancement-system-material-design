@@ -7,6 +7,7 @@ import { configureStore } from '@reduxjs/toolkit';
 import themeReducer from './Features/Theme'
 import alertReducer from './Features/PopAlert'
 import profileReducer from './Features/Profile'
+import fetchReducer from './Features/Fecthing'
 
 const root = ReactDOM.createRoot(document.getElementById('root'))
 
@@ -15,6 +16,7 @@ const store = configureStore({
 		theme: themeReducer,
 		alert: alertReducer,
 		profile: profileReducer,
+		fetch: fetchReducer,
 	}
 })
 

@@ -19,12 +19,16 @@ export default function PostLinkLayout({
             width: '60%',
         }}>
             <Grid container spacing={0}>
-                <Grid item xs={1}>
-                    <Person fontSize='small' />
-                </Grid>
-                <Grid item xs={11}>
-                    <Typography variant='body2'>{Author}</Typography>
-                </Grid>
+                {Author &&
+                    <>
+                        <Grid item xs={1}>
+                            <Person fontSize='small' />
+                        </Grid>
+                        <Grid item xs={11}>
+                            <Typography variant='body2'>{Author}</Typography>
+                        </Grid>
+                    </>
+                }
                 <Grid item xs={1} >
                     <Attachment fontSize='small' />
                 </Grid>
@@ -71,26 +75,30 @@ export default function PostLinkLayout({
                         </MenuList>
                     </Menu>
                 </Grid>
-                <Grid item xs={1} >
-                    <MenuBook fontSize='small' />
-                </Grid>
-                <Grid item xs={11}>
-                    <Typography
-                        sx={{ textTransform: 'none', cursor: 'pointer' }}
-                        onClick={() => nav(`/subjects/${subjectId}`)}
-                        color='primary'
-                        variant='body2'>
-                        {(function () {
-                            let subjectTitle = ''
-                            onValue(ref(database, `subject/${subjectId}`), snapshot => {
-                                if (snapshot.exists()) {
-                                    subjectTitle = snapshot.val().subjectTitle
-                                }
-                            })
-                            return subjectTitle
-                        })()}
-                    </Typography>
-                </Grid>
+                {subjectId &&
+                    <>
+                        <Grid item xs={1} >
+                            <MenuBook fontSize='small' />
+                        </Grid>
+                        <Grid item xs={11}>
+                            <Typography
+                                sx={{ textTransform: 'none', cursor: 'pointer' }}
+                                onClick={() => nav(`/subjects/${subjectId}`)}
+                                color='primary'
+                                variant='body2'>
+                                {(function () {
+                                    let subjectTitle = ''
+                                    onValue(ref(database, `subject/${subjectId}`), snapshot => {
+                                        if (snapshot.exists()) {
+                                            subjectTitle = snapshot.val().subjectTitle
+                                        }
+                                    })
+                                    return subjectTitle
+                                })()}
+                            </Typography>
+                        </Grid>
+                    </>
+                }
                 <Grid item xs={1} >
                     <PushPin fontSize='small' />
                 </Grid>
@@ -98,7 +106,6 @@ export default function PostLinkLayout({
                     <Typography variant='body2'>{Date}</Typography>
                 </Grid>
             </Grid>
-
         </Box>
     )
 }

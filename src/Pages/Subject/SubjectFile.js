@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Tab, Typography } from '@mui/material'
+import { Tab } from '@mui/material'
 import { Box } from '@mui/system'
 import { TabContext, TabPanel, TabList } from '@mui/lab'
 import { useParams } from 'react-router-dom';

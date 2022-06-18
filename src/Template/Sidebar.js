@@ -60,6 +60,8 @@ export default function Sidebar() {
                 top: '0',
                 display: 'flex',
                 flexDirection: 'column',
+                borderRadius: '0',
+                boxShadow: '0 0 0 0'
             }}>
             <Toolbar
                 disableGutters

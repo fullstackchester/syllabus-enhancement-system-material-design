@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react'
-import { Grid, Button, Typography } from '@mui/material';
-import { Card, CardActions, CardContent } from '@mui/material';
+import { Grid, Typography } from '@mui/material';
 import { onValue, ref } from 'firebase/database'
 import { database } from '../../JS/Firebase'
 import { useNavigate } from 'react-router-dom';
 import { Box } from '@mui/system';
+import FileCard from '../../Components/FileCard';
 
 export default function FacultySyllabus({ uid }) {
 
@@ -38,16 +38,11 @@ export default function FacultySyllabus({ uid }) {
                     {
                         syllabus.map((v, k) =>
                             <Grid item key={k} xs={3}>
-                                <Card variant="outlined" sx={{ minHeight: '12rem', display: 'flex', flexDirection: 'column' }}>
-                                    <CardContent sx={{ flex: '1', }}>
-                                        <Typography variant='subtitle2' color="text.primary" gutterBottom>
-                                            {v.postTitle}
-                                        </Typography>
-                                    </CardContent>
-                                    <CardActions>
-                                        <Button size='small' onClick={() => nav(`/syllabus/${v.postId}`)}>Open</Button>
-                                    </CardActions>
-                                </Card>
+                                <FileCard
+                                    title={v.postTitle}
+                                    date={v.postDate}
+                                    status={v.postStatus}
+                                    handleClick={() => nav(`/syllabus/${v.postId}`)} />
                             </Grid>
                         )
                     }

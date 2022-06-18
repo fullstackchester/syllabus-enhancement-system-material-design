@@ -2,6 +2,8 @@ import { Switch, FormControlLabel, styled, Tooltip } from '@mui/material'
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { toLight, toDark } from '../Features/Theme'
+import { LightMode, DarkMode } from '@mui/icons-material'
+import { blue, grey } from '@mui/material/colors'
 
 const MaterialUISwitch = styled(Switch)(({ theme }) => ({
     width: 62,
@@ -21,12 +23,12 @@ const MaterialUISwitch = styled(Switch)(({ theme }) => ({
             },
             '& + .MuiSwitch-track': {
                 opacity: 1,
-                backgroundColor: theme.palette.mode === 'dark' ? '#8796A5' : '#aab4be',
+                backgroundColor: theme.palette.mode === 'dark' ? grey[700] : grey[300],
             },
         },
     },
     '& .MuiSwitch-thumb': {
-        backgroundColor: theme.palette.mode === 'dark' ? '#003892' : '#001e3c',
+        backgroundColor: theme.palette.mode === 'dark' ? blue[500] : blue[700],
         width: 32,
         height: 32,
         '&:before': {
@@ -45,7 +47,7 @@ const MaterialUISwitch = styled(Switch)(({ theme }) => ({
     },
     '& .MuiSwitch-track': {
         opacity: 1,
-        backgroundColor: theme.palette.mode === 'dark' ? '#8796A5' : '#aab4be',
+        backgroundColor: theme.palette.mode === 'dark' ? grey[700] : grey[300],
         borderRadius: 20 / 2,
     },
 }));

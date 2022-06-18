@@ -1,7 +1,6 @@
 import {
     Button, TextField, Typography, Grid, FormControl, MenuItem, Select, InputLabel
 } from '@mui/material'
-import LoadingButton from '@mui/lab/LoadingButton';
 import { Box } from '@mui/system'
 import React, { useState, useRef, useEffect } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
@@ -12,6 +11,7 @@ import { schoolYearList, subjectList } from '../../Data/Data';
 import { v4 } from 'uuid'
 import { notify } from '../../Features/PopAlert'
 import { useDispatch } from 'react-redux'
+import FormButton from '../../Components/FormButton';
 
 export default function MyFileEdit() {
 
@@ -125,11 +125,12 @@ export default function MyFileEdit() {
             paddingY: '2rem',
         }}>
             <Typography variant='h4' gutterBottom>Edit Syllabus</Typography>
-            <form
+            <Box
+                component='form'
                 id='add-syllabus-form'
                 spellCheck={false}
                 onSubmit={addSyllabus}>
-                <Grid container spacing={2}>
+                <Grid container spacing={3}>
                     <Grid item xs={12} >
                         <TextField
                             required
@@ -223,18 +224,8 @@ export default function MyFileEdit() {
                         />
                     </Grid>
                 </Grid>
-            </form>
-
-            <LoadingButton
-                sx={{
-                    marginTop: '1rem',
-                    width: 'max-content',
-                    textTransform: 'none'
-                }}
-                form='add-syllabus-form'
-                type='submit'
-                loading={loading}
-                variant='contained'>Save Changes</LoadingButton>
+                <FormButton label='Save Changes' isLoading={loading} />
+            </Box>
         </Box>
     )
 }

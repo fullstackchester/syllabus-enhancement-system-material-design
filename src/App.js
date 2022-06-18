@@ -27,13 +27,14 @@ import Protected from "./Components/Routing/ProtectedRoute";
 import Restricted from "./Components/Routing/RestrictedRoute";
 import Practice from "./Pages/Practice";
 import { ThemeProvider, createTheme } from '@mui/material/styles';
-import { CssBaseline, Dialog, Alert, Snackbar } from '@mui/material'
+import { CssBaseline, Alert, Snackbar } from '@mui/material'
+import { Box } from "@mui/system";
 import { useDispatch, useSelector } from 'react-redux'
 import Authentication from "./Pages/Authentication/Authentication";
 import ForgetPassword from "./Pages/Authentication/ForgetPassword";
 import AuthListener from "./Components/Routing/AuthListenerRoute";
 import { notify } from './Features/PopAlert'
-
+import { grey } from '@mui/material/colors'
 function App() {
 
 	const dispatch = useDispatch()
@@ -43,6 +44,9 @@ function App() {
 	const customTheme = createTheme({
 		palette: {
 			mode: theme,
+			background: {
+				default: theme === 'dark' ? '#121212' : grey[50]
+			}
 		},
 		typography: {
 			fontFamily: `'Open Sans', sans-serif`,
@@ -56,7 +60,9 @@ function App() {
 		<FirebaseProvider>
 			<ThemeProvider theme={customTheme}>
 				<CssBaseline />
-				<div className="App">
+				<Box
+					component='div'
+					className='App'>
 					<BrowserRouter>
 						<Routes>
 							<Route index element={<AuthListener><Landing /></AuthListener>} />
@@ -100,14 +106,14 @@ function App() {
 							</Route>
 						</Routes>
 					</BrowserRouter>
-				</div>
+				</Box>
 
 				<Snackbar
 					open={POP_ALERT.visible}
 					anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
 					onClose={() => {
 						dispatch(notify({
-							status: 'error',
+							status: '',
 							message: '',
 							visible: false
 						}))
@@ -117,6 +123,7 @@ function App() {
 						{POP_ALERT.message}
 					</Alert>
 				</Snackbar>
+
 			</ThemeProvider>
 		</FirebaseProvider>
 	)

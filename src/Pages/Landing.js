@@ -76,9 +76,10 @@ export default function Landing() {
                     elevation={3}
                     sx={{
                         minWidth: '30rem',
-                        width: '35%',
+                        width: '40%',
                         minHeight: '20rem',
-                        padding: '1.5rem',
+                        paddingX: '3rem',
+                        paddingY: '2rem',
                         display: 'flex',
                         flexDirection: "column"
                     }}>
@@ -138,7 +139,12 @@ export default function Landing() {
                             variant='contained'
                             size='medium' >Login</LoadingButton>
                     </Box>
-                    <Stack direction='row' sx={{ marginTop: '1rem', justifyContent: 'center' }}>
+                    <Stack
+                        direction='row'
+                        sx={{
+                            marginTop: '1rem',
+                            justifyContent: 'center',
+                        }}>
                         <Typography variant='body2'> Don't have an account?</Typography>
                         <Typography
                             variant='body2'
@@ -151,12 +157,12 @@ export default function Landing() {
                     </Stack>
                 </Box>
             </Container>
-
-            <Box sx={{
-                position: 'absolute',
-                bottom: '2rem',
-                left: '2rem'
-            }}>
+            <Box
+                sx={{
+                    position: 'absolute',
+                    bottom: '2rem',
+                    left: '2rem'
+                }}>
                 <ThemeModeSwitch />
             </Box>
         </>

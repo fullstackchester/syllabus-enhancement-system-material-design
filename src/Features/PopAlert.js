@@ -16,5 +16,6 @@ export const popalertSlice = createSlice({
     }
 })
 
+
 export const { notify } = popalertSlice.actions
 export default popalertSlice.reducer;
