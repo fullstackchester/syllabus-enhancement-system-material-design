@@ -7,6 +7,7 @@ import { sendPasswordResetEmail } from 'firebase/auth'
 import { auth } from '../../JS/Firebase'
 import { notify } from '../../Features/PopAlert'
 import { useDispatch } from 'react-redux'
+import ThemeModeSwitch from '../../Components/ThemeModeSwitch'
 
 export default function ForgetPassword() {
     const [email, setEmail] = useState('')
@@ -19,7 +20,7 @@ export default function ForgetPassword() {
         e.preventDefault()
         setLoading(true)
         sendPasswordResetEmail(auth, email)
-            .then((result) => {
+            .then(() => {
                 setLoading(false)
                 dispatch(notify({
                     status: 'success',
@@ -93,6 +94,13 @@ export default function ForgetPassword() {
                         variant='contained'
                         size='medium' >Send Password Reset Email</LoadingButton>
                 </Box>
+            </Box>
+            <Box sx={{
+                position: 'absolute',
+                bottom: '2rem',
+                left: '2rem'
+            }}>
+                <ThemeModeSwitch />
             </Box>
         </Container>
     )

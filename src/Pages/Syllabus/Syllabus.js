@@ -32,7 +32,7 @@ export default function Syllabus() {
 
     return (
         <ListLayout
-            btnTitle='New Syllabi'
+            btnTitle='New Syllabus'
             listTitle='Syllabus'
             path={`/syllabus/new-syllabus/${v4()}`}>
             <CustomDataGrid

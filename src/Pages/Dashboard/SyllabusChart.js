@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Typography, Card, CardContent, CardActions, Stack, Button } from '@mui/material'
+import { Typography, Card, CardContent, CardActions, Stack } from '@mui/material'
 import { database } from '../../JS/Firebase'
 import { onValue, ref } from 'firebase/database'
 import { Box } from '@mui/system'
@@ -96,9 +96,6 @@ export default function SyllabusChart() {
                 </Stack>
             </CardContent>
             <CardActions>
-                <Button
-                    size='small'
-                    onClick={() => !expand ? setExpand(true) : setExpand(false)}>Expand</Button>
             </CardActions>
         </Card>
     )

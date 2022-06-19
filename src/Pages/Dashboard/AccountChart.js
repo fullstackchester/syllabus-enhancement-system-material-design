@@ -92,8 +92,6 @@ export default function AccountChart() {
                 </Stack>
             </CardContent>
             <CardActions>
-                <Button
-                    size='small'>See all syllabus</Button>
             </CardActions>
         </Card>
     )

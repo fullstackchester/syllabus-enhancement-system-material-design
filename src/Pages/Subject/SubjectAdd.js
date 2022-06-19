@@ -2,7 +2,6 @@ import { TextField, Typography, Grid } from '@mui/material'
 import { Box } from '@mui/system'
 import React, { useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
-import '../../index.css'
 import { ref, set } from 'firebase/database';
 import { database } from '../../JS/Firebase';
 import FormButton from '../../Components/FormButton';

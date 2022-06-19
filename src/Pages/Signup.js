@@ -1,7 +1,7 @@
 import { LoadingButton } from '@mui/lab'
 import {
     Avatar, Button, Grid, Stack, TextField, FormControl, Paper,
-    Select, InputLabel, MenuItem, Snackbar, Alert, Typography,
+    Select, InputLabel, MenuItem, Typography,
 } from '@mui/material'
 import { Box, Container } from '@mui/system'
 import React, { useState, useEffect } from 'react'
@@ -12,9 +12,12 @@ import { uploadBytes, ref as storageRef } from 'firebase/storage'
 import { auth, database, storage } from '../JS/Firebase'
 import ThemeModeSwitch from '../Components/ThemeModeSwitch'
 import { motion } from 'framer-motion'
+import { notify } from '../Features/PopAlert'
+import { useDispatch } from 'react-redux'
 
 export default function Signup() {
     const nav = useNavigate()
+    const dispatch = useDispatch()
 
     const [name, setName] = useState()
     const [employeeId, setEmployeeId] = useState()
@@ -22,12 +25,6 @@ export default function Signup() {
     const [pass, setPass] = useState()
     const [confirmPass, setConfirmPass] = useState()
     const [department, setDepartment] = useState('')
-
-
-    //for action validation and alerts
-    const [actionMessage, setActionMessage] = useState('')
-    const [actionStatus, setActionStatus] = useState()
-    const [snakcOpen, setSnackOpen] = useState(false)
 
     // states for avatar
     const [avatar, setAvatar] = useState()
@@ -51,60 +48,75 @@ export default function Signup() {
     function signupUser(e) {
         e.preventDefault()
         setLoading(true)
-        if (pass === confirmPass) {
-            createUserWithEmailAndPassword(auth, email, pass)
-                .then((user) => {
+        setTimeout(() => {
+            if (pass === confirmPass) {
+                createUserWithEmailAndPassword(auth, email, pass)
+                    .then((user) => {
 
-                    const newAccount = {
-                        uid: user.user.uid,
-                        employeeId: employeeId,
-                        photoUrl: avatar ? avatar.name : '',
-                        name: name,
-                        email: email,
-                        department: department,
-                        userType: 'faculty'
-                    }
-                    set(ref(database, `users/${user.user.uid}`), newAccount)
-                        .then(() => {
-                            if (avatar) {
-                                uploadBytes(storageRef(storage, `avatars/${user.user.uid}/${avatar.name}`), avatar)
-                                    .then(() => {
-                                        setLoading(false)
-                                        setActionStatus('success')
-                                        setActionMessage('Successfully registered your account')
-                                        setSnackOpen(true)
-                                    }).catch((err) => {
-                                        setLoading(false)
-                                        setActionStatus('error')
-                                        setActionMessage(err.message)
-                                        setSnackOpen(true)
-                                    })
-                            } else {
+                        const newAccount = {
+                            uid: user.user.uid,
+                            employeeId: employeeId,
+                            photoUrl: avatar ? avatar.name : '',
+                            name: name,
+                            email: email,
+                            department: department,
+                            userType: 'faculty'
+                        }
+                        set(ref(database, `users/${user.user.uid}`), newAccount)
+                            .then(() => {
+                                if (avatar) {
+                                    uploadBytes(storageRef(storage, `avatars/${user.user.uid}/${avatar.name}`), avatar)
+                                        .then(() => {
+                                            setLoading(false)
+                                            dispatch(notify({
+                                                status: 'success',
+                                                message: 'Successfully registered your account',
+                                                visible: true
+                                            }))
+                                        }).catch((err) => {
+                                            setLoading(false)
+                                            dispatch(notify({
+                                                status: 'error',
+                                                message: err.message,
+                                                visible: true
+                                            }))
+                                        })
+                                } else {
+                                    setLoading(false)
+                                    dispatch(notify({
+                                        status: 'success',
+                                        message: 'Successfully registered your account',
+                                        visible: true
+                                    }))
+                                }
+                                nav(`/dashboard`)
+                            })
+                            .catch((err) => {
                                 setLoading(false)
-                                setActionStatus('success')
-                                setActionMessage('Successfully registered your account')
-                                setSnackOpen(true)
-                            }
-                        })
-                        .catch((err) => {
-                            setLoading(false)
-                            setActionStatus('error')
-                            setActionMessage(err.message)
-                            setSnackOpen(true)
-                        })
-                })
-                .catch((err) => {
-                    setLoading(false)
-                    setActionStatus('error')
-                    setActionMessage(err.message)
-                    setSnackOpen(true)
-                })
-        } else {
-            setLoading(false)
-            setActionStatus('error')
-            setActionMessage('Passwords dont match')
-            setSnackOpen(true)
-        }
+                                dispatch(notify({
+                                    status: 'error',
+                                    message: err.message,
+                                    visible: true
+                                }))
+                            })
+                    })
+                    .catch((err) => {
+                        setLoading(false)
+                        dispatch(notify({
+                            status: 'error',
+                            message: err.message,
+                            visible: true
+                        }))
+                    })
+            } else {
+                setLoading(false)
+                dispatch(notify({
+                    status: 'error',
+                    message: 'Passwords dont match',
+                    visible: true
+                }))
+            }
+        }, 1000)
     }
 
     const signupTextfields = [
@@ -277,16 +289,22 @@ export default function Signup() {
                                     disableElevation>Create Account</LoadingButton>
                             </Grid>
                         </Grid>
-
                     </Box>
-                    <Stack direction='row'>
-                        <Typography variant='caption' color='text.secondary' sx={{ fontWeight: 'bold' }}>
-                            Already have and account? <Typography
-                                variant='caption' color='primary'
-                                sx={{ fontWeight: 'bold', cursor: 'pointer' }}
-                                onClick={() => nav('/')}
-                            >Login</Typography>
-                        </Typography>
+                    <Stack
+                        direction='row'
+                        sx={{
+                            marginTop: '1rem',
+                            justifyContent: 'center',
+                        }}>
+                        <Typography variant='body2'> Already have an account?</Typography>
+                        <Typography
+                            variant='body2'
+                            color='primary'
+                            sx={{
+                                marginLeft: '.5rem',
+                                cursor: 'pointer',
+                            }}
+                            onClick={() => nav('/')}>Login</Typography>
                     </Stack>
                 </Box>
 
@@ -298,23 +316,6 @@ export default function Signup() {
             }}>
                 <ThemeModeSwitch />
             </Box>
-
-
-            <Snackbar
-                open={snakcOpen}
-                onClose={() => {
-                    if (actionStatus === 'success') {
-                        setSnackOpen(false)
-                        nav('/dashboard')
-                    } else {
-                        setSnackOpen(false)
-                    }
-                }}
-                autoHideDuration={6000}>
-                <Alert severity={actionStatus} >
-                    {actionMessage}
-                </Alert>
-            </Snackbar>
         </>
     )
 }

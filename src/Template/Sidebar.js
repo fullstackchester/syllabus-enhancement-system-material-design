@@ -1,9 +1,9 @@
-import { Divider, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Paper, Toolbar, Typography, Stack } from '@mui/material'
+import { Divider, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Paper, Toolbar, Typography } from '@mui/material'
 import { Box } from '@mui/system'
 import React from 'react'
 import { blue } from '@mui/material/colors';
 import { NavLink } from 'react-router-dom'
-import { AccountCircle, Article, Dashboard, Group, School, Folder } from "@mui/icons-material";
+import { AccountCircle, Article, Dashboard, Group, School, Folder, CalendarMonth } from "@mui/icons-material";
 import { useFirebase } from '../Context/FirebaseContext';
 import '../index.css'
 
@@ -22,6 +22,12 @@ export default function Sidebar() {
             label: 'Syllabus',
             link: '/syllabus',
             icon: <Article />,
+            hidden: role === 'faculty' ? 'none' : '',
+        },
+        {
+            label: 'School Year',
+            link: '/school-year',
+            icon: <CalendarMonth />,
             hidden: role === 'faculty' ? 'none' : '',
         },
         {

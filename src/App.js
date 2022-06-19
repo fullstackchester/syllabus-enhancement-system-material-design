@@ -35,6 +35,8 @@ import ForgetPassword from "./Pages/Authentication/ForgetPassword";
 import AuthListener from "./Components/Routing/AuthListenerRoute";
 import { notify } from './Features/PopAlert'
 import { grey } from '@mui/material/colors'
+import SchoolYear from "./Pages/School Year/SchoolYear";
+import SchoolYearAdd from "./Pages/School Year/SchoolYearAdd";
 function App() {
 
 	const dispatch = useDispatch()
@@ -84,6 +86,9 @@ function App() {
 								<Route exact path='syllabus/:postId' element={<SyllabusFile />} />
 								<Route exact path='syllabus/new-syllabus/:postId' element={<SyllabusAdd />} />
 								<Route exact path='syllabus/edit-syllabus/:postId' element={<SyllabusEdit />} />
+
+								<Route exact path='school-year' element={<Restricted><SchoolYear /></Restricted>} />
+								<Route exact path='school-year/new-school-year/:syId' element={<SchoolYearAdd />} />
 
 								<Route exact path='subjects' element={<Restricted><Subject /></Restricted>} />
 								<Route exact path='subjects/:subjectId' element={<SubjectFile />} />

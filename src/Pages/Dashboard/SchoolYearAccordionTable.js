@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import {
-    Card, CardContent, CardActions, Typography, Button,
+    Card, CardContent, CardActions, Typography,
     TableContainer, Table, TableHead, TableBody, TableCell, TableRow
 } from '@mui/material'
 import { onValue, ref } from 'firebase/database'
@@ -63,7 +63,6 @@ export default function SchoolYearAccordionTable() {
                         <TableBody>
                             {list
                                 .sort((a, b) => new Date(b.syDateCreated).getTime() - new Date(a.syDateCreated).getTime())
-                                .slice(0, 3)
                                 .map((v, k) =>
                                     <TableRow key={k}>
                                         <TableCell>{v.syTitle}</TableCell>
@@ -85,9 +84,7 @@ export default function SchoolYearAccordionTable() {
                 </TableContainer>
             </CardContent>
             <CardActions>
-                <Button size='small'>View all</Button>
             </CardActions>
-
         </Card>
     )
 }
