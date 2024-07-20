@@ -1,5 +1,5 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import Landing from "./Pages/Landing";
+import Landing from "./Pages/Landing/Landing";
 import React from 'react'
 import './index.css'
 import Signup from "./Pages/Signup";
