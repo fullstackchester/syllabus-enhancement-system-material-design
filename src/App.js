@@ -39,28 +39,28 @@ import SchoolYear from "./Pages/School Year/SchoolYear";
 import SchoolYearAdd from "./Pages/School Year/SchoolYearAdd";
 function App() {
 
-	const dispatch = useDispatch()
-	const theme = useSelector((state) => state.theme.mode)
+	const dispatch	= useDispatch()
+	const THEME		= useSelector((state) => state.theme.mode)
 	const POP_ALERT = useSelector((state) => state.alert.value)
 
 	const customTheme = createTheme({
 		palette: {
-			mode: theme,
+			mode: THEME,
 			background: {
-				default: theme === 'dark' ? '#121212' : grey[50]
+				default: THEME === 'dark' ? '#121212' : grey[50]
 			}
 		},
 		typography: {
-			fontFamily: `'Open Sans', sans-serif`,
-			fontWeightRegular: 400,
-			fontWeightMedium: 500,
-			fontWeightLight: 300,
-			fontWeightBold: 700,
+			fontFamily:			`'Open Sans', sans-serif`,
+			fontWeightRegular:	400,
+			fontWeightMedium:	500,
+			fontWeightLight:	300,
+			fontWeightBold:		700,
 		}
 	});
 	return (
 		<FirebaseProvider>
-			<ThemeProvider theme={customTheme}>
+			<ThemeProvider theme={ customTheme }>
 				<CssBaseline />
 				<Box
 					component='div'

@@ -14,10 +14,10 @@ export default function Syllabus() {
     const [isFetching, setFetching] = useState(true)
 
     const columns = [
-        { field: 'postTitle', headerName: 'Title', flex: 1 },
-        { field: 'postAuthor', headerName: 'Author', flex: 1 },
-        { field: 'postDate', headerName: 'Date Posted', flex: 1 },
-        { field: 'postStatus', headerName: 'Status', flex: 1 },
+        { field: 'postTitle',   headerName: 'Title',        flex: 1 },
+        { field: 'postAuthor',  headerName: 'Author',       flex: 1 },
+        { field: 'postDate',    headerName: 'Date Posted',  flex: 1 },
+        { field: 'postStatus',  headerName: 'Status',       flex: 1 },
     ];
 
     useEffect(() => {
@@ -32,15 +32,15 @@ export default function Syllabus() {
 
     return (
         <ListLayout
-            btnTitle='New Syllabus'
-            listTitle='Syllabus'
-            path={`/syllabus/new-syllabus/${v4()}`}>
+            btnTitle    = 'New Syllabus'
+            listTitle   = 'Syllabus'
+            path        = {`/syllabus/new-syllabus/${v4()}`}>
             <CustomDataGrid
-                columns={columns}
-                rows={list}
-                isFetching={isFetching}
-                onClick={(cell) => nav(`/syllabus/${cell.id}`)}
-                getPrimaryKey={(row) => row.postId} />
+                columns         = { columns     }
+                rows            = { list        }
+                isFetching      = { isFetching  }
+                onClick         = { (cell) => nav(`/syllabus/${cell.id}`)}
+                getPrimaryKey   = { (row) => row.postId} />
         </ListLayout>
     )
 }

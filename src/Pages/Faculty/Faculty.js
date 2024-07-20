@@ -13,10 +13,10 @@ export default function Faculty() {
 
     const nav = useNavigate()
     const columns = [
-        { field: 'employeeId', headerName: 'Employee ID', flex: 1 },
-        { field: 'name', headerName: 'Name', flex: 1 },
-        { field: 'department', headerName: 'Department', flex: 1 },
-        { field: 'userType', headerName: 'Position', flex: 1 },
+        { field: 'employeeId',  headerName: 'Employee ID',  flex: 1 },
+        { field: 'name',        headerName: 'Name',         flex: 1 },
+        { field: 'department',  headerName: 'Department',   flex: 1 },
+        { field: 'userType',    headerName: 'Position',     flex: 1 },
     ];
 
     useEffect(() => {
@@ -40,11 +40,13 @@ export default function Faculty() {
     return (
         <ListLayout listTitle='Faculty' btnHidden='none'>
             <CustomDataGrid
-                columns={columns}
-                isFetching={isFetching}
-                rows={list}
-                getPrimaryKey={(row) => row.uid}
-                onClick={(cell) => nav(`/faculty/${cell.id}`)} />
+                columns         = { columns         }
+                isFetching      = { isFetching      }
+                rows            = { list            }
+                getPrimaryKey   = { (row) => row.uid}
+                onClick         = {
+                    (cell) => nav(`/faculty/${cell.id}`)
+                }/>
         </ListLayout>
     )
 }
