@@ -5,7 +5,7 @@ import {
 } from '@mui/material'
 import { onValue, ref } from 'firebase/database';
 import React, { useState, useEffect, useRef } from 'react'
-import '../../index.css';
+import '../../index.scss';
 import { database, auth } from '../../JS/Firebase';
 import { updateEmail, updatePassword } from "firebase/auth";
 import { useFirebase } from '../../Context/FirebaseContext';

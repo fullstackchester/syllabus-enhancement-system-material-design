@@ -5,7 +5,7 @@ import { blue } from '@mui/material/colors';
 import { NavLink } from 'react-router-dom'
 import { AccountCircle, Article, Dashboard, Group, School, Folder, CalendarMonth } from "@mui/icons-material";
 import { useFirebase } from '../Context/FirebaseContext';
-import '../index.css'
+import '../index.scss'
 
 export default function Sidebar() {
 

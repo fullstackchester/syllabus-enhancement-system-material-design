@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import { Container, Box } from '@mui/system'
 import { Card, Typography, TextField } from '@mui/material'
-import { motion } from 'framer-motion'
 import LoadingButton from '@mui/lab/LoadingButton'
 import { sendPasswordResetEmail } from 'firebase/auth'
 import { auth } from '../../JS/Firebase'
@@ -39,7 +38,6 @@ export default function ForgetPassword() {
     return (
         <Container
             maxWidth='xl'
-            component={motion.div}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}

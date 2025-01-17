@@ -3,7 +3,7 @@ import { Box } from '@mui/system'
 import { onValue, ref } from 'firebase/database'
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import '../../index.css'
+import '../../index.scss'
 import { database } from '../../JS/Firebase'
 import ProfileAvatar from '../../Components/ProfileAvatar'
 

@@ -11,7 +11,7 @@ import { set, ref } from 'firebase/database'
 import { uploadBytes, ref as storageRef } from 'firebase/storage'
 import { auth, database, storage } from '../JS/Firebase'
 import ThemeModeSwitch from '../Components/ThemeModeSwitch'
-import { motion } from 'framer-motion'
+// import { motion } from 'framer-motion'
 import { notify } from '../Features/PopAlert'
 import { useDispatch } from 'react-redux'
 
@@ -169,7 +169,6 @@ export default function Signup() {
         <>
             <Container
                 maxWidth='xl'
-                component={motion.div}
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opactity: 0 }}

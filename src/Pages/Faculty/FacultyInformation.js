@@ -6,7 +6,7 @@ import { database, storage } from '../../JS/Firebase'
 import { onValue, ref } from 'firebase/database'
 import { getDownloadURL, ref as storageRef } from 'firebase/storage'
 import { useFirebase } from '../../Context/FirebaseContext'
-import '../../index.css'
+import '../../index.scss'
 import ProfileAvatar from '../../Components/ProfileAvatar'
 
 export default function FacultyInformation({ uid }) {

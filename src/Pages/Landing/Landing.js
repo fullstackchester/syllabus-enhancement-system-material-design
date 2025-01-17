@@ -4,12 +4,11 @@ import { signInWithEmailAndPassword } from 'firebase/auth'
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { auth } from '../../JS/Firebase'
-import '../../index.css'
+import '../../index.scss'
 import { LoadingButton } from '@mui/lab'
 import ThemeModeSwitch from '../../Components/ThemeModeSwitch'
 import { AuthError } from '../../Data/AuthError'
 import PasswordField from '../../Components/PasswordField'
-import { motion } from 'framer-motion'
 import { useFirebase } from '../../Context/FirebaseContext'
 import { notify } from '../../Features/PopAlert'
 import { useDispatch } from 'react-redux'
@@ -69,7 +68,6 @@ export default function Landing() {
         <>
             <Container
                 maxWidth    = 'xl'
-                component   = {motion.div}
                 initial     = {{ opacity: 0 }}
                 animate     = {{ opacity: 1 }}
                 exit        = {{ opacity: 0 }}

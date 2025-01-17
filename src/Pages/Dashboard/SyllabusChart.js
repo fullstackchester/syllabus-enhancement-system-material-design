@@ -3,7 +3,6 @@ import { Typography, Card, CardContent, CardActions, Stack } from '@mui/material
 import { database } from '../../JS/Firebase'
 import { onValue, ref } from 'firebase/database'
 import { Box } from '@mui/system'
-import { motion } from 'framer-motion'
 import DoughnutChart from '../../Components/Charts/DoughnutChart';
 
 
@@ -45,7 +44,6 @@ export default function SyllabusChart() {
     return (
         <Card
             elevation={3}
-            component={motion.div}
             initial={{ scale: 1 }}
             animate={{ scale: expand ? 1.2 : 1 }}
             style={{ scale: expand }}

@@ -4,7 +4,7 @@ import { onValue, ref, set } from 'firebase/database'
 import React, { useState, useEffect, useRef } from 'react'
 import { database } from '../../JS/Firebase'
 import SendIcon from '@mui/icons-material/Send';
-import '../../index.css'
+import '../../index.scss'
 import { useFirebase } from '../../Context/FirebaseContext'
 import { v4 } from 'uuid'
 
