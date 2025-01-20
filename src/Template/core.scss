@@ -1,0 +1,13 @@
+main {
+    div {
+        &.outlet {
+            border: 1px solid;
+            display: flex;
+            flex-direction: row;
+
+            // > * {
+            //     border: 1px solid red;
+            // }
+        }
+    }
+}

@@ -3,7 +3,8 @@ import { Box } from '@mui/system'
 import React from 'react'
 import { blue } from '@mui/material/colors';
 import { NavLink } from 'react-router-dom'
-import { AccountCircle, Article, Dashboard, Group, School, Folder, CalendarMonth } from "@mui/icons-material";
+import MenuRoundedIcon from '@mui/icons-material/MenuRounded';
+import { AccountCircle, Article, Dashboard, Group, School, Folder, CalendarMonth } from "@mui/icons-material/MenuRounded";
 import { useFirebase } from '../Context/FirebaseContext';
 import '../index.scss'
 
