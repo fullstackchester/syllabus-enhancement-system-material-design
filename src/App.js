@@ -38,6 +38,7 @@ import { grey } from '@mui/material/colors'
 import SchoolYear from "./Pages/School Year/SchoolYear";
 import SchoolYearAdd from "./Pages/School Year/SchoolYearAdd";
 import { LoginPage } from "./Pages/login/Login";
+import { APP_ROUTE } from "./route";
 function App() {
 
 	const dispatch	= useDispatch()
@@ -60,7 +61,7 @@ function App() {
 		}
 	});
 	return (
-		<LoginPage />
+		<APP_ROUTE />
 		// <FirebaseProvider>
 		// 	<ThemeProvider theme={ customTheme }>
 		// 		<CssBaseline />
