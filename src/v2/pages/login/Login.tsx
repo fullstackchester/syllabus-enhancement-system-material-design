@@ -1,28 +1,40 @@
-import React, { JSX } from 'react';
+import React, { JSX, useEffect } from 'react';
 import { useForm, SubmitHandler } from "react-hook-form";
 import s from './login.module.scss';
-import { Input } from '@mantine/core';
-import { Button } from '@mantine/core';
+import { Input, Button } from '@mantine/core';
 
-type loginForm = {
-  email: string;
+
+interface loginForm {
+  email: string; // email and password should be encrypted upon save
   password: string;
-};
+  loginDateTime: string;
+}
 
 
 function Login(): JSX.Element {
 
-  const { register, handleSubmit, formState, setValue } = useForm<loginForm>({ mode: 'onBlur' });
 
-  const { isLoading, isSubmitting, isValid, errors, isSubmitted, isSubmitSuccessful } = formState;
+  const { register, handleSubmit, formState, setValue } = useForm<loginForm>({ mode: 'onChange' });
+
+  const { isLoading, isSubmitting, isValid, errors, isSubmitted, isSubmitSuccessful } = formState;  
 
   const submitForm: SubmitHandler<loginForm> = (data: loginForm) => {
 
+    return new Promise(resolve => {
+      setTimeout(() => {
+        resolve({});
+      }, 4000)
+    })
   }
+
+  useEffect(() => {
+    if(isSubmitSuccessful) {
+      window.open('http://localhost:3000/dashboard', '_parent')
+    }
+  }, [isSubmitSuccessful])
 
   return (
     <div className={s.login_container}>
-
       <div className={s.card}>
         <form onSubmit={handleSubmit(submitForm)}>
           <h1>Login Form</h1>
@@ -42,10 +54,9 @@ function Login(): JSX.Element {
                   {...register("password", { required: true })}  />
             </Input.Wrapper>
           </div>
-          <Button type='submit' variant="filled">Submit</Button>
+          <Button type='submit' variant="filled" loading={isSubmitting} disabled={!isValid}>Submit</Button>
         </form>
       </div>
-
     </div>
   )
 }
