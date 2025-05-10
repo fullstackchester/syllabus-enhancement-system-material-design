@@ -39,6 +39,7 @@ import SchoolYear from "./Pages/School Year/SchoolYear";
 import SchoolYearAdd from "./Pages/School Year/SchoolYearAdd";
 import { LoginPage } from "./Pages/login/Login";
 import { APP_ROUTE } from "./route";
+import Login from "./v2/pages/login/Login";
 function App() {
 
 	const dispatch	= useDispatch()
@@ -61,7 +62,8 @@ function App() {
 		}
 	});
 	return (
-		<APP_ROUTE />
+		// <LoginPage />
+		<Login />
 		// <FirebaseProvider>
 		// 	<ThemeProvider theme={ customTheme }>
 		// 		<CssBaseline />

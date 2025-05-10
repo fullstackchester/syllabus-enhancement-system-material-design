@@ -1,13 +1,14 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.scss';
-import App from './App';
 import { Provider } from 'react-redux'
 import { configureStore } from '@reduxjs/toolkit';
 import themeReducer from './Features/Theme'
 import alertReducer from './Features/PopAlert'
 import profileReducer from './Features/Profile'
 import fetchReducer from './Features/Fecthing'
+import Login from './v2/pages/login/Login';
+import App from './v2/App';
 
 const root = ReactDOM.createRoot(document.getElementById('root'))
 
@@ -20,11 +21,14 @@ const store = configureStore({
 	}
 })
 
+
 root.render(
 
 	<React.StrictMode>
-		<Provider store={store}>
+		{/* <Provider store={store}>
 			<App />
-		</Provider>
+		</Provider> */}
+		<App />
+
 	</React.StrictMode>
 );

@@ -6,11 +6,11 @@ import { auth, database } from '../JS/Firebase';
 const AuthContext = React.createContext()
 
 export function useFirebase() {
-    return useContext(AuthContext);
+    return 
 }
 
 export default function FirebaseProvider({ children }) {
-
+/* 
     const [currentUser, setCurrentUser] = useState()
     const [userData, setUserData] = useState({})
     const [loading, setLoading] = useState(true)
@@ -49,11 +49,12 @@ export default function FirebaseProvider({ children }) {
         })
 
         return unsub
-    }, []);
+    }, []); */
 
     return (
-        <AuthContext.Provider value={value}>
-            {!loading && children}
+        // <AuthContext.Provider value={value}>
+        <AuthContext.Provider>
+            {/* {!loading && children} */}
         </AuthContext.Provider>
     )
 }

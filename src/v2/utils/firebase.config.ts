@@ -1,10 +1,9 @@
-// import 'dotenv'
-// import { initializeApp } from 'firebase/app'
-// import { getAuth } from 'firebase/auth'
-// import { getDatabase } from 'firebase/database'
-// import { getStorage } from 'firebase/storage'
+import { initializeApp } from 'firebase/app'
+import { getAuth } from 'firebase/auth'
+import { getDatabase } from 'firebase/database'
+import { getStorage } from 'firebase/storage'
 
-export default firebaseConfig = {
+const firebaseConfig = {
     apiKey:             process.env.REACT_APP_API_KEY,
     authDomain:         process.env.REACT_APP_AUTH_DOMAIN,
     databaseURL:        process.env.REACT_APP_DATABASE_URL,
@@ -15,8 +14,8 @@ export default firebaseConfig = {
     measurementId:      process.env.REACT_APP_MEASUREMENT_ID
 };
 
-// const app = initializeApp(firebaseConfig)
-// export const auth = getAuth(app)
-// auth.useDeviceLanguage()
-// export const database = getDatabase(app)
-// export const storage = getStorage(app)
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+
+export { auth };
+export default firebaseConfig;

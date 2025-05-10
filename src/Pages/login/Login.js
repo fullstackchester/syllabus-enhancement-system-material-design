@@ -25,7 +25,7 @@ export const LoginPage = () => {
             <div className="login-card">
                 <div className="login-wrapper">
                     <div className="login-card-header">
-                        <img src={require('../../Assets/Img/bulsu-logo.png')}/>
+                        {/* <img src={require('../../Assets/Img/bulsu-logo.png')}/> */}
                         <h3>Sign in to your Account</h3>
                     </div>
                     <TextField type='text' label='Email' variant="filled" size='small' defaultValue={email} onBlur={(e) => setEmail(e.target.value)} error={email === ''} helperText='Invalid email address' />

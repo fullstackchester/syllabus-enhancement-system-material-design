@@ -1,32 +1,59 @@
 import { JSX, useState } from "react";
 import { Badge, NavLink } from '@mantine/core';
-import { IconHome2, IconGauge, IconChevronRight, IconActivity, IconCircleOff, IconLayoutDashboard } from '@tabler/icons-react';
+import { IconFolder, IconUsers, IconChevronRight, IconActivity, IconUserCircle, IconCalendar, IconLayoutDashboard } from '@tabler/icons-react';
+import { useLocation } from "react-router-dom";
 
 
 function Navbar(): JSX.Element {
   const [active, setActive] = useState("Billing");
-
+  const _location = useLocation();
+  console.log(_location.pathname)
   return (
     <>
       <NavLink
-          href="#"
+          href="/dashboard"
+          
+          
           label="Dashboard"
+          variant="filled"
+          active={_location.pathname === '/dashboard' }
           leftSection={<IconLayoutDashboard size={16} stroke={1.5} />}
           rightSection={<Badge size="sm" color="red" circle>3</Badge>}
         />
       <NavLink
-        href="#required-for-focus"
-        label="With right section"
-        leftSection={<IconGauge size={16} stroke={1.5} />}
+        href="/faculty"
+        label="Faculty"
+        variant="filled"
+        active={_location.pathname === '/faculty' }
+        leftSection={<IconUsers size={16} stroke={1.5} />}
+        rightSection={
+          <IconChevronRight size={12} stroke={1.5} className="mantine-rotate-rtl" />
+        }
+      />
+      <NavLink
+        href="/school-year"
+        label="School Year"
+        variant="filled"
+        active={_location.pathname === '/school-year' }
+        leftSection={<IconCalendar size={16} stroke={1.5} />}
+        rightSection={
+          <IconChevronRight size={12} stroke={1.5} className="mantine-rotate-rtl" />
+        }
+      />
+      <NavLink
+        href="/account"
+        label="Account"
+        variant="filled"
+        active={_location.pathname === '/account' }
+        leftSection={<IconUserCircle size={16} stroke={1.5} />}
         rightSection={
           <IconChevronRight size={12} stroke={1.5} className="mantine-rotate-rtl" />
         }
       />
       <NavLink
         href="#required-for-focus"
-        label="Disabled"
-        leftSection={<IconCircleOff size={16} stroke={1.5} />}
-        disabled
+        label="My Files"
+        leftSection={<IconFolder size={16} stroke={1.5} />}
       />
       <NavLink
         href="#required-for-focus"
