@@ -1,16 +1,16 @@
-import React, { JSX } from 'react';
 import { AppShell, AppShellNavbarConfiguration, Burger } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
-import Navbar from '../navbar/Navbar';
+import { JSX } from 'react';
 import { Outlet } from 'react-router-dom';
+import Navbar from '../navbar/Navbar';
 import s from './shell.module.scss';
 
-const NAVBAR_CONFIG: AppShellNavbarConfiguration = {
-  breakpoint: 1000,
-  collapsed: { mobile: false },
-  width: 200,
+// const NAVBAR_CONFIG: AppShellNavbarConfiguration = {
+//   breakpoint: 1000,
+//   collapsed: { mobile: false },
+//   width: 200,
   
-}
+// }
 
 function Shell(): JSX.Element {
   const [opened, { toggle }] = useDisclosure();

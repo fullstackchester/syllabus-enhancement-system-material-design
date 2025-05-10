@@ -1,20 +1,15 @@
-import React, { JSX, useEffect } from 'react';
-import { useForm, SubmitHandler } from "react-hook-form";
+import { Button, Divider, Input } from '@mantine/core';
+import { JSX, useEffect } from 'react';
+import { SubmitHandler, useForm } from "react-hook-form";
 import s from './login.module.scss';
-import { Input, Button, Divider } from '@mantine/core';
 
-import { auth as authUi } from 'firebaseui'
-import '../../../../node_modules/firebaseui/dist/firebaseui.css'
-
-import { onAuthStateChanged } from "firebase/auth";
-import API_URL from '../../../environment';
-import firebaseConfig, { auth } from '../../utils/firebase.config';
-import { googleAuthentication } from './auth.functions';
+import '../../../../node_modules/firebaseui/dist/firebaseui.css';
 
 
 
 
-const authUiInstance = new authUi.AuthUI(auth);
+
+// const authUiInstance = new authUi.AuthUI(auth);
 
 interface loginForm {
   email: string; // email and password should be encrypted upon save
@@ -26,9 +21,9 @@ interface loginForm {
 function Login(): JSX.Element {
 
 
-  const { register, handleSubmit, formState, setValue } = useForm<loginForm>({ mode: 'onChange' });
+  const { register, handleSubmit, formState } = useForm<loginForm>({ mode: 'onChange' });
 
-  const { isLoading, isSubmitting, isValid, errors, isSubmitted, isSubmitSuccessful } = formState;  
+  const { isSubmitting, isValid, errors, isSubmitSuccessful } = formState;  
 
   const submitForm: SubmitHandler<loginForm> = (data: loginForm) => {
 

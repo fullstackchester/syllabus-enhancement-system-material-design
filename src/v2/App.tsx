@@ -39,7 +39,6 @@ function App(): JSX.Element {
               </Route>
             </Routes>
           </BrowserRouter>
-
       </MantineProvider>
   )
 
