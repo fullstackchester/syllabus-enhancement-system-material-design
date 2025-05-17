@@ -1,14 +1,17 @@
 import { Button, Divider, Input } from '@mantine/core';
-import { JSX, useEffect } from 'react';
+import React, { JSX, useEffect, useState } from 'react';
 import { RegisterOptions, SubmitHandler, useForm } from "react-hook-form";
 import s from './login.module.scss';
+import { createClient, Session } from '@supabase/supabase-js';
+import { Auth } from '@supabase/auth-ui-react';
+import { ThemeSupa } from '@supabase/auth-ui-shared';
 
-import '../../../../node_modules/firebaseui/dist/firebaseui.css';
 import { emailValidator } from './auth.functions';
+import { useNavigate } from 'react-router';
 
 
 
-
+const supabase = createClient('https://szvehjazguexrrfbxdcj.supabase.co', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN6dmVoamF6Z3VleHJyZmJ4ZGNqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDcxMTQ5NzIsImV4cCI6MjA2MjY5MDk3Mn0.qVzAhiIq-t-Lm35XpA3wCrQZvgRcX77rKaCZWSnTbbM')
 
 // const authUiInstance = new authUi.AuthUI(auth);
 
@@ -23,27 +26,29 @@ const passwordValidation: RegisterOptions = { required: true }
 function Login(): JSX.Element {
 
 
+  const [session, setSession] = useState<Session | null>(null);
   const { register, handleSubmit, formState } = useForm<loginForm>({ mode: 'onChange' });
-
-  const { isSubmitting, isValid, errors, isSubmitSuccessful } = formState;  
+  const { isSubmitting, isValid, errors, isSubmitSuccessful } = formState;
+  const navigate = useNavigate();
 
   const submitForm: SubmitHandler<loginForm> = (data: loginForm) => {
 
-    return new Promise(resolve => {
-      setTimeout(() => {
-        resolve({});
-      }, 4000)
+    supabase.auth.signInWithPassword({email: 'mark.chester.danday@gmail.com', password: 'Chester_810'}).then((auth) => {
+      console.log(auth.data.session);
+    }).catch((e) => {
+      console.error(e);
     })
   }
 
   useEffect(() => {
-    if(isSubmitSuccessful) {
-      window.open('http://localhost:3000/dashboard', '_parent')
+    const token: string | null = window.localStorage.getItem('session');
+    if(token) {
+      navigate('/faculty');
     }
 
-    console.log()
+  }, []);
 
-  }, [isSubmitSuccessful])
+
 
   return (
     <div className={s.login_container}>
@@ -70,10 +75,8 @@ function Login(): JSX.Element {
         </form>
         {/* <center>or</center> */}
         {/* <Divider></Divider> */}
-		    {/* <div id='firebaseui-auth-container'></div> */}
-
+        {/* <div id='firebaseui-auth-container'></div> */}
       </div>
-
     </div>
   )
 }

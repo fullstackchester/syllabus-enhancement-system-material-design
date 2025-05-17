@@ -8,7 +8,7 @@ import FacultyPage from "../pages/faculty/Faculty";
 import Dashboard from "../pages/dashboard/Dashboard";
 import FacultyDetails from "../pages/faculty/faculty-details/FacultyDetails";
 
-const appRouter = createBrowserRouter([
+const   appRouter = createBrowserRouter([
     {
         path: 'login',
         Component: Login,

@@ -1,29 +1,22 @@
 import { createTheme, MantineProvider, MantineThemeOverride } from '@mantine/core';
-import { JSX, useEffect } from 'react';
+import React from 'react';
 import { RouterProvider } from 'react-router';
 
 import appRouter from './utils/router';
+import { AuthContextProvider } from './utils/AuthContext';
 
-function App(): JSX.Element {
-
-  useEffect(() => {
-  }, [])
-
-  
-
-
+function App() {
   const customTheme: MantineThemeOverride = createTheme({
-    fontFamily: 'Brush Script MT, sans-serif',
-
+    fontFamily: 'Roboto, sans-serif',
   });
 
-
   return (
-      <MantineProvider theme={customTheme}>
-          <RouterProvider router={appRouter} />
-      </MantineProvider>
-  )
-
+    <MantineProvider theme={customTheme}>
+      <AuthContextProvider>
+        <RouterProvider router={appRouter} />
+      </AuthContextProvider>
+    </MantineProvider>
+  );
 }
 
-export default App
+export default App;
