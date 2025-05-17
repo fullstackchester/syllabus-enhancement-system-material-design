@@ -1,5 +1,5 @@
 import { JSX } from "react";
-import { useParams } from "react-router-dom"
+import { useParams } from "react-router"
 
 function FacultyDetails(): JSX.Element {
 
@@ -9,7 +9,7 @@ function FacultyDetails(): JSX.Element {
     console.log(_params.id)
     return(
         <>
-            <h1>FACULTY DETAILS PAGE</h1>
+            <h1>FACULTY DETAILS PAGE, router params = {_params.id }</h1>
         </>
     )
 }

@@ -1,7 +1,7 @@
 import { JSX, useState } from "react";
 import { Badge, NavLink } from '@mantine/core';
 import { IconFolder, IconUsers, IconChevronRight, IconActivity, IconUserCircle, IconCalendar, IconLayoutDashboard } from '@tabler/icons-react';
-import { useLocation } from "react-router-dom";
+import { useLocation } from "react-router";
 
 
 function Navbar(): JSX.Element {

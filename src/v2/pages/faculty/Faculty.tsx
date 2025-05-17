@@ -1,6 +1,6 @@
 import { Anchor, Table } from '@mantine/core';
 import { JSX, useEffect, useState } from 'react';
-import { Outlet } from 'react-router-dom';
+import { Outlet } from 'react-router';
 import { getFacultyList } from './faculty.service';
 
 
@@ -44,7 +44,10 @@ function FacultyPage(): JSX.Element {
     });
 
     return(
-        <Outlet></Outlet>
+        <>
+            faculty
+            <Outlet />
+        </>
     )
 }
 

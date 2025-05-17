@@ -1,25 +1,25 @@
-import { Box, Grid, Typography } from '@mui/material'
+// import { Box, Grid, Typography } from '@mui/material'
 import React, { Suspense } from 'react'
-import { useFirebase } from '../../Context/FirebaseContext'
-import AccountChart from './AccountChart'
-import SchoolYearAccordionTable from './SchoolYearAccordionTable'
-import SyllabusChart from './SyllabusChart'
-import SubjectTable from './SubjectTable'
-import SyllabusTable from './SyllabusTable'
+// import { useFirebase } from '../../Context/FirebaseContext'
+// import AccountChart from './AccountChart'
+// import SchoolYearAccordionTable from './SchoolYearAccordionTable'
+// import SyllabusChart from './SyllabusChart'
+// import SubjectTable from './SubjectTable'
+// import SyllabusTable from './SyllabusTable'
 
 export default function Dashboard() {
 
-    const { currentUser } = useFirebase()
-    const WeatherCard = React.lazy(() => import('./WeatherCard'))
-    const SyllabusGraph = React.lazy(() => import('./SyllabusGraph'))
+    // const { currentUser } = useFirebase()
+    // const WeatherCard = React.lazy(() => import('./WeatherCard'))
+    // const SyllabusGraph = React.lazy(() => import('./SyllabusGraph'))
 
-    const CHART_BOXES = [
-        <SyllabusChart />, <AccountChart />, <SchoolYearAccordionTable />
-    ]
+    // const CHART_BOXES = [
+    //     <SyllabusChart />, <AccountChart />, <SchoolYearAccordionTable />
+    // ]
 
     return (
         <>
-            <Box sx={{
+            {/* <Box sx={{
                 width: '100%',
                 paddingX: '3rem',
                 paddingY: '2rem',
@@ -74,7 +74,7 @@ export default function Dashboard() {
                         </Suspense>
                     </Grid>
                 </Grid>
-            </Box>
+            </Box> */}
         </>
     )
 }

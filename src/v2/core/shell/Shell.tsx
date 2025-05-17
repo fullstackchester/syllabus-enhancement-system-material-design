@@ -1,7 +1,7 @@
 import { AppShell, AppShellNavbarConfiguration, Burger } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { JSX } from 'react';
-import { Outlet } from 'react-router-dom';
+import { Outlet } from 'react-router';
 import Navbar from '../navbar/Navbar';
 import s from './shell.module.scss';
 

@@ -4,7 +4,7 @@ import { JSX } from "react";
 import { dummyData } from "./dummy.data";
 import s from './dashboard.module.scss';
 
-function DashboardPage(): JSX.Element {
+function Dashboard(): JSX.Element {
 
     const rows: JSX.Element[] = dummyData.map((row) => {
         const totalReviews: number = row.reviews.negative + row.reviews.positive;
@@ -75,4 +75,4 @@ function DashboardPage(): JSX.Element {
     )
 }
 
-export default DashboardPage;
+export default Dashboard;
