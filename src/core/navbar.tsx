@@ -1,11 +1,10 @@
-import { type JSX, useState } from "react";
 import { Badge, NavLink } from '@mantine/core';
-import { IconFolder, IconUsers, IconChevronRight, IconActivity, IconUserCircle, IconCalendar, IconLayoutDashboard } from '@tabler/icons-react';
+import { IconActivity, IconCalendar, IconChevronRight, IconFolder, IconLayoutDashboard, IconUserCircle, IconUsers } from '@tabler/icons-react';
+import { type JSX } from "react";
 import { useLocation } from "react-router";
 
 
 function Navbar(): JSX.Element {
-  const [active, setActive] = useState("Billing");
   const _location = useLocation();
   console.log(_location.pathname)
   return (

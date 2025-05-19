@@ -1,10 +1,8 @@
-import { Anchor, Button, Table, Pagination } from '@mantine/core';
+import { Anchor, Button, Pagination, Table, TextInput } from '@mantine/core';
+import { IconSearch } from '@tabler/icons-react';
 import { type JSX, useEffect, useState } from 'react';
-import { TextInput } from '@mantine/core';
-import { IconExclamationCircle, IconSearch } from '@tabler/icons-react';
-import { Outlet } from 'react-router';
+import dummy from './data/faculty.json';
 import style from './faculty.module.css';
-import dummy from './data/faculty.json'
 
 function chunk<T>(array: T[], size: number): T[][] {
   if (!array.length) {
@@ -23,7 +21,6 @@ const data = chunk(
 
 function FacultyPage(): JSX.Element {
 
-    const [facultyList, setFacultyList] = useState<any[]>([]);
     const [activePage, setPage] = useState(1);
     useEffect(() => {
         fetchFacultyList();
