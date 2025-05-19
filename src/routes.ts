@@ -3,7 +3,7 @@ import {
 } from "react-router";
 // import Login from "../pages/login/Login";
 import Shell from "./core/shell";
-import FacultyPage from "./pages/faculty";
+import FacultyPage from "./pages/faculty/faculty";
 // import FacultyOverviewPage from "../pages/faculty/overview/overview";
 // import FacultyPage from "../pages/faculty/Faculty";
 // import Dashboard from "../pages/dashboard/Dashboard";

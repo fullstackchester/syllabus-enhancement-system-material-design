@@ -2,6 +2,7 @@ import { AppShell, Burger } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import type { JSX } from 'react';
 import { Outlet } from 'react-router';
+import Navbar from './navbar';
 
 
 function Shell(): JSX.Element {
@@ -25,11 +26,11 @@ function Shell(): JSX.Element {
           size="sm"
         />
         {/* <h6>Bulcan State University</h6> */}
-        {/* <img src={require('../../../Assets/Img/bulsu-logo.png')} className={s.header_logo} /> */}
+        {/* <img src={'../assets/react.svg'} /> */}
       </AppShell.Header>
 
       <AppShell.Navbar>
-        {/* <Navbar /> */}
+        <Navbar />
       </AppShell.Navbar>
 
       <AppShell.Main>

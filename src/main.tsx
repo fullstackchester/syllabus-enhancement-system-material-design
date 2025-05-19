@@ -3,7 +3,6 @@ import { createRoot } from 'react-dom/client'
 import { MantineProvider, type MantineThemeOverride, createTheme } from '@mantine/core';
 import '@mantine/core/styles.css';
 import './index.css'
-import App from './App.tsx'
 import { RouterProvider } from 'react-router';
 import routes from './routes.ts';
 
