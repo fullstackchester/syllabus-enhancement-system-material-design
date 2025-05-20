@@ -4,7 +4,7 @@ import { MantineProvider, type MantineThemeOverride, createTheme } from '@mantin
 import '@mantine/core/styles.css';
 import './index.css'
 import { RouterProvider } from 'react-router';
-import routes from './routes.ts';
+import routes from './routes.tsx';
 
 const customTheme: MantineThemeOverride = createTheme({
   fontFamily: 'Roboto, sans-serif',

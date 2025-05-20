@@ -1,0 +1,52 @@
+[
+    {
+        "uid": "9e5f0184-1a68-4f38-ac86-016efc235df3",
+        "codeId": "SY2526",
+        "name": "School Year2025-2026",
+        "description": "",
+        "college": "9e5f0184-1a68-4f38-ac86-016efc235df3",
+        "yearRange": ["2025", "2026"]
+    },
+    {
+        "uid": "a1b2c3d4-5678-4e9f-8a1b-2c3d4e5f6789",
+        "codeId": "SY2324",
+        "name": "School Year2023-2024",
+        "description": "",
+        "college": "a1b2c3d4-5678-4e9f-8a1b-2c3d4e5f6789",
+        "yearRange": ["2023", "2024"]
+    },
+    {
+        "uid": "b2c3d4e5-6789-4f0a-9b1c-2d3e4f5a6789",
+        "codeId": "SY2122",
+        "name": "School Year2021-2022",
+        "description": "",
+        "college": "b2c3d4e5-6789-4f0a-9b1c-2d3e4f5a6789",
+        "yearRange": ["2021", "2022"]
+    },
+    {
+        "uid": "c3d4e5f6-7890-4a1b-9c2d-3e4f5a6b7890",
+        "codeId": "SY1920",
+        "name": "School Year2019-2020",
+        "description": "",
+        "college": "c3d4e5f6-7890-4a1b-9c2d-3e4f5a6b7890",
+        "yearRange": ["2019", "2020"],
+        "syStartDate": "2019-08-01T00:00:00.000Z",
+        "syEndDate": "2020-06-30T00:00:00.000Z"
+    },
+    {
+        "uid": "d4e5f6a7-8901-4b2c-9d3e-4f5a6b7c8901",
+        "codeId": "SY1718",
+        "name": "School Year2017-2018",
+        "description": "",
+        "college": "d4e5f6a7-8901-4b2c-9d3e-4f5a6b7c8901",
+        "yearRange": ["2017", "2018"]
+    },
+    {
+        "uid": "e5f6a7b8-9012-4c3d-9e4f-5a6b7c8d9012",
+        "codeId": "SY1516",
+        "name": "School Year2015-2016",
+        "description": "",
+        "college": "e5f6a7b8-9012-4c3d-9e4f-5a6b7c8d9012",
+        "yearRange": ["2015", "2016"]
+    }
+]

@@ -1,8 +1,18 @@
-import { Anchor, Button, Pagination, Table, TextInput } from '@mantine/core';
+import { Anchor, Button, Pagination, Table, TextInput, ActionIcon , Menu, Text, Drawer } from '@mantine/core';
 import { IconSearch } from '@tabler/icons-react';
 import { type JSX, useEffect, useState } from 'react';
 import dummy from './data/faculty.json';
 import style from './faculty.module.css';
+import {
+  IconSettings,
+  IconPhoto,
+  IconMessageCircle,
+  IconTrash,
+  IconArrowsLeftRight,
+  IconFilter,
+  IconFilter2
+} from '@tabler/icons-react';
+import { useDisclosure } from '@mantine/hooks';
 
 function chunk<T>(array: T[], size: number): T[][] {
   if (!array.length) {
@@ -13,7 +23,7 @@ function chunk<T>(array: T[], size: number): T[][] {
   return [head, ...chunk(tail, size)];
 }
 
-const data = chunk(
+let data = chunk(
   dummy,
   15
 );
@@ -22,6 +32,7 @@ const data = chunk(
 function FacultyPage(): JSX.Element {
 
     const [activePage, setPage] = useState(1);
+    const [opened, { open, close }] = useDisclosure(false);
     useEffect(() => {
         fetchFacultyList();
     }, [])
@@ -36,6 +47,10 @@ function FacultyPage(): JSX.Element {
         // }).catch((e) => {
         //     console.error(e);
         // })
+    }
+
+    function filterCurrentData() {
+        data[activePage] = []
     }
 
     const rows: JSX.Element[] = data[activePage].map((row, i) => {
@@ -66,22 +81,73 @@ function FacultyPage(): JSX.Element {
 
     return(
         <>
+            <Drawer size="xl" opened={opened} onClose={close} title="New Faculty">
+                {/* Drawer content */}
+            </Drawer>
             <nav className={style.custom_nav}>
                 <TextInput
                     placeholder="Enter Employee Id, Name, etc"
                     withErrorStyles={false}
                     rightSectionPointerEvents="none"
                     width={400}
+
                     rightSection={ <IconSearch size={20} /> }
                 />
-                <Button>Add</Button>
+                <Button onClick={open}>Add</Button>
             </nav>
-            <Table.ScrollContainer minWidth={800}>
-                <Table verticalSpacing="xs">
+            <Table.ScrollContainer minWidth={300}>
+                <Table verticalSpacing="xs" highlightOnHover>
                     <Table.Thead>
                         <Table.Tr>
                             <Table.Th key="eid">EID</Table.Th>
-                            <Table.Th key="name">Name</Table.Th>
+                            <Table.Th key="name" style={{ display: 'flex', justifyContent: 'space-between'}}>
+                                Name
+                                <Menu shadow="md" width={200}>
+                                    <Menu.Target>
+                                        <ActionIcon variant="subtle" size={'xs'} color='gray' aria-label="Settings">
+                                            <IconFilter2 />
+                                        </ActionIcon>
+                                    </Menu.Target>
+
+                                    <Menu.Dropdown>
+                                        <Menu.Label>Filter By</Menu.Label>
+                                        <Menu.Item leftSection={<IconSettings size={14} />}>
+                                        Settings
+                                        </Menu.Item>
+                                        <Menu.Item leftSection={<IconMessageCircle size={14} />}>
+                                        Messages
+                                        </Menu.Item>
+                                        <Menu.Item leftSection={<IconPhoto size={14} />}>
+                                        Gallery
+                                        </Menu.Item>
+                                        <Menu.Item
+                                        leftSection={<IconSearch size={14} />}
+                                        rightSection={
+                                            <Text size="xs" c="dimmed">
+                                            ⌘K
+                                            </Text>
+                                        }
+                                        >
+                                        Search
+                                        </Menu.Item>
+
+                                        <Menu.Divider />
+
+                                        <Menu.Label>Danger zone</Menu.Label>
+                                        <Menu.Item
+                                        leftSection={<IconArrowsLeftRight size={14} />}
+                                        >
+                                        Transfer my data
+                                        </Menu.Item>
+                                        <Menu.Item
+                                        color="red"
+                                        leftSection={<IconTrash size={14} />}
+                                        >
+                                        Delete my account
+                                        </Menu.Item>
+                                    </Menu.Dropdown>
+                                </Menu>
+                            </Table.Th>
                             <Table.Th key="department">Department</Table.Th>
                             <Table.Th key="published">Published</Table.Th>
                             <Table.Th key="pending">Pending</Table.Th>
@@ -90,9 +156,11 @@ function FacultyPage(): JSX.Element {
                     <Table.Tbody>{rows}</Table.Tbody>
                 </Table>
             </Table.ScrollContainer>
-            <Pagination total={data.length} value={activePage} onChange={setPage} mt="sm" />
+            <Pagination total={data.length -1} value={activePage} onChange={setPage} mt="sm" />
         </>
     )
 }
+
+
 
 export default FacultyPage;
