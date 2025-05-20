@@ -44,6 +44,7 @@ function Navbar(): JSX.Element {
         onClick={() => _nav('/account/profile')}
         label="Account"
         // variant=""
+        defaultOpened={true}
         active={_location.pathname.includes('account')}
         leftSection={<IconUserCircle size={16} stroke={1.5} />}
         childrenOffset={20}

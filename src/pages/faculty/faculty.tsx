@@ -1,18 +1,9 @@
-import { Anchor, Button, Pagination, Table, TextInput, ActionIcon , Menu, Text, Drawer } from '@mantine/core';
-import { IconSearch } from '@tabler/icons-react';
+import { ActionIcon, Anchor, Button, Drawer, Menu, Pagination, Table, Text, TextInput } from '@mantine/core';
+import { useDisclosure } from '@mantine/hooks';
+import { IconArrowsLeftRight, IconFilter2, IconMessageCircle, IconPhoto, IconSearch, IconSettings, IconTrash } from '@tabler/icons-react';
 import { type JSX, useEffect, useState } from 'react';
 import dummy from './data/faculty.json';
 import style from './faculty.module.css';
-import {
-  IconSettings,
-  IconPhoto,
-  IconMessageCircle,
-  IconTrash,
-  IconArrowsLeftRight,
-  IconFilter,
-  IconFilter2
-} from '@tabler/icons-react';
-import { useDisclosure } from '@mantine/hooks';
 
 function chunk<T>(array: T[], size: number): T[][] {
   if (!array.length) {
@@ -23,7 +14,7 @@ function chunk<T>(array: T[], size: number): T[][] {
   return [head, ...chunk(tail, size)];
 }
 
-let data = chunk(
+const data = chunk(
   dummy,
   15
 );
@@ -49,9 +40,9 @@ function FacultyPage(): JSX.Element {
         // })
     }
 
-    function filterCurrentData() {
-        data[activePage] = []
-    }
+    // function filterCurrentData() {
+    //     data[activePage] = []
+    // }
 
     const rows: JSX.Element[] = data[activePage].map((row, i) => {
         return (

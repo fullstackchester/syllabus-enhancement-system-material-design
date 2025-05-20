@@ -5,8 +5,8 @@ import Shell from "./core/shell";
 import FacultyPage from "./pages/faculty/faculty";
 import Dashboard from './pages/dashboard/dashboard'
 import SchoolYearPage from "./pages/school_year/school_year";
-import AccountPage from "./pages/account/account";
 import { Navigate } from "react-router";
+import PublishedPage from "./pages/account/published";
 
 const routes = createBrowserRouter([
     // {
@@ -32,7 +32,7 @@ const routes = createBrowserRouter([
             },
             {  
                 path: 'account',
-                Component: AccountPage,
+                Component: null,
                 children: [
                     {
                         index: true,
@@ -48,7 +48,7 @@ const routes = createBrowserRouter([
                     },
                     {
                         path: 'published',
-                        Component: null
+                        Component: PublishedPage
                     }
                 ]
             },
