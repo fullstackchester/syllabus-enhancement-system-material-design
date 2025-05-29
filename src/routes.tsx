@@ -7,12 +7,14 @@ import Dashboard from './pages/dashboard/dashboard'
 import SchoolYearPage from "./pages/school_year/school_year";
 import { Navigate } from "react-router";
 import PublishedPage from "./pages/account/published";
+import LoginPage from "./pages/login/login";
+import NotFoundPage from "./pages/not_found/not_found";
 
 const routes = createBrowserRouter([
-    // {
-    //     path: 'login',
-    //     Component: Login,
-    // },
+    {
+        path: 'login',
+        Component: LoginPage,
+    },
     {
         path: '/',
         Component: Shell,
@@ -54,7 +56,11 @@ const routes = createBrowserRouter([
             },
             
         ]
-    }
+    },
+    {
+        path: "*",
+        element: <NotFoundPage />,
+    },
 ])
 
 export default routes;
